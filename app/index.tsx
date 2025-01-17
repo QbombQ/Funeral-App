@@ -7,7 +7,6 @@ import { ThemedText } from '@/components/ThemedText';
 import NextIcon from '@/components/icons/NextIcon';
 import tw from "twrnc";
 import { router } from 'expo-router';
-
 export default function HomeScreen() {
     const handlePress = () => {
         router.push("/(auth)")
@@ -57,7 +56,7 @@ export default function HomeScreen() {
                             onPress={handlePress}
                         >
                             {/* <View  style={tw`absolute w-full h-full bg-[#004CFF] opacity-50 rounded-[56px] z-[1]`}/> */}
-                            
+
                             <Image source={require('@/assets/images/logbutton.png')} style={tw`w-full h-full absolute top-0 left-0 z-[2]`} />
 
                             <ThemedText type='numedium' textcolor='#F6FBFD'>
