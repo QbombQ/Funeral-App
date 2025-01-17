@@ -18,7 +18,10 @@ export default function RootLayout() {
     RalewayBold: require('../assets/fonts/Raleway-Bold.ttf'),
     RaleWaySemiBold: require('../assets/fonts/Raleway-SemiBold.ttf'),
     RalewayMedium: require('../assets/fonts/Raleway-Medium.ttf'),
-    NunitoMedium: require('@/assets/fonts/NunitoSans_10pt-Medium.ttf')
+    NunitoMedium: require('@/assets/fonts/NunitoSans_10pt-Medium.ttf'),
+    NunitoRegular: require('@/assets/fonts/NunitoSans_10pt-Regular.ttf'),
+    NunitoBold: require('@/assets/fonts/NunitoSans_10pt-SemiBold.ttf'),
+    PoppinsMedium: require('@/assets/fonts/Poppins-Medium.ttf'),
   });
 
   useEffect(() => {

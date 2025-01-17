@@ -36,16 +36,16 @@ export default function Index() {
         <View style={tw`w-full flex flex-col items-center`}>
           <View style={tw`pt-[27%]`}>
             <ThemedText type='rebold' textcolor='#FFFFFF'>
-              Create Your Account
+              Sign In
             </ThemedText>
           </View>
-          <View style={tw`mt-[40px] py-[15px] px-[8px] gap-[9px] flex flex-col justify-center items-center relative`}>
+          <View style={tw`mt-[100px] py-[15px] px-[8px] gap-[9px] flex flex-col justify-center items-center relative`}>
             <View style={tw`absolute inset-0 rounded-xl bg-[#FAFAFA] opacity-3`}></View>
-            <FormInput
+            {/* <FormInput
               placeholder="Name"
               value={name}
               onChangeText={setName}
-            />
+            /> */}
 
             <FormInput
               placeholder="Email"
@@ -60,7 +60,7 @@ export default function Index() {
               value={password}
               onChangeText={setPassword}
             />
-            <View
+            {/* <View
               style={tw`flex flex-row gap-[12px] w-[325px] items-center`}
             >
               <CheckBox
@@ -88,7 +88,7 @@ export default function Index() {
               <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
                 Terms of service and privacy policy
               </ThemedText>
-            </View>
+            </View> */}
             <View
               style={tw`flex flex-row w-[325px] items-center`}
             >
@@ -100,7 +100,7 @@ export default function Index() {
                 value={isEnabled}
               />
               <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
-                Allow location access to find nearby funeral homes
+                Remember
               </ThemedText>
             </View>
           </View>
@@ -116,14 +116,14 @@ export default function Index() {
                 {/* <View style={tw`absolute w-full h-full bg-[#004CFF] opacity-30 rounded-[56px]`} /> */}
                 <Image source={require('@/assets/images/01. Primary Button.png')} style={tw`w-full h-full absolute top-0 left-0`} />
                 <ThemedText type='numedium' textcolor='#F6FBFD'>
-                  Sign Up
+                  Sign In
                 </ThemedText>
               </TouchableOpacity>
 
             </View>
             <TouchableOpacity style={tw`flex justify-center items-center`}>
               <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
-                or sign up with
+                or sign in with
               </ThemedText>
             </TouchableOpacity>
             <View
@@ -135,7 +135,7 @@ export default function Index() {
                 <Image source={require('@/assets/images/authbtn.png')} style={tw`w-full h-full absolute`} />
                 <Image source={require('@/assets/images/google.png')} />
                 <ThemedText type='nusemibold' textcolor='#95989A'>
-                  Sign Up with Google
+                  Sign In with Google
                 </ThemedText>
               </View>
 
@@ -149,7 +149,7 @@ export default function Index() {
                 <Image source={require('@/assets/images/authbtn.png')} style={tw`w-full h-full absolute`} />
                 <Image source={require('@/assets/images/apple.png')} />
                 <ThemedText type='nusemibold' textcolor='#95989A'>
-                  Sign Up with Apple
+                  Sign In with Apple
                 </ThemedText>
               </View>
 
@@ -161,13 +161,13 @@ export default function Index() {
                 style={tw`flex flex-row gap-[5px]`}
               >
                 <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
-                  Already have an account?
+                Didn&apos;t have an account?
                 </ThemedText>
                 <TouchableOpacity
                   onPress={tosignin}
                 >
                   <ThemedText type='nuregular' textcolor='#004CFF' style={tw`opacity-90`}>
-                    Sign In
+                   Sign Up
                   </ThemedText>
                 </TouchableOpacity>
               </View>

@@ -5,7 +5,7 @@ import { useThemeColor } from '@/hooks/useThemeColor';
 export type ThemedTextProps = TextProps & {
   // lightColor?: string;
   textcolor?: string;
-  type?: 'retitle'| 'nutitle'| 'numedium' | 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'retitle'|'rebold'| 'nutitle'| 'numedium' | 'nuregular'| 'nusemibold' | 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
 };
 
 export function ThemedText({
@@ -22,9 +22,12 @@ export function ThemedText({
     <Text
       style={[
         { color },
+        type === 'rebold' ? styles.rebold : undefined,
         type === 'retitle' ? styles.retitle : undefined,
+        type === 'nuregular' ? styles.nuregular : undefined,
         type === 'nutitle' ? styles.nutitle : undefined,
         type === 'numedium' ? styles.numedium : undefined,
+        type === 'nusemibold' ? styles.nusemibold : undefined,
         type === 'default' ? styles.default : undefined,
         type === 'title' ? styles.title : undefined,
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
@@ -38,9 +41,14 @@ export function ThemedText({
 }
 
 const styles = StyleSheet.create({
+  rebold: {
+    fontSize: 32,
+    // lineHeight: 24,
+    fontFamily:"RalewayBold"
+  },
   retitle: {
     fontSize: 24,
-    lineHeight: 24,
+    lineHeight: 26,
     fontFamily:"RalewayBold"
   },
   nutitle: {
@@ -50,8 +58,18 @@ const styles = StyleSheet.create({
   },
   numedium:{
     fontSize:16,
-    lineHeight:24,
+    // lineHeight:24,
     fontFamily:"NunitoMedium"
+  },
+  nusemibold:{
+    fontSize:16,
+    // lineHeight:24,
+    fontFamily:"NunitoBold"
+  },
+  nuregular:{
+    fontSize:12,
+    // lineHeight:24,
+    fontFamily:"NunitoRegular"
   },
   default: {
     fontSize: 16,
