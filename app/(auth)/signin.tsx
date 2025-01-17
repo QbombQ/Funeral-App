@@ -9,12 +9,13 @@ import {
 } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import tw from "twrnc";
-import AuthBackground from '@/components/AuthBackground';
-import FormInput from '@/components/Input/FormInput';
+import AuthBackground from '@/components/background/AuthBackground';
+import FormInput from '@/components/input/FormInput';
 import { CheckBox, Icon } from '@rneui/themed';
-import {router} from "expo-router"
+import { router } from "expo-router"
 import { PrimaryButton } from '@/components/button/PrimaryButton';
 import { SocialAuthButton } from '@/components/button/SocialAuthButton';
+import SwitchForm from '@/components/input/SwitchForm';
 
 export default function Index() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -36,9 +37,9 @@ export default function Index() {
         contentContainerStyle={tw`flex-grow`}
         style={tw`w-full h-full`}
       >
-        <View style={tw`w-full flex flex-col items-center`}>
+        <View style={tw`w-full flex flex-col items-center pb-[20px]`}>
           <View style={tw`pt-[27%]`}>
-            <ThemedText type='rebold' textcolor='#FFFFFF'>
+            <ThemedText variant='title32' textcolor='#FFFFFF' style={{ fontFamily: "RalewayBold" }}>
               Sign In
             </ThemedText>
           </View>
@@ -59,46 +60,46 @@ export default function Index() {
             />
 
             <View
-              style={tw`flex flex-row w-[325px] items-center`}
+              style={tw`flex flex-row w-[325px] gap-[4px] justify-start`}
             >
-              <Switch
-                trackColor={{ false: '#FFFFFF', true: '#004CFF' }}
-                thumbColor={"#FFFFFF"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-              />
-              <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
+
+              <SwitchForm />
+              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`,{fontFamily:"NunitoRegular"}]}>
+              {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90 flex-1`}> */}
                 Remember
               </ThemedText>
             </View>
+
           </View>
           <View
             style={tw`mt-[25px] flex flex-col gap-[18px] w-full justify-center`}
           >
-            <PrimaryButton text='Sign In'/>
+            <PrimaryButton text='Sign In' />
             <TouchableOpacity style={tw`flex justify-center items-center`}>
-              <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
+            <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`,{fontFamily:"NunitoRegular"}]}>
+            {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
                 or sign in with
               </ThemedText>
             </TouchableOpacity>
-            <SocialAuthButton provider='google' action='signIn'/>
-            <SocialAuthButton provider='apple' action='signIn'/>
-           
+            <SocialAuthButton provider='google' action='signIn' />
+            <SocialAuthButton provider='apple' action='signIn' />
+
             <View
               style={tw`w-full flex justify-center items-center`}
             >
               <View
                 style={tw`flex flex-row gap-[5px]`}
               >
-                <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
-                Didn&apos;t have an account?
+              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`,{fontFamily:"NunitoRegular"}]}>
+              {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
+                  Didn&apos;t have an account?
                 </ThemedText>
                 <TouchableOpacity
                   onPress={tosignin}
                 >
-                  <ThemedText type='nuregular' textcolor='#004CFF' style={tw`opacity-90`}>
-                   Sign Up
+              <ThemedText variant='title12' textcolor='#004CFF' style={[tw`opacity-90`,{fontFamily:"NunitoRegular"}]}>
+              {/* <ThemedText type='nuregular' textcolor='#004CFF' style={tw`opacity-90`}> */}
+                    Sign Up
                   </ThemedText>
                 </TouchableOpacity>
               </View>

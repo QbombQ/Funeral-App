@@ -33,7 +33,7 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
           style={tw`w-full h-full absolute`}
         />
         <Image source={iconSource} />
-        <ThemedText type="nusemibold" textcolor="#95989A">
+        <ThemedText variant="title16" textcolor="#95989A" style={{fontFamily:"NunitoSemiBold"}}>
           {label}
         </ThemedText>
       </TouchableOpacity>

@@ -8,13 +8,14 @@ import {
   Switch
 } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import tw from "twrnc";
-import AuthBackground from '@/components/AuthBackground';
-import FormInput from '@/components/Input/FormInput';
-import { CheckBox, Icon } from '@rneui/themed';
+import tw, { style } from "twrnc";
+import AuthBackground from '@/components/background/AuthBackground';
+import FormInput from '@/components/input/FormInput';
+import { ThemedCheckBox } from '@/components/input/ThemedCheckBox';
 import { router } from "expo-router"
 import { PrimaryButton } from '@/components/button/PrimaryButton';
 import { SocialAuthButton } from '@/components/button/SocialAuthButton';
+import SwitchForm from "@/components/input/SwitchForm";
 
 export default function Index() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -30,15 +31,18 @@ export default function Index() {
   const tosignin = () => {
     router.push("/(auth)/signin")
   }
+  const toOnboarding = () => {
+    router.push('/(auth)/onboarding')
+  }
   return (
     <AuthBackground title=''>
       <ScrollView
         contentContainerStyle={tw`flex-grow`}
         style={tw`w-full h-full`}
       >
-        <View style={tw`w-full flex flex-col items-center`}>
+        <View style={tw`w-full flex flex-col items-center pb-[20px]`}>
           <View style={tw`pt-[27%]`}>
-            <ThemedText type='rebold' textcolor='#FFFFFF'>
+            <ThemedText variant='title32' textcolor='#FFFFFF' style={{ fontFamily: "RalewayBold" }}>
               Create Your Account
             </ThemedText>
           </View>
@@ -66,43 +70,24 @@ export default function Index() {
             <View
               style={tw`flex flex-row gap-[12px] w-[325px] items-center`}
             >
-              <CheckBox
+              <ThemedCheckBox
                 checked={check}
                 onPress={() => setCheck(!check)}
-                checkedIcon={
-                  <Icon
-                    type="font-awesome"
-                    name="dot-circle-o"
-                    size={20}
-                    color="#139AD6"
-                  />
-                }
-                uncheckedIcon={
-                  <Icon
-                    type="font-awesome"
-                    name="circle-o"
-                    size={20}
-                    color="#BAC1C4"
-                  />
-                }
-                containerStyle={tw`bg-transparent p-0 m-0 border-0`}
-                wrapperStyle={tw`bg-transparent p-0 m-0`}
+                checkedColor="#1E90FF"
+                uncheckedColor="#808080"
+                size={20}
               />
-              <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
+              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                 Terms of service and privacy policy
               </ThemedText>
             </View>
             <View
-              style={tw`flex flex-row w-[325px] items-center`}
+              style={tw`flex flex-row w-[325px] gap-[4px] justify-center`}
             >
-              <Switch
-                trackColor={{ false: '#FFFFFF', true: '#004CFF' }}
-                thumbColor={"#FFFFFF"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-              />
-              <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
+
+              <SwitchForm />
+              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
+                {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
                 Allow location access to find nearby funeral homes
               </ThemedText>
             </View>
@@ -110,14 +95,15 @@ export default function Index() {
           <View
             style={tw`mt-[25px] flex flex-col gap-[18px] w-full justify-center items-center`}
           >
-            <PrimaryButton text='Sign Up'/>
+            <PrimaryButton text='Sign Up' onPress={toOnboarding} />
             <TouchableOpacity style={tw`flex justify-center items-center`}>
-              <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
+              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
+                {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
                 or sign up with
               </ThemedText>
             </TouchableOpacity>
-            <SocialAuthButton provider='google' action='signUp'/>
-            <SocialAuthButton provider='apple' action='signUp'/>
+            <SocialAuthButton provider='google' action='signUp' />
+            <SocialAuthButton provider='apple' action='signUp' />
 
             <View
               style={tw`w-full flex justify-center items-center`}
@@ -125,13 +111,15 @@ export default function Index() {
               <View
                 style={tw`flex flex-row gap-[5px]`}
               >
-                <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
+                <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
+                  {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
                   Already have an account?
                 </ThemedText>
                 <TouchableOpacity
                   onPress={tosignin}
                 >
-                  <ThemedText type='nuregular' textcolor='#004CFF' style={tw`opacity-90`}>
+                  <ThemedText variant='title12' textcolor='#004CFF' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
+                    {/* <ThemedText type='nuregular' textcolor='#004CFF' style={tw`opacity-90`}> */}
                     Sign In
                   </ThemedText>
                 </TouchableOpacity>

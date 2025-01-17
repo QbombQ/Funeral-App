@@ -16,7 +16,7 @@ export default function AuthBackground({ children, title }: PropsWithChildren & 
             /> */}
             <Image
                 source={require('@/assets/images/Ellipse 31.png')}
-                style={tw`absolute`}
+                style={tw`absolute right-[10px]`}
             />
             <Image
                 source={require('@/assets/images/bubble1.png')}

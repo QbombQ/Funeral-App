@@ -20,11 +20,11 @@ const FormInput = ({
 
   return (
     <View style={[tw`w-[325px] h-[50px]`, additionalStyles]}>
-      <View style={tw`absolute bg-[#004CFF] top-0 w-full h-full rounded-[56px] z-[1] opacity-10`}>
         <Image
           source={require("@/assets/images/Form.png")}
           style={tw`absolute top-0 left-0 z-[2] w-full h-full`}
         />
+      <View style={tw`absolute bg-[#004CFF] top-0 w-full h-full rounded-[56px] z-[1] opacity-10`}>
       </View>
 
       {secureTextEntry ? (
@@ -46,7 +46,7 @@ const FormInput = ({
             onPress={togglePasswordVisibility}
             activeOpacity={0.7}
           >
-            {isPasswordHidden ? <ShowIcon /> : <HiddenIcon />}
+            {isPasswordHidden ? <ShowIcon  /> : <HiddenIcon />}
           </TouchableOpacity>
         </View>
       ) : (

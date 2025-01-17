@@ -20,7 +20,8 @@ export default function RootLayout() {
     RalewayMedium: require('../assets/fonts/Raleway-Medium.ttf'),
     NunitoMedium: require('@/assets/fonts/NunitoSans_10pt-Medium.ttf'),
     NunitoRegular: require('@/assets/fonts/NunitoSans_10pt-Regular.ttf'),
-    NunitoBold: require('@/assets/fonts/NunitoSans_10pt-SemiBold.ttf'),
+    NunitoSemiBold: require('@/assets/fonts/NunitoSans_10pt-SemiBold.ttf'),
+    NunitoBold: require('@/assets/fonts/NunitoSans_10pt-Bold.ttf'),
     PoppinsMedium: require('@/assets/fonts/Poppins-Medium.ttf'),
   });
 

@@ -32,7 +32,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
           source={require('@/assets/images/01. Primary Button.png')}
           style={tw`w-full h-full absolute top-0 left-0`}
         />
-        <ThemedText type="numedium" textcolor="#F6FBFD">
+        <ThemedText variant='title16' textcolor='#F6FBFD' style={{fontFamily:"NunitoMedium"}}>
           {text}
         </ThemedText>
       </TouchableOpacity>

@@ -36,7 +36,7 @@ export default function HomeScreen() {
                     <View
                         style={tw`w-[309px] text-center mt-[-40px]`}
                     >
-                        <ThemedText type='retitle' textcolor='#E9E9E9' style={tw`text-center`}>
+                        <ThemedText variant='title24' textcolor='#E9E9E9' style={[tw`text-center`,{fontFamily:"RalewayBold"}]}>
                             Plan Ahead with Ease and Peace of Mind
                         </ThemedText>
                     </View>
@@ -44,7 +44,7 @@ export default function HomeScreen() {
                     <View
                         style={tw`w-[340px] text-center`}
                     >
-                        <ThemedText type='nutitle' textcolor='#FFFFFF' style={tw`text-center`}>
+                        <ThemedText variant='title20' textcolor='#FFFFFF' style={[tw`text-center`,{fontFamily:"NunitoMedium"}]}>
                             Secure your end-of-life wishes with simple tools
                         </ThemedText>
                     </View>
@@ -59,7 +59,7 @@ export default function HomeScreen() {
 
                             <Image source={require('@/assets/images/logbutton.png')} style={tw`w-full h-full absolute top-0 left-0 z-[2]`} />
 
-                            <ThemedText type='numedium' textcolor='#F6FBFD'>
+                            <ThemedText variant='title16' textcolor='#F6FBFD' style={{fontFamily:"NunitoMedium"}}>
                                 Get Started
                             </ThemedText>
                             <NextIcon />

@@ -1,38 +1,70 @@
-import { Text, type TextProps, StyleSheet } from 'react-native';
-
+import React from 'react';
+import { Text, TextProps, StyleSheet } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
-export type ThemedTextProps = TextProps & {
-  // lightColor?: string;
-  textcolor?: string;
-  type?: 'retitle'|'rebold'| 'nutitle'| 'numedium' | 'nuregular'| 'nusemibold' | 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+
+export type ThemedTextVariant =
+  | 'title32'
+  | 'title30'
+  | 'title28'
+  | 'title26'
+  | 'title24'
+  | 'title22'
+  | 'title20'
+  | 'title19'
+  | 'title18'
+  | 'title16'
+  | 'title14'
+  | 'title12'
+  | 'title10';
+
+
+const FONT_SIZE_MAP: Record<ThemedTextVariant, number> = {
+  title32: 32,
+  title30: 30,
+  title28: 28,
+  title26: 26,
+  title24: 24,
+  title22: 22,
+  title20: 20,
+  title19: 19,
+  title18: 18,
+  title16: 16,
+  title14: 14,
+  title12: 12,
+  title10: 10,
 };
+
+export interface ThemedTextProps extends TextProps {
+
+  variant?: ThemedTextVariant;
+
+
+  textcolor?: string;
+
+
+  fontFamily?: string;
+}
 
 export function ThemedText({
   style,
-  // lightColor,
-  // darkColor,
+  variant = 'title16', // default variant
   textcolor,
-  type = 'default',
+  fontFamily = 'RalewayRegular',
   ...rest
 }: ThemedTextProps) {
+  // Use your theme or fallback to textColor
   const color = useThemeColor({ light: textcolor }, 'text');
 
   return (
     <Text
       style={[
-        { color },
-        type === 'rebold' ? styles.rebold : undefined,
-        type === 'retitle' ? styles.retitle : undefined,
-        type === 'nuregular' ? styles.nuregular : undefined,
-        type === 'nutitle' ? styles.nutitle : undefined,
-        type === 'numedium' ? styles.numedium : undefined,
-        type === 'nusemibold' ? styles.nusemibold : undefined,
-        type === 'default' ? styles.default : undefined,
-        type === 'title' ? styles.title : undefined,
-        type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
-        type === 'subtitle' ? styles.subtitle : undefined,
-        type === 'link' ? styles.link : undefined,
+        styles.base,
+        {
+          color,
+          fontFamily,
+          fontSize: FONT_SIZE_MAP[variant],
+        },
         style,
       ]}
       {...rest}
@@ -41,57 +73,8 @@ export function ThemedText({
 }
 
 const styles = StyleSheet.create({
-  rebold: {
-    fontSize: 32,
+  base: {
+    // Any shared default text styles can go here
     // lineHeight: 24,
-    fontFamily:"RalewayBold"
-  },
-  retitle: {
-    fontSize: 24,
-    lineHeight: 26,
-    fontFamily:"RalewayBold"
-  },
-  nutitle: {
-    fontSize: 20,
-    lineHeight: 24,
-    fontFamily:"NunitoMedium"
-  },
-  numedium:{
-    fontSize:16,
-    // lineHeight:24,
-    fontFamily:"NunitoMedium"
-  },
-  nusemibold:{
-    fontSize:16,
-    // lineHeight:24,
-    fontFamily:"NunitoBold"
-  },
-  nuregular:{
-    fontSize:12,
-    // lineHeight:24,
-    fontFamily:"NunitoRegular"
-  },
-  default: {
-    fontSize: 16,
-    lineHeight: 24,
-  },
-  defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
-  },
-  subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    lineHeight: 30,
-    fontSize: 16,
-    color: '#0a7ea4',
   },
 });
