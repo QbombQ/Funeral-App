@@ -10,9 +10,12 @@ import {
 import { ThemedText } from '@/components/ThemedText';
 import tw from "twrnc";
 import AuthBackground from '@/components/AuthBackground';
-import FormInput from '@/components/FormInput';
+import FormInput from '@/components/Input/FormInput';
 import { CheckBox, Icon } from '@rneui/themed';
-import {router} from "expo-router"
+import { router } from "expo-router"
+import { PrimaryButton } from '@/components/button/PrimaryButton';
+import { SocialAuthButton } from '@/components/button/SocialAuthButton';
+
 export default function Index() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [name, setName] = useState('');
@@ -105,55 +108,17 @@ export default function Index() {
             </View>
           </View>
           <View
-            style={tw`mt-[25px] flex flex-col gap-[18px] w-full justify-center`}
+            style={tw`mt-[25px] flex flex-col gap-[18px] w-full justify-center items-center`}
           >
-            <View
-              style={tw`w-full flex justify-center items-center`}
-            >
-              <TouchableOpacity
-                style={tw`w-[283px] h-[50px] flex flex-row justify-center items-center  border border-[#004CFF] rounded-[56px]`}
-              >
-                {/* <View style={tw`absolute w-full h-full bg-[#004CFF] opacity-30 rounded-[56px]`} /> */}
-                <Image source={require('@/assets/images/01. Primary Button.png')} style={tw`w-full h-full absolute top-0 left-0`} />
-                <ThemedText type='numedium' textcolor='#F6FBFD'>
-                  Sign Up
-                </ThemedText>
-              </TouchableOpacity>
-
-            </View>
+            <PrimaryButton text='Sign Up'/>
             <TouchableOpacity style={tw`flex justify-center items-center`}>
               <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}>
                 or sign up with
               </ThemedText>
             </TouchableOpacity>
-            <View
-              style={tw`w-full flex items-center`}
-            >
-              <View
-                style={tw`w-[335px] h-[49px] border border-[#004CFF] rounded-[56px] flex flex-row gap-[12px] justify-center items-center`}
-              >
-                <Image source={require('@/assets/images/authbtn.png')} style={tw`w-full h-full absolute`} />
-                <Image source={require('@/assets/images/google.png')} />
-                <ThemedText type='nusemibold' textcolor='#95989A'>
-                  Sign Up with Google
-                </ThemedText>
-              </View>
+            <SocialAuthButton provider='google' action='signUp'/>
+            <SocialAuthButton provider='apple' action='signUp'/>
 
-            </View>
-            <View
-              style={tw`w-full flex items-center`}
-            >
-              <View
-                style={tw`w-[335px] h-[49px] border border-[#004CFF] rounded-[56px] flex flex-row gap-[12px] justify-center items-center`}
-              >
-                <Image source={require('@/assets/images/authbtn.png')} style={tw`w-full h-full absolute`} />
-                <Image source={require('@/assets/images/apple.png')} />
-                <ThemedText type='nusemibold' textcolor='#95989A'>
-                  Sign Up with Apple
-                </ThemedText>
-              </View>
-
-            </View>
             <View
               style={tw`w-full flex justify-center items-center`}
             >
