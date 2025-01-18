@@ -40,6 +40,7 @@ export default function RootLayout() {
       <Stack initialRouteName='index'>
         <Stack.Screen name="index" options={{ headerShown: false }}/>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(home)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="light" />

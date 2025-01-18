@@ -87,7 +87,6 @@ export default function Index() {
 
               <SwitchForm />
               <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
-                {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
                 Allow location access to find nearby funeral homes
               </ThemedText>
             </View>
@@ -98,7 +97,6 @@ export default function Index() {
             <PrimaryButton text='Sign Up' onPress={toOnboarding} />
             <TouchableOpacity style={tw`flex justify-center items-center`}>
               <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
-                {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
                 or sign up with
               </ThemedText>
             </TouchableOpacity>
@@ -112,14 +110,12 @@ export default function Index() {
                 style={tw`flex flex-row gap-[5px]`}
               >
                 <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
-                  {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
                   Already have an account?
                 </ThemedText>
                 <TouchableOpacity
                   onPress={tosignin}
                 >
                   <ThemedText variant='title12' textcolor='#004CFF' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
-                    {/* <ThemedText type='nuregular' textcolor='#004CFF' style={tw`opacity-90`}> */}
                     Sign In
                   </ThemedText>
                 </TouchableOpacity>

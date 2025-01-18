@@ -64,8 +64,7 @@ export default function Index() {
             >
 
               <SwitchForm />
-              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`,{fontFamily:"NunitoRegular"}]}>
-              {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90 flex-1`}> */}
+              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                 Remember
               </ThemedText>
             </View>
@@ -76,8 +75,7 @@ export default function Index() {
           >
             <PrimaryButton text='Sign In' />
             <TouchableOpacity style={tw`flex justify-center items-center`}>
-            <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`,{fontFamily:"NunitoRegular"}]}>
-            {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
+              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                 or sign in with
               </ThemedText>
             </TouchableOpacity>
@@ -90,15 +88,13 @@ export default function Index() {
               <View
                 style={tw`flex flex-row gap-[5px]`}
               >
-              <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`,{fontFamily:"NunitoRegular"}]}>
-              {/* <ThemedText type='nuregular' textcolor='#C2C2C2' style={tw`opacity-90`}> */}
+                <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                   Didn&apos;t have an account?
                 </ThemedText>
                 <TouchableOpacity
                   onPress={tosignin}
                 >
-              <ThemedText variant='title12' textcolor='#004CFF' style={[tw`opacity-90`,{fontFamily:"NunitoRegular"}]}>
-              {/* <ThemedText type='nuregular' textcolor='#004CFF' style={tw`opacity-90`}> */}
+                  <ThemedText variant='title12' textcolor='#004CFF' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                     Sign Up
                   </ThemedText>
                 </TouchableOpacity>

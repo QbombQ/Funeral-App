@@ -7,12 +7,16 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedCheckBox } from '@/components/input/ThemedCheckBox';
 import RightIcon from '@/components/icons/RightIcon';
 import LeftIcon from '@/components/icons/LeftIcon';
+import { router } from 'expo-router';
 export default function OnboardingScreen() {
   const [check1, setCheck1] = useState(false);
   const [check2, setCheck2] = useState(false);
   const [check3, setCheck3] = useState(false);
   const [check4, setCheck4] = useState(false);
   const [selectedOption, setSelectedOption] = useState<String>("");
+  const toDashboard = () => {
+    router.push('/(home)')
+  }
   return (
     <MainBackground title=''>
       <View
@@ -29,12 +33,11 @@ export default function OnboardingScreen() {
         <View style={tw`w-full h-full flex justify-around items-center`}>
           <View style={tw`pt-[51px] w-[263px]`}>
             <ThemedText variant='title24' textcolor='#E9E9E9' style={[tw`text-center`, { fontFamily: "RalewayBold" }]}>
-
               Let&apos;s Customize Your Experience
             </ThemedText>
           </View>.
 
-          
+
           <View style={tw`py-[16px] px-[12px] flex flex-col gap-[24px] relative`}>
             <Image source={require('@/assets/images/Frame 1000005921 (1).png')} style={tw`absolute top-0 left-0 z-[-3] h-[222px] w-[313px]`} />
             <ThemedText variant='title22' textcolor='#FFFFFF' style={[tw`w-[289px] text-center`, { fontFamily: 'NunitoBold' }]}>
@@ -105,12 +108,13 @@ export default function OnboardingScreen() {
           </View>
           <View style={tw`flex flex-row w-full justify-between px-[28px]`}>
             <TouchableOpacity
-            disabled
+              disabled
               style={tw`w-[30px] h-[30px] flex justify-center items-center rounded-[50px] bg-[#383A3B]`}
             >
               <LeftIcon />
             </TouchableOpacity>
             <TouchableOpacity
+              onPress={toDashboard}
               style={tw`w-[30px] h-[30px] flex justify-center items-center rounded-[50px] bg-[#004CFF]`}
             >
               <RightIcon />
