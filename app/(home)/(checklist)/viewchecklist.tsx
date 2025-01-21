@@ -114,7 +114,7 @@ export default function Index() {
                     style={tw`pt-[46px] flex flex px-[30px] w-full gap-[34px]`}
                 >
                     <View
-                        style={tw`gap-[18px] flex felx-col`}
+                        style={tw`gap-[18px] flex flex-col`}
                     >
                         <View
                             style={tw`flex flex-row gap-[6.5px]`}
@@ -160,7 +160,7 @@ export default function Index() {
                         </View>
 
                     </View>
-                    <View style={tw`w-full justif-center items-center`}>
+                    <View style={tw`w-full justify-center items-center`}>
                         <ManIcon />
                         <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Picture</ThemedText>
                     </View>

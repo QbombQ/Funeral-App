@@ -35,7 +35,7 @@ export default function OnboardingScreen() {
             <ThemedText variant='title24' textcolor='#E9E9E9' style={[tw`text-center`, { fontFamily: "RalewayBold" }]}>
               Let&apos;s Customize Your Experience
             </ThemedText>
-          </View>.
+          </View>
 
 
           <View style={tw`py-[16px] px-[12px] flex flex-col gap-[24px] relative`}>

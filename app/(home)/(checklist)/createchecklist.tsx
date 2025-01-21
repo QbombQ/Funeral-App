@@ -28,6 +28,7 @@ import UploadingModal from "@/components/modal/UpLoadingModal"
 import SuccessModal from '@/components/modal/SuccessModal';
 import ManIcon from '@/components/icons/ManIcon';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
+import CheckListUploadModal from '@/components/modal/CheckListUploadModal';
 export default function CreateCheckList() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [showItem, setShowItem] = useState(false)
@@ -91,6 +92,10 @@ export default function CreateCheckList() {
         setShowConfirmationModal(false)
 
     }
+    const closeUploadModal = () => setUploadModalVisible(false);
+    const handleCreateChecklist = () => {
+        router.push('/(home)/(checklist)/createchecklist')
+    };
     return (
         <MainBackground title=''>
             <View style={tw`flex-1`}>
@@ -216,7 +221,7 @@ export default function CreateCheckList() {
 
                         </View>
                         {isShowUploadedImage &&
-                            <View style={tw`w-full justif-center items-center`}>
+                            <View style={tw`w-full justify-center items-center`}>
                                 <ManIcon />
                                 <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Picture</ThemedText>
                             </View>
@@ -263,6 +268,13 @@ export default function CreateCheckList() {
 
                 </View>
             </View>
+            <CheckListUploadModal
+                visible={isUploadModalVisible}
+                onClose={closeUploadModal}
+                onCreateChecklist={handleCreateChecklist}
+                onUpload={handleFileUpload}
+                isLoading={false}
+            />
             <UploadImageComponent
                 visible={isModalVisible}
                 text='Upload from Device'
