@@ -1,3 +1,4 @@
+import React from 'react';
 import { PropsWithChildren } from 'react';
 import { StyleSheet, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 import tw from "twrnc";

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import tw from "twrnc";
 import LeftIcon from '../icons/LeftIcon';
@@ -12,23 +12,35 @@ import CheckListIcon from '../icons/CheckListIcon';
 import VaultIcon from '../icons/VaultIcon';
 import BudgetIcon from '../icons/BudgetIcon';
 import LocationIcon from '../icons/LocationIcon';
+import { router } from 'expo-router';
+import { useNavigationState, useRoute } from '@react-navigation/native';
+import { useNavigationContext } from '@/context/NavigationContext';
 
 const MainNavigationBar: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<string>('home'); 
+  const { selectedTab, setSelectedTab } = useNavigationContext();
+
 
   const handleTabSelect = (tab: string) => {
-    setSelectedTab(tab);
+    setSelectedTab(tab); 
+  };
+  const toCheckList = () => {
+    handleTabSelect('checklist');
+    router.push('/(home)/(checklist)');
+  };
+
+  const toHome = () => {
+    handleTabSelect('home');
+    router.push('/(home)/home');
   };
 
   return (
-    <View style={tw`w-full absolute bottom-[30px] px-[8px] justify-center`}>
-      <View style={tw`w-full h-[80px] rounded-[50px] border border-[#004CFF]`}>
+    <View style={[tw`w-full absolute bottom-[30px] px-[8px] justify-center`,{position:"absolute",zIndex:2}]}>
+      <View style={tw`w-full h-[80px] rounded-[50px] border border-[#004CFF] bg-[#004CFF] bg-opacity-20`}>
         <Image source={require('@/assets/images/Navbar (3).png')} style={tw`absolute w-full h-full`} />
         <View style={tw`w-full h-full px-[24px] py-[11px] flex flex-row justify-between`}>
-          {/* Home Tab */}
           <TouchableOpacity
             style={tw`flex flex-col justify-center items-center px-[5px]`}
-            onPress={() => handleTabSelect('home')}
+            onPress={() => { handleTabSelect('home'), toHome() }}
           >
             <View style={tw`w-[40px] h-[40px] flex justify-center items-center rounded-[50px] ${selectedTab === 'home' ? 'bg-[#004CFF] bg-opacity-20 border border-[#004CFF]' : ''}`}>
               <HomeIcon color={selectedTab === 'home' ? '#004CFF' : undefined} />
@@ -40,7 +52,7 @@ const MainNavigationBar: React.FC = () => {
 
           <TouchableOpacity
             style={tw`flex flex-col justify-center items-center px-[5px]`}
-            onPress={() => handleTabSelect('checklist')}
+            onPress={() => { handleTabSelect('checklist'), toCheckList() }}
           >
             <View style={tw`w-[40px] h-[40px] flex justify-center items-center rounded-[50px] ${selectedTab === 'checklist' ? 'bg-[#004CFF] bg-opacity-20 border border-[#004CFF]' : ''}`}>
               <CheckListIcon color={selectedTab === 'checklist' ? '#004CFF' : undefined} />

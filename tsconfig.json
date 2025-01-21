@@ -1,7 +1,9 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "jsx": "react-native",
     "strict": true,
+    "esModuleInterop": true,  // Add this line to enable esModuleInterop
     "paths": {
       "@/*": [
         "./*"

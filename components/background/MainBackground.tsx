@@ -1,3 +1,4 @@
+import React from 'react';
 import { PropsWithChildren } from 'react';
 import {
     StyleSheet,
@@ -22,14 +23,14 @@ export default function MainBackground({ children, title }: PropsWithChildren & 
                 <Image source={require('@/assets/images/bubble6.png')} style={tw`absolute bottom-[70px] left-0 z-[3]`} />
             </View>
 
-            <ScrollView
+            {/* <ScrollView
                 contentContainerStyle={tw`flex-grow justify-center`}
                 style={tw`w-full h-full`}
-            >
-                <View style={tw`w-full h-full justify-center`}>
-                    {children}
-                </View>
-            </ScrollView>
+            > */}
+            <View style={tw`w-full h-full justify-center`}>
+                {children}
+            </View>
+            {/* </ScrollView> */}
         </SafeAreaView>
     );
 }

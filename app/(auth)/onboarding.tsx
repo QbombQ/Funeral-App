@@ -15,7 +15,7 @@ export default function OnboardingScreen() {
   const [check4, setCheck4] = useState(false);
   const [selectedOption, setSelectedOption] = useState<String>("");
   const toDashboard = () => {
-    router.push('/(home)')
+    router.push('/(home)/home')
   }
   return (
     <MainBackground title=''>

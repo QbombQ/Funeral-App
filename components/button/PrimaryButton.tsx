@@ -30,7 +30,7 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
       >
         <Image
           source={require('@/assets/images/01. Primary Button.png')}
-          style={tw`w-full h-full absolute top-0 left-0`}
+          style={tw`w-full h-full absolute top-0 left-0 rounded-full`}
         />
         <ThemedText variant='title16' textcolor='#F6FBFD' style={{fontFamily:"NunitoMedium"}}>
           {text}

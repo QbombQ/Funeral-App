@@ -24,7 +24,7 @@ export default function HomeScreen() {
                 />
                 <Image
                     source={require('@/assets/images/bubble 02.png')}
-                    style={tw`absolute top-0 left-0 z-[20]`}
+                    style={tw`absolute top-0 left-0`}
                 />
                 <Image
                     source={require('@/assets/images/bubble 4.png')}
