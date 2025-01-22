@@ -248,7 +248,7 @@ export default function Index() {
                 </ScrollView>
                 <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`,{zIndex:30}]}>
 
-                    <TouchableOpacity >
+                    <TouchableOpacity onPress={handleCreateChecklist} >
                         <Image source={require("@/assets/images/09. More.png")} />
                     </TouchableOpacity>
                 </View>

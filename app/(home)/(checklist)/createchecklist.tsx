@@ -29,6 +29,7 @@ import SuccessModal from '@/components/modal/SuccessModal';
 import ManIcon from '@/components/icons/ManIcon';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import CheckListUploadModal from '@/components/modal/CheckListUploadModal';
+import { BlueButton } from '@/components/button/BlueButton';
 export default function CreateCheckList() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [showItem, setShowItem] = useState(false)
@@ -258,8 +259,9 @@ export default function CreateCheckList() {
                                     Add Reminder
                                 </ThemedText>
                             </View>
-                            <PrimaryButton
+                            <BlueButton
                                 width={142}
+                                height={48}
                                 text='Save'
                                 onPress={addChecklist}
                             />

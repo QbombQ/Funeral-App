@@ -34,7 +34,7 @@ export default function Home() {
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex`}>
-                <NavigationHeader />
+                <NavigationHeader title='Welcome' />
                 <MainNavigationBar />
                 <View
                     style={tw`pt-[20px] px-[14px] gap-[26px] flex flex-col justify-center`}

@@ -68,6 +68,7 @@ import tw from "twrnc";
 import { ThemedText } from '../ThemedText';
 import MainBackground from '../background/MainBackground';
 import { PrimaryButton } from '../button/PrimaryButton';
+import { NormalButton } from '../button/NormalButton';
 
 type SuccessModalProps = {
     visible: boolean;
@@ -100,7 +101,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
                                         {statusText}
                                     </ThemedText>
                                 </View>
-                                <PrimaryButton width={230} text={btnText} onPress={onConfirm} />
+                                <NormalButton width={230} text={btnText} onPress={onConfirm} />
                             </View>
                         </View>
                     </View>

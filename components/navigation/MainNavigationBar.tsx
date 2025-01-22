@@ -21,7 +21,7 @@ const MainNavigationBar: React.FC = () => {
 
 
   const handleTabSelect = (tab: string) => {
-    setSelectedTab(tab); 
+    setSelectedTab(tab);
   };
   const toCheckList = () => {
     handleTabSelect('checklist');
@@ -32,9 +32,20 @@ const MainNavigationBar: React.FC = () => {
     handleTabSelect('home');
     router.push('/(home)/home');
   };
-
+  const toVault = () => {
+    handleTabSelect('vault');
+    router.push('/(home)/(vault)');
+  }
+  const toBudget = () =>{
+    handleTabSelect("budget");
+    router.push('/(home)/(budget)')
+  }
+  const toLocation = () =>{
+    handleTabSelect("location")
+    router.push('/(home)/(location)')
+  }
   return (
-    <View style={[tw`w-full absolute bottom-[30px] px-[8px] justify-center`,{position:"absolute",zIndex:2}]}>
+    <View style={[tw`w-full absolute bottom-[30px] px-[8px] justify-center`, { position: "absolute", zIndex: 2 }]}>
       <View style={tw`w-full h-[80px] rounded-[50px] border border-[#004CFF] bg-[#004CFF] bg-opacity-20`}>
         <Image source={require('@/assets/images/Navbar (3).png')} style={tw`absolute w-full h-full`} />
         <View style={tw`w-full h-full px-[24px] py-[11px] flex flex-row justify-between`}>
@@ -64,7 +75,7 @@ const MainNavigationBar: React.FC = () => {
 
           <TouchableOpacity
             style={tw`flex flex-col justify-center items-center px-[5px]`}
-            onPress={() => handleTabSelect('vault')}
+            onPress={() => { handleTabSelect('vault'), toVault() }}
           >
             <View style={tw`w-[40px] h-[40px] flex justify-center items-center rounded-[50px] ${selectedTab === 'vault' ? 'bg-[#004CFF] bg-opacity-20 border border-[#004CFF]' : ''}`}>
               <VaultIcon color={selectedTab === 'vault' ? '#004CFF' : undefined} />
@@ -76,7 +87,7 @@ const MainNavigationBar: React.FC = () => {
 
           <TouchableOpacity
             style={tw`flex flex-col justify-center items-center px-[5px]`}
-            onPress={() => handleTabSelect('budget')}
+            onPress={() => { handleTabSelect('budget'), toBudget() }}
           >
             <View style={tw`w-[40px] h-[40px] flex justify-center items-center rounded-[50px] ${selectedTab === 'budget' ? 'bg-[#004CFF] bg-opacity-20 border border-[#004CFF]' : ''}`}>
               <BudgetIcon color={selectedTab === 'budget' ? '#004CFF' : undefined} />
@@ -88,7 +99,7 @@ const MainNavigationBar: React.FC = () => {
 
           <TouchableOpacity
             style={tw`flex flex-col justify-center items-center px-[5px]`}
-            onPress={() => handleTabSelect('location')}
+            onPress={() => {handleTabSelect('location'),toLocation()}}
           >
             <View style={tw`w-[40px] h-[40px] flex justify-center items-center rounded-[50px] ${selectedTab === 'location' ? 'bg-[#004CFF] bg-opacity-20 border border-[#004CFF]' : ''}`}>
               <LocationIcon color={selectedTab === 'location' ? '#004CFF' : undefined} />

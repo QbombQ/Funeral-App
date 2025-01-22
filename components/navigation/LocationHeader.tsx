@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, TextInput } from 'react-native';
 import tw from "twrnc";
 import LeftIcon from '../icons/LeftIcon';
 import { ThemedText } from '../ThemedText';
@@ -8,12 +8,14 @@ import OptionIcon from '../icons/OptionIcon';
 import { Image } from 'react-native';
 import ConfirmationModal from '../modal/ConfirmationModal';
 import { router } from 'expo-router';
+import SettingIcon from '../icons/SettingIcon';
+import { Input } from '@rneui/base';
 
-interface NavigationHeaderProps{
-    title:string;
+interface LocationHeaderProps {
+    title?: string;
 }
 
-const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
+const LocationHeader: React.FC<LocationHeaderProps> = ({ title }) => {
     const [showLogoutOption, setShowLogoutOption] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -34,7 +36,9 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
         setIsModalVisible(false);
     };
     return (
-        <>
+        <View
+            style={tw`absolute w-full h-full`}
+        >
             <ConfirmationModal
                 visible={isModalVisible}
                 onConfirm={confirmLogout}
@@ -44,14 +48,16 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
             />
             <View
                 style={[
-                    tw`mt-[44px] w-full flex justify-center items-center px-[14px] h-[38px]`,
-                    { position: 'relative', zIndex: 1 } // Set position to relative
+                    tw`mt-[44px] w-full flex justify-center items-center px-[14px]`,
+                    { position: 'absolute', zIndex: 1 } // Set position to relative
                 ]}
             >
+
                 <View
                     style={tw`w-full h-[38px] rounded-[100px] flex flex-row justify-between items-center`}
                 >
-                    <View style={tw`bg-[#FFFFFF] opacity-5 w-full h-full rounded-[50px] absolute`} />
+                    <Image source={require("@/assets/images/locationheaderback.png")} style={tw`absolute w-full h-full`} />
+                    {/* <View style={tw`bg-[#FFFFFF] opacity-5 w-full h-full rounded-[50px] absolute`} /> */}
                     <View
                         style={tw`w-full h-[38px] rounded-[100px] py-[4px] px-[12px] flex flex-row justify-between items-center`}
                     >
@@ -59,12 +65,12 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
                         <TouchableOpacity
                             style={tw`w-[30px] h-[30px] rounded-[50px] flex justify-center items-center`}
                         >
-                            <View style={tw`absolute w-full h-full rounded-[50px] bg-[#004CFF] opacity-40`} />
-                            <LeftIcon />
+                            <View style={tw`absolute w-full h-full rounded-[50px] bg-[#FFFFFF] shadow`} />
+                            <LeftIcon color='black' />
                         </TouchableOpacity>
                         <View>
-                            <ThemedText variant='title12' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold' >
-                                {title}
+                            <ThemedText variant='title12' textcolor='#1F1F1F' fontFamily='RaleWaySemiBold' >
+                                Find Funeral Homes Near You
                             </ThemedText>
                         </View>
                         <View
@@ -74,7 +80,7 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
                                 style={tw`w-[30px] h-[30px] rounded-[56px] border border-[#004CFF] flex justify-center items-center`}
                             >
                                 <View style={tw`absolute w-full h-full rounded-[50px] bg-[#004CFF] opacity-20`} />
-                                <Notification />
+                                <Notification color='black' />
                                 <View
                                     style={tw`w-[9px] h-[9px] rounded-[50px] bg-[#004CFF] absolute top-[4px] right-[6px]`}
                                 />
@@ -85,7 +91,7 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
                             >
                                 <View style={tw`absolute w-full h-full rounded-[50px] bg-[#004CFF] opacity-20`} />
 
-                                <OptionIcon />
+                                <OptionIcon color='black' />
                             </TouchableOpacity>
                         </View>
                         {showLogoutOption &&
@@ -117,10 +123,35 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
                     </View>
                 </View>
 
+                <View
+                    style={tw`px-[41px] w-full h-[40px] gap-[12px] flex flex-row justify-center items-center`}
+                >
+                    <View
+                    style={tw`w-full`}
+                    >
+                        <TextInput
+                        placeholder='Search by zip code or city'
+                        placeholderTextColor={"#707070"}
+                        style={tw` rounded-full border w-full border-[#004CFF] pl-[40px] pr-[10px] z-1`}
+                        >
+
+                        </TextInput>
+                        <Image source={require("@/assets/images/13. search-02.png")}  style={tw`absolute top-[8px] left-[12px]`}/>
+                        <Image source={require("@/assets/images/ModalBack2.png")} style={tw`absolute w-full h-full rounded-full`} />
+                    </View>
+                    <TouchableOpacity
+                        onPress={showLogoutItem}
+                        style={tw`w-[30px] h-[30px] rounded-[56px] border border-[#004CFF] flex justify-center items-center`}
+                    >
+                        <View style={tw`absolute w-full h-full rounded-[50px] bg-[#004CFF] opacity-20`} />
+
+                        <SettingIcon color='black' />
+                    </TouchableOpacity>
+                </View>
             </View>
-        </>
+        </View>
 
     );
 };
 
-export default NavigationHeader;
+export default LocationHeader;
