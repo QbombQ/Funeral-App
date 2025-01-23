@@ -3,15 +3,13 @@ import { Text, type TextProps, StyleSheet } from 'react-native';
 import { useThemeColor } from '@/hooks/useThemeColor';
 
 export type ThemedTextProps = TextProps & {
-  // lightColor?: string;
   textcolor?: string;
   type?: 'retitle'|'rebold'| 'nutitle'| 'numedium' | 'nuregular'| 'nusemibold' | 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
 };
 
 export function ThemedText({
   style,
-  // lightColor,
-  // darkColor,
+
   textcolor,
   type = 'default',
   ...rest

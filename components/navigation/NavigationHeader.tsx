@@ -92,7 +92,7 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
                             <View
                                 style={[
                                     tw`absolute bottom-[-40px] right-[15px] gap-[3px] flex justify-end items-end`,
-                                    { zIndex: 50, position: 'absolute' } // Ensure position is absolute
+                                    { zIndex: 50, position: 'absolute' } 
                                 ]}
                             >
                                 <Image source={require("@/assets/images/Polygon 2.png")} />

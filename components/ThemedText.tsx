@@ -48,12 +48,11 @@ export interface ThemedTextProps extends TextProps {
 
 export function ThemedText({
   style,
-  variant = 'title16', // default variant
+  variant = 'title16', 
   textcolor,
   fontFamily = 'RalewayRegular',
   ...rest
 }: ThemedTextProps) {
-  // Use your theme or fallback to textColor
   const color = useThemeColor({ light: textcolor }, 'text');
 
   return (
@@ -74,7 +73,6 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   base: {
-    // Any shared default text styles can go here
-    // lineHeight: 24,
+
   },
 });
