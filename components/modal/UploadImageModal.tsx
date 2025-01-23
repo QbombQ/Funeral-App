@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import tw from 'twrnc'; // Import twrnc for TailwindCSS styles
-import { ThemedText } from '../ThemedText'; // Adjust path if necessary
-import UploadImageIcon from '../icons/UploadImageIcon'; // Adjust path if necessary
+import tw from 'twrnc'; 
+import { ThemedText } from '../ThemedText'; 
+import UploadImageIcon from '../icons/UploadImageIcon'; 
 
 interface UploadImageComponentProps {
     visible: boolean;
@@ -38,7 +38,7 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
                                 fontFamily="PoppinsMedium"
                                 style={tw`text-center`}
                             >
-                                {text} {/* Display the dynamic text */}
+                                {text}
                             </ThemedText>
                         </TouchableOpacity>
                     </View>

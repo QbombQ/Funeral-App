@@ -5,7 +5,6 @@ import { ThemedText } from '../ThemedText';
 import OptionIcon from '@/components/icons/OptionIcon';
 import VaultCardIcon from '@/components/icons/VaultCardIcon';
 
-// Define the type for each item in the data list
 interface VaultCardProps {
   item: {
     id: number;

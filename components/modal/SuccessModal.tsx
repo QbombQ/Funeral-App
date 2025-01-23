@@ -85,7 +85,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
     statusText,
     btnText
 }) => {
-    if (!visible) return null; // Do not render anything if not visible
+    if (!visible) return null; 
 
     return (
         <View style={tw`absolute top-0 left-0 right-0 bottom-0 w-full h-full z-30`}>

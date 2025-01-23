@@ -46,7 +46,6 @@ export default function Payment() {
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1 `}>
                 <NavigationHeader title="" />
-                {/* <MainNavigationBar /> */}
                 <View
                     style={tw`w-full h-full flex-1 flex items-center px-[12px] pt-[19px] gap-[45px]`}
                 >
@@ -113,7 +112,6 @@ export default function Payment() {
             <PaymentSuccessModal
             visible={showPamentModal}
             onConfirm={toDashBoard}
-            // onCancel={toBudget}
             statusText='Subscription Confirmed!'
             mainMessage='Thank you for subscribing'
             additionalMessage='You now have full access to all tools'

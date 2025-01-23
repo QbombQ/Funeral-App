@@ -123,8 +123,8 @@ type CheckListUploadModalProps = {
     visible: boolean;
     onClose: () => void;
     onCreateChecklist: () => void;
-    onUpload: () => void; // New function to trigger the upload logic
-    isLoading: boolean; // Pass loading state from parent
+    onUpload: () => void; 
+    isLoading: boolean; 
 };
 
 const CheckListUploadModal: React.FC<CheckListUploadModalProps> = ({
@@ -179,16 +179,7 @@ const CheckListUploadModal: React.FC<CheckListUploadModalProps> = ({
                     </TouchableOpacity>
                 </View>
 
-                {/* {isLoading && (
-                    <View style={tw`absolute top-0 left-0 right-0 bottom-0 justify-center items-center bg-black bg-opacity-50`}>
-                        <View style={tw`w-[200px] h-[100px] bg-white rounded-lg justify-center items-center`}>
-                            <ActivityIndicator size="large" color="#004CFF" />
-                            <ThemedText variant="title14" textcolor="#004CFF" style={tw`mt-2`}>
-                                Uploading File...
-                            </ThemedText>
-                        </View>
-                    </View>
-                )} */}
+
             </View>
         </TouchableWithoutFeedback>
     );

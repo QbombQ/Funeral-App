@@ -13,11 +13,8 @@ export default function BudgetLayout() {
 
   return (
     <Stack screenOptions={{headerShown:false}}>
-      {/* <Tabs.Screen name="(home)" /> */}
       <Stack.Screen name="index"/>
       <Stack.Screen name="payment"/>
-      {/* <Stack.Screen name="createchecklist"/>
-      <Stack.Screen name="viewchecklist"/> */}
     </Stack>
   );
 }

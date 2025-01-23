@@ -39,7 +39,7 @@ export default function CreateCheckList() {
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
     const [isShowUploadedImage, setShowUploadedImage] = useState(false)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [isUploadSuccessful, setIsUploadSuccessful] = useState(false); // Track upload success
+    const [isUploadSuccessful, setIsUploadSuccessful] = useState(false); 
 
     const [name, setName] = useState('');
     const showOptionItem = () => {
@@ -57,11 +57,9 @@ export default function CreateCheckList() {
     }
     const closeStatusModal = () => {
         setStatusModalVisible(false);
-        // router.push("/(checklist)/")
         if (isUploadSuccessful) {
-            setIsUploadSuccessful(false); // Reset the upload state
+            setIsUploadSuccessful(false); 
         } else {
-            // Otherwise, navigate back to the checklist
             router.push("/(home)/(checklist)/viewchecklist");
         }
     }
@@ -74,7 +72,6 @@ export default function CreateCheckList() {
             if (progress >= 100) {
                 clearInterval(interval);
                 setUploadingModalVisible(false);
-                // setModalVisible(true)
                 setShowUploadedImage(true);
                 setStatusModalVisible(true)
                 setUploadProgress(0);
@@ -164,7 +161,6 @@ export default function CreateCheckList() {
                         <View
                             style={tw`w-full rounded-[12px] w-full bg-[#1D2C4F] bg-opacity-60 flex flex-col gap-[8px]`}
                         >
-                            {/* <BlurView style={[tw`absolute top-0 left-0 right-0 bottom-0 w-full h-full justify-center items-center rounded-[12px]`,{borderRadius:"12px"}]} intensity={20} /> */}
                             <View
                                 style={tw`p-[12px] gap-[8px]`}
                             >
@@ -227,23 +223,7 @@ export default function CreateCheckList() {
                                 <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Picture</ThemedText>
                             </View>
                         }
-                        {/* <View
-                            style={tw`w-full h-[205px] bg-[#181818] rounded-[24px] justify-center items-center`}
-                        >
-                            <View
-                                style={tw`w-[133px] h-[133px] rounded-[12px] bg-[#004CFF] bg-opacity-50 justify-center items-center gap-[8.5px]`}
-                            >
-                                <View
-                                    style={tw`w-[58px] h-[58px] justify-center items-center border border-[#95989A] rounded-[5px]`}
-                                >
-                                    <UploadImageIcon />
-                                </View>
-                                <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium' style={tw`text-center`}>
-                                    Upload from Device
-                                </ThemedText>
 
-                            </View>
-                        </View> */}
                     </View>
                     <View
                         style={tw`pb-[220px] w-full`}

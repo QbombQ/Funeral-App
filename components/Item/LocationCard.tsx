@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import tw from 'twrnc';
-import { ThemedText } from '@/components/ThemedText'; // Adjust based on your path
-import LocationsIcon from '@/components/icons/LocationsIcon'; // Adjust based on your path
-import PhoneNumberIcon from '@/components/icons/PhoneNumberIcon'; // Adjust based on your path
+import { ThemedText } from '@/components/ThemedText'; 
+import LocationsIcon from '@/components/icons/LocationsIcon';
+import PhoneNumberIcon from '@/components/icons/PhoneNumberIcon'; 
 
 type LocationCardProps = {
   name: string;

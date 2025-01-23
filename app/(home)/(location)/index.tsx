@@ -58,7 +58,6 @@ export default function Index() {
                     </TouchableOpacity>
                     {showServiceOption && (
                         <View style={tw`absolute bottom-[-41px] right-[25px] gap-[3px] flex justify-end items-end z-1`}>
-                            {/* <Image source={require('@/assets/images/Polygon 2.png')} /> */}
                             <View style={tw`w-[111px] border border-[#004CFF] rounded-[4px] justify-between`}>
                                 <Image source={require("@/assets/images/checklistoptionback.png")} style={tw`w-full h-full absolute`} />
                                 <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`}>

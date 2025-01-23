@@ -49,7 +49,7 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({ title }) => {
             <View
                 style={[
                     tw`mt-[44px] w-full flex justify-center items-center px-[14px]`,
-                    { position: 'absolute', zIndex: 1 } // Set position to relative
+                    { position: 'absolute', zIndex: 1 } 
                 ]}
             >
 
@@ -98,7 +98,7 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({ title }) => {
                             <View
                                 style={[
                                     tw`absolute bottom-[-40px] right-[15px] gap-[3px] flex justify-end items-end`,
-                                    { zIndex: 50, position: 'absolute' } // Ensure position is absolute
+                                    { zIndex: 50, position: 'absolute' } 
                                 ]}
                             >
                                 <Image source={require("@/assets/images/Polygon 2.png")} />
@@ -140,7 +140,7 @@ const LocationHeader: React.FC<LocationHeaderProps> = ({ title }) => {
                         <Image source={require("@/assets/images/ModalBack2.png")} style={tw`absolute w-full h-full rounded-full`} />
                     </View>
                     <TouchableOpacity
-                        onPress={showLogoutItem}
+                        // onPress={showLogoutItem}
                         style={tw`w-[30px] h-[30px] rounded-[56px] border border-[#004CFF] flex justify-center items-center`}
                     >
                         <View style={tw`absolute w-full h-full rounded-[50px] bg-[#004CFF] opacity-20`} />

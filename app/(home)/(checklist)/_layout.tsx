@@ -13,7 +13,6 @@ export default function ChecklistLayout() {
 
   return (
     <Stack screenOptions={{headerShown:false}}>
-      {/* <Tabs.Screen name="(home)" /> */}
       <Stack.Screen name="index"/>
       <Stack.Screen name="createchecklist"/>
       <Stack.Screen name="viewchecklist"/>

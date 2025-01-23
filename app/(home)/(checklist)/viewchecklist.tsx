@@ -70,7 +70,6 @@ const dataList = [
         phone: '+1 0211420420',
         uploadDate: '30 min ago',
     },
-    // Add more data objects as needed
 ];
 export default function Index() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);

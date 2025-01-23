@@ -66,13 +66,12 @@ import { ThemedText } from '../ThemedText';
 
 type UploadingModalProps = {
     visible: boolean;
-    progress: number; // Upload progress (0-100)
+    progress: number; 
 };
 
 const UploadingModal: React.FC<UploadingModalProps> = ({ visible, progress }) => {
     const animatedProgress = useRef(new Animated.Value(0)).current;
 
-    // Animate progress bar width
     useEffect(() => {
         Animated.timing(animatedProgress, {
             toValue: progress,
@@ -86,8 +85,7 @@ const UploadingModal: React.FC<UploadingModalProps> = ({ visible, progress }) =>
         outputRange: ['0%', '100%'],
     });
 
-    if (!visible) return null; // Return nothing if not visible
-
+    if (!visible) return null; 
     return (
         <View style={tw`flex-1 justify-center items-center bg-black bg-opacity-50 absolute top-0 left-0 right-0 bottom-0 z-20`}>
             <View style={tw`rounded-lg justify-center items-center p-4`}>
@@ -95,7 +93,6 @@ const UploadingModal: React.FC<UploadingModalProps> = ({ visible, progress }) =>
                     Uploading File...
                 </ThemedText>
 
-                {/* Custom Progress Bar */}
                 <View style={tw`w-[271px] h-[26px] border border-[#004CFF] rounded-full overflow-hidden flex justify-center`}>
                     <Animated.View
                         style={[
@@ -111,7 +108,6 @@ const UploadingModal: React.FC<UploadingModalProps> = ({ visible, progress }) =>
                     <Image source={require('@/assets/images/uploadingstatusbar.png')} style={tw`absolute w-full h-full`} />
                 </View>
 
-                {/* Additional Progress Text */}
             </View>
         </View>
     );

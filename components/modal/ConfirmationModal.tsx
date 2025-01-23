@@ -29,7 +29,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
         //     onRequestClose={onCancel}
         // >
         <TouchableWithoutFeedback onPress={onCancel}>
-            <View style={tw`flex-1 justify-center items-center w-full h-full bg-black absolute bg-opacity-50 z-2`}>
+            <View style={tw`flex-1 justify-center items-center w-full h-full bg-black absolute bg-opacity-50 z-5`}>
                 <View style={tw`w-[305px] h-[297px]`}>
                     <Image style={tw`absolute w-full h-full`} source={require("@/assets/images/modalback.png")} />
                     <View

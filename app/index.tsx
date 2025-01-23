@@ -55,7 +55,6 @@ export default function HomeScreen() {
                             style={tw`w-[283px] h-[50px] flex flex-row justify-center items-center gap-[12px] border border-[#004CFF] rounded-[56px]`}
                             onPress={handlePress}
                         >
-                            {/* <View  style={tw`absolute w-full h-full bg-[#004CFF] opacity-50 rounded-[56px] z-[1]`}/> */}
 
                             <Image source={require('@/assets/images/logbutton.png')} style={tw`w-full h-full absolute top-0 left-0 z-[2]`} />
 
