@@ -122,7 +122,7 @@ import { ThemedText } from '../ThemedText';
 type CheckListUploadModalProps = {
     visible: boolean;
     onClose: () => void;
-    onCreateChecklist: () => void;
+    onCreateChecklist?: () => void;
     onUpload: () => void; 
     isLoading: boolean; 
 };
@@ -161,7 +161,7 @@ const CheckListUploadModal: React.FC<CheckListUploadModalProps> = ({
                     <TouchableOpacity
                         style={tw`flex justify-center items-center w-[120px] h-[120px] rounded-lg gap-[11px]`}
                         onPress={() => {
-                            onCreateChecklist();
+                            // onCreateChecklist();
                             onClose();
                         }}
                         disabled={isLoading} 

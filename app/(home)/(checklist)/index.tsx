@@ -23,63 +23,43 @@ import CheckListCardItem from '@/components/Item/CheckListCardItem';
 import CheckListUploadModal from '@/components/modal/CheckListUploadModal';
 import UploadingModal from '@/components/modal/UpLoadingModal';
 import SuccessModal from '@/components/modal/SuccessModal';
-const dataList = [
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-];
+import CreateChecklistModal from '@/components/modal/CreateCheckListModal';
+import ConfirmationModal from '@/components/modal/ConfirmationModal';
+// const dataList = [
+//     // {
+//     //     title: 'Burial',
+//     //     name: 'Willams Alex',
+//     //     dob: '07-02-1963',
+//     //     kin: 'Alex John',
+//     //     location: 'Karnail Singh Stadium',
+//     //     phone: '+1 0211420420',
+//     //     uploadDate: '30 min ago',
+//     // }
+//     {
+//         title: 'Burial',
+//         description:"jdfhskjfhskjdfhskjfdhskdjhf",
+//         uploadDate: '30 min ago',
+//     }
+// ];
 export default function Index() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
-
+    const [dataList, setDataList] = useState([
+        {
+            title: 'Burial',
+            description: 'jdfhskjfhskjdfhskjfdhskdjhf',
+            uploadDate: '30 min ago',
+        },
+    ]);
+    const [isCreateModalVisible, setCreateModalVisible] = useState(false);
+    const [isConfirmationModalVisible, setConfirmationModalVisible] = useState(false)
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const openUploadModal = () => setUploadModalVisible(true);
     const closeUploadModal = () => setUploadModalVisible(false);
     const closeStatusModal = () => {
-    setStatusModalVisible(false);
+        setStatusModalVisible(false);
     }
 
     const handleFileUpload = () => {
@@ -100,13 +80,35 @@ export default function Index() {
         }, 500);
     };
 
-    const handleCreateChecklist = () => {
-        router.push('/(home)/(checklist)/createchecklist')
+    const openCreateModal = () => setCreateModalVisible(true);
+    const closeCreateModal = () => setCreateModalVisible(false);
+
+    const handleCreateChecklist = (newItem: any) => {
+        setDataList((prevData) => [newItem, ...prevData]);
     };
+    // const handleCreateChecklist = () => {
+    //     // router.push('/(home)/(checklist)/createchecklist')
+
+
+    // };
+    const handleRemoveItem = () => {
+        if (selectedIndex !== null) {
+            setDataList((prevData) => prevData.filter((_, index) => index !== selectedIndex));
+            closeConfirmationModal();
+        }
+    };
+    const showConfirmationModal = (index: any) => {
+        setSelectedIndex(index);
+        setConfirmationModalVisible(true);
+    }
+    const closeConfirmationModal = () => {
+        setSelectedIndex(null);
+        setConfirmationModalVisible(false);
+    }
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1`}>
-                <CheckListNavigation openModal={openUploadModal} title="Checklist"/>
+                <CheckListNavigation openModal={openUploadModal} title="Checklist" />
                 <MainNavigationBar />
                 <ScrollView
                     contentContainerStyle={tw`flex-grow`}
@@ -119,14 +121,15 @@ export default function Index() {
                             <CheckListCardItem
                                 key={index}
                                 data={data}
-
+                                // onRemove={() => handleRemoveItem(index)}
+                                onRemove={() => showConfirmationModal(index)}
                             />
                         ))}
                     </View>
                 </ScrollView>
-                <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`,{zIndex:30}]}>
+                <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`, { zIndex: 30 }]}>
 
-                    <TouchableOpacity onPress={handleCreateChecklist} >
+                    <TouchableOpacity onPress={openCreateModal} >
                         <Image source={require("@/assets/images/09. More.png")} />
                     </TouchableOpacity>
                 </View>
@@ -135,7 +138,7 @@ export default function Index() {
             <CheckListUploadModal
                 visible={isUploadModalVisible}
                 onClose={closeUploadModal}
-                onCreateChecklist={handleCreateChecklist}
+                onCreateChecklist={openCreateModal}
                 onUpload={handleFileUpload}
                 isLoading={false}
             />
@@ -150,6 +153,18 @@ export default function Index() {
                 statusText='Completed!'
                 btnText='Check File'
             />
+            <CreateChecklistModal
+                visible={isCreateModalVisible}
+                onClose={closeCreateModal}
+                onCreate={handleCreateChecklist}
+            />
+            <ConfirmationModal
+                visible={isConfirmationModalVisible}
+                onConfirm={handleRemoveItem}
+                onCancel={closeConfirmationModal}
+                title='Confirm Checklist'
+                message='Are you sure to confirm this Checklist?'
+            />
         </MainBackground>
     );
-}
+   }
