@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import { LinearGradient } from 'react-native-linear-gradient';
-import tw, { style } from 'twrnc';
+import tw from 'twrnc';
 import MainBackground from '@/components/background/MainBackground';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedCheckBox } from '@/components/input/ThemedCheckBox';

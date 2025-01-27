@@ -20,7 +20,7 @@ const Switch = ({
   style,
   duration = 400,
   trackColors = { on: '#004CFF', off: '#BAC1C4' },
-}) => {
+}: any) => {
   const height = useSharedValue(0);
   const width = useSharedValue(0);
 

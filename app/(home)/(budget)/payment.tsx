@@ -40,7 +40,7 @@ export default function Payment() {
         router.push("/(home)/home")
     }
     const toBudget = () =>{
-        router.push("/(home)/(budget)/")
+        router.push("/(home)/(budget)")
     }
     return (
         <MainBackground title=''>

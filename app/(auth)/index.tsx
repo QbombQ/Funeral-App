@@ -8,7 +8,7 @@ import {
   Switch
 } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
-import tw, { style } from "twrnc";
+import tw from "twrnc";
 import AuthBackground from '@/components/background/AuthBackground';
 import FormInput from '@/components/input/FormInput';
 import { ThemedCheckBox } from '@/components/input/ThemedCheckBox';
