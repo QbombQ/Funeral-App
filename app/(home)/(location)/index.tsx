@@ -8,7 +8,8 @@ import {
     Switch
 } from 'react-native';
 import { router } from "expo-router";
-import tw from "twrnc";
+// import tw from "twrnc";
+import tw from "twrnc"
 import MainBackground from '@/components/background/MainBackground';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';

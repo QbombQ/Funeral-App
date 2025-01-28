@@ -38,8 +38,6 @@
     "expo-symbols": "~0.2.1",
     "expo-system-ui": "~4.0.7",
     "expo-web-browser": "~14.0.2",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
     "react-native": "^0.76.6",
     "react-native-custom-switch": "^1.0.7",
     "react-native-document-picker": "^9.3.1",
@@ -55,7 +53,7 @@
     "react-native-web": "~0.19.13",
     "react-native-webview": "13.12.5",
     "recoil": "^0.7.7",
-    "twrnc": "^4.6.0"
+    "twrnc": "^4.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
