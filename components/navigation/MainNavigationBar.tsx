@@ -46,7 +46,8 @@ const MainNavigationBar: React.FC = () => {
   }
   return (
     <View style={[tw`w-full absolute bottom-[30px] px-[8px] justify-center`, { position: "absolute", zIndex: 2 }]}>
-      <View style={tw`w-full h-[80px] rounded-[50px] border border-[#004CFF] bg-[#004CFF] bg-opacity-20`}>
+      {/* <View style={tw`w-full h-[80px] rounded-[50px] border border-[#004CFF] bg-[#004CFF] bg-opacity-20`}> */}
+      <View style={tw`w-full h-[80px] rounded-[50px] border border-[#004CFF] bg-[#0C1A36]`}>
         <Image source={require('@/assets/images/Navbar (3).png')} style={tw`absolute w-full h-full`} />
         <View style={tw`w-full h-full px-[24px] py-[11px] flex flex-row justify-between`}>
           <TouchableOpacity

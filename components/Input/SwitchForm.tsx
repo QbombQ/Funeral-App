@@ -2,8 +2,6 @@ import React from 'react';
 import {
   Pressable,
   SafeAreaView,
-  View,
-  Button,
 } from 'react-native';
 import Animated, {
   interpolate,

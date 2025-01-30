@@ -67,7 +67,6 @@ import { View, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-n
 import tw from "twrnc";
 import { ThemedText } from '../ThemedText';
 import MainBackground from '../background/MainBackground';
-import { PrimaryButton } from '../button/PrimaryButton';
 import { NormalButton } from '../button/NormalButton';
 
 type SuccessModalProps = {

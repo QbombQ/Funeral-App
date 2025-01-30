@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TextInput, Image } from 'react-native';
-import tw from 'twrnc'; // Import twrnc for TailwindCSS styles
+import tw from 'twrnc'; 
 
 interface PaymentInputProps {
     placeholder: string;

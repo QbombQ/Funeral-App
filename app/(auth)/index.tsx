@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import {
   ScrollView,
-  TextInput,
   View,
-  Image,
   TouchableOpacity,
-  Switch
 } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import tw from "twrnc";

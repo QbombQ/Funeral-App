@@ -109,14 +109,14 @@ export default function Index() {
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1 `}>
-                <NavigationHeader title="Vault" />
+                <NavigationHeader title="Notification" />
                 <MainNavigationBar />
                 <ScrollView
                     contentContainerStyle={tw`flex-grow`}
                     style={tw`w-full h-full px-[25px]`}
                 >
 
-                    <View
+                    {/* <View
                         style={tw`flex flex-col gap-[8px] pt-[24px] pb-[24px]`}
                     >
                         <ThemedText variant='title18' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
@@ -125,16 +125,16 @@ export default function Index() {
                         <ThemedText variant='title14' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>
                             Securely store and access your important documents anytime
                         </ThemedText>
-                    </View>
+                    </View> */}
                     <View
-                        style={tw`w-full h-full flex items-center gap-[8px] pb-[120px]`}
+                        style={tw`w-full h-full flex items-center gap-[8px] pb-[120px] pt-[24px]`}
                     >
                         {dataList.map(item => (
                             <VaultCard key={item.id} item={item} onDelete={handleDelete} />
                         ))}
                     </View>
                 </ScrollView>
-                <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`, { zIndex: 30 }]}>
+                {/* <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`, { zIndex: 30 }]}>
 
                     <TouchableOpacity onPress={showVaultCreateOption} >
                         <Image source={require("@/assets/images/09. More.png")} />
@@ -165,7 +165,7 @@ export default function Index() {
                         </View>
                     }
 
-                </View>
+                </View> */}
             </View>
 
             <VaultUploadModal

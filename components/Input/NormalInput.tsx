@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TextInput, Image } from 'react-native';
-import tw from 'twrnc'; // Import twrnc for TailwindCSS styles
+import tw from 'twrnc'; 
 
 interface NormalInputProps {
   placeholder: string;
@@ -14,8 +14,8 @@ const NormalInput: React.FC<NormalInputProps> = ({
   onChangeText,
 }) => {
   return (
-    <View style={tw`w-[207px] h-[48px]`}>
-      <Image source={require('@/assets/images/normalinputform.png')} style={tw`absolute`} />
+    <View style={tw`w-full h-[48px]`}>
+      <Image source={require('@/assets/images/normalinputform.png')} style={tw`absolute w-full`} />
       <TextInput
         placeholder={placeholder}
         placeholderTextColor="#C2C2C2"

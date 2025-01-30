@@ -11,7 +11,7 @@ const FormInput = ({
   onChangeText,
   additionalStyles = {},
   ...props
-}) => {
+}:any) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(secureTextEntry);
 
   const togglePasswordVisibility = () => {

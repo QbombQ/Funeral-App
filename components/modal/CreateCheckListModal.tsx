@@ -16,11 +16,10 @@ const CreateChecklistModal = ({ visible, onClose, onCreate }:any) => {
 
     const handleCreate = () => {
         if (title.trim() && description.trim()) {
-            // Pass the new item to the parent component
             onCreate({ title, description, uploadDate: 'Just now' });
             setTitle('');
             setDescription('');
-            onClose(); // Close the modal
+            onClose(); 
         } else {
             alert('Please fill in both fields.');
         }

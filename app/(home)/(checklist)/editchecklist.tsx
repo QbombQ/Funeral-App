@@ -24,7 +24,8 @@ import ManIcon from '@/components/icons/ManIcon';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import CheckListUploadModal from '@/components/modal/CheckListUploadModal';
 import { BlueButton } from '@/components/button/BlueButton';
-export default function CreateCheckList() {
+import NavigationHeader from '@/components/navigation/NavigationHeader';
+export default function EditCheckList() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [showItem, setShowItem] = useState(false)
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
@@ -91,7 +92,9 @@ export default function CreateCheckList() {
     return (
         <MainBackground title=''>
             <View style={tw`flex-1`}>
-                <CheckListNavigation openModal={openUploadModal} title='Add Checklist' />
+                <NavigationHeader
+                    title='Edit Checklist'
+                />
                 <MainNavigationBar />
                 <View
                     style={tw`mt-[10px] w-full h-full px-[23px] justify-between gap-[12px]`}
@@ -102,16 +105,16 @@ export default function CreateCheckList() {
                         <View
                             style={tw`w-full flex flex-row justify-end gap-[5px] items-center`}
                         >
-                            <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
+                            {/* <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
                                 Create a New Title
                             </ThemedText>
                             <TouchableOpacity
                                 onPress={showOptionItem}
                             >
                                 <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
 
-                            {showItem && (
+                            {/* {showItem && (
                                 <View style={[tw`absolute bottom-[-185px] right-[6px] gap-[3px] flex justify-end items-end`, { zIndex: 4, position: 'absolute' }]}>
                                     <Image source={require('@/assets/images/Polygon 2.png')} />
                                     <View style={tw`w-[151px] h-[170px] border border-[#004CFF] rounded-[4px] justify-between`}>
@@ -149,7 +152,7 @@ export default function CreateCheckList() {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                            )}
+                            )} */}
                         </View>
 
                         <View
@@ -159,52 +162,52 @@ export default function CreateCheckList() {
                                 style={tw`p-[12px] gap-[8px]`}
                             >
                                 <View
-                                    style={tw`w-full flex flex-row`}
+                                    style={tw`w-full flex flex-row w-full`}
                                 >
                                     <View
-                                        style={tw`flex flex-col gap-[6px]`}
+                                        style={tw`flex flex-col gap-[6px] w-full`}
                                     >
                                         <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
                                             Title:
                                         </ThemedText>
                                         <NormalInput
-                                            placeholder="E.g Name"
+                                            placeholder="E.g Burial"
                                             value={name}
                                             onChangeText={setName}
                                         />
                                     </View>
-                                    <View
+                                    {/* <View
                                         style={tw`flex-1 justify-center items-center pt-[10px] gap-[5px]`}
                                     >
                                         <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
                                         <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsLight'>
                                             Create List
                                         </ThemedText>
-                                    </View>
+                                    </View> */}
                                 </View>
                                 <View
-                                    style={tw`w-full flex flex-row`}
+                                    style={tw`w-full flex flex-row w-full`}
                                 >
                                     <View
-                                        style={tw`flex flex-col gap-[6px]`}
+                                        style={tw`flex flex-col gap-[6px] w-full`}
                                     >
                                         <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
-                                            List:
+                                            Description:
                                         </ThemedText>
                                         <NormalInput
-                                            placeholder="E.g Willam Alex"
+                                            placeholder="E.g Buy Flower"
                                             value={name}
                                             onChangeText={setName}
                                         />
                                     </View>
-                                    <View
+                                    {/* <View
                                         style={tw`flex-1 justify-center items-center pt-[10px] gap-[5px]`}
                                     >
                                         <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
                                         <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsLight'>
                                             Add List
                                         </ThemedText>
-                                    </View>
+                                    </View> */}
                                 </View>
 
                             </View>

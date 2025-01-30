@@ -1,13 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-    ScrollView,
-    TextInput,
     View,
-    Image,
-    TouchableOpacity,
-    Switch
 } from 'react-native';
-import { router } from "expo-router";
 import tw from "twrnc";
 import MainBackground from '@/components/background/MainBackground';
 import NavigationHeader from '@/components/navigation/NavigationHeader';

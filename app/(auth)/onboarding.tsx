@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
-import { LinearGradient } from 'react-native-linear-gradient';
+import { View, TouchableOpacity, Image } from 'react-native';
 import tw from 'twrnc';
 import MainBackground from '@/components/background/MainBackground';
 import { ThemedText } from '@/components/ThemedText';

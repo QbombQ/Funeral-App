@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import {
   ScrollView,
-  TextInput,
   View,
-  Image,
   TouchableOpacity,
-  Switch
 } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import tw from "twrnc";
 import AuthBackground from '@/components/background/AuthBackground';
 import FormInput from '@/components/input/FormInput';
-import { CheckBox, Icon } from '@rneui/themed';
 import { router } from "expo-router"
 import { PrimaryButton } from '@/components/button/PrimaryButton';
 import { SocialAuthButton } from '@/components/button/SocialAuthButton';

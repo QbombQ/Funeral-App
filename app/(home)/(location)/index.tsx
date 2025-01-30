@@ -1,26 +1,17 @@
 import React, { useState } from 'react';
 import {
     ScrollView,
-    TextInput,
     View,
     Image,
     TouchableOpacity,
-    Switch
 } from 'react-native';
 import { router } from "expo-router";
-// import tw from "twrnc";
 import tw from "twrnc"
 import MainBackground from '@/components/background/MainBackground';
-import NavigationHeader from '@/components/navigation/NavigationHeader';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';
 import { ThemedText } from '@/components/ThemedText';
-import { PrimaryButton } from '@/components/button/PrimaryButton';
-import { NormalButton } from '@/components/button/NormalButton';
 import LocationHeader from '@/components/navigation/LocationHeader';
 import SettingIcon from '@/components/icons/SettingIcon';
-import LocationIcon from '@/components/icons/LocationIcon';
-import LocationsIcon from '@/components/icons/LocationsIcon';
-import PhoneNumberIcon from '@/components/icons/PhoneNumberIcon';
 import LocationCard from '@/components/Item/LocationCard';
 
 
@@ -43,7 +34,7 @@ export default function Index() {
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1 `}>
-                <Image source={require("@/assets/images/Android Large - 2.png")} style={tw`w-full h-[590px] rounded-lg`} />
+                <Image source={require("@/assets/images/Android Large - 2.png")} style={tw`w-full h-[540px] rounded-lg`} />
                 <LocationHeader title="" />
                 <MainNavigationBar />
                 <View
@@ -79,7 +70,7 @@ export default function Index() {
                 <ScrollView>
 
                     <View
-                        style={tw`gap-[4px] flex flex-col items-center`}
+                        style={tw`gap-[4px] flex flex-col items-center pb-[120px]`}
                     >
                         <LocationCard
                             name="Mattew John"

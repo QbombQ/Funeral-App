@@ -1,77 +1,122 @@
 import React, { useState } from 'react';
 import {
     ScrollView,
-    TextInput,
     View,
     Image,
     TouchableOpacity,
-    Switch
 } from 'react-native';
-import { router } from "expo-router";
 import tw from "twrnc";
+
 import MainBackground from '@/components/background/MainBackground';
-import NavigationHeader from '@/components/navigation/NavigationHeader';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';
-import { ThemedText } from '@/components/ThemedText';
-import DashBoardCardComponent from '@/components/ui/DashBoardCardComponent';
 import CheckListNavigation from '@/components/navigation/CheckListNavigation';
-import OptionIcon from '@/components/icons/OptionIcon';
-import { FeSpotLight } from 'react-native-svg';
-import LocationsIcon from '@/components/icons/LocationsIcon';
-import PhoneNumberIcon from '@/components/icons/PhoneNumberIcon';
+
 import CheckListCardItem from '@/components/Item/CheckListCardItem';
+
 import CheckListUploadModal from '@/components/modal/CheckListUploadModal';
 import UploadingModal from '@/components/modal/UpLoadingModal';
 import SuccessModal from '@/components/modal/SuccessModal';
 import CreateChecklistModal from '@/components/modal/CreateCheckListModal';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
-// const dataList = [
-//     // {
-//     //     title: 'Burial',
-//     //     name: 'Willams Alex',
-//     //     dob: '07-02-1963',
-//     //     kin: 'Alex John',
-//     //     location: 'Karnail Singh Stadium',
-//     //     phone: '+1 0211420420',
-//     //     uploadDate: '30 min ago',
-//     // }
-//     {
-//         title: 'Burial',
-//         description:"jdfhskjfhskjdfhskjfdhskdjhf",
-//         uploadDate: '30 min ago',
-//     }
-// ];
+import { ThemedText } from '@/components/ThemedText';
+import NavigationHeader from '@/components/navigation/NavigationHeader';
+
+interface ChecklistItem {
+    title: string;
+    description: string;
+    uploadDate: string;
+    completed: boolean;
+}
+
+type ConfirmationAction = 'remove' | 'complete' | null;
+
 export default function Index() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
-    const [dataList, setDataList] = useState([
+
+    const [dataList, setDataList] = useState<ChecklistItem[]>([
         {
-            title: 'Burial',
-            description: 'jdfhskjfhskjdfhskjfdhskdjhf',
+            title: 'Burial A',
+            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
             uploadDate: '30 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial B',
+            description: 'Second item desc',
+            uploadDate: '10 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial A',
+            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            uploadDate: '30 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial B',
+            description: 'Second item desc',
+            uploadDate: '10 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial A',
+            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            uploadDate: '30 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial B',
+            description: 'Second item desc',
+            uploadDate: '10 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial A',
+            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            uploadDate: '30 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial B',
+            description: 'Second item desc',
+            uploadDate: '10 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial A',
+            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+            uploadDate: '30 min ago',
+            completed: false,
+        },
+        {
+            title: 'Burial B',
+            description: 'Second item desc',
+            uploadDate: '10 min ago',
+            completed: false,
         },
     ]);
-    const [isCreateModalVisible, setCreateModalVisible] = useState(false);
-    const [isConfirmationModalVisible, setConfirmationModalVisible] = useState(false)
+
+    const [confirmationAction, setConfirmationAction] = useState<ConfirmationAction>(null);
+    const [isConfirmationModalVisible, setConfirmationModalVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+    const [isCreateModalVisible, setCreateModalVisible] = useState(false);
+
     const openUploadModal = () => setUploadModalVisible(true);
     const closeUploadModal = () => setUploadModalVisible(false);
-    const closeStatusModal = () => {
-        setStatusModalVisible(false);
-    }
 
     const handleFileUpload = () => {
         closeUploadModal();
         setUploadingModalVisible(true);
-
         let progress = 0;
         const interval = setInterval(() => {
             if (progress >= 100) {
                 clearInterval(interval);
                 setUploadingModalVisible(false);
-                setStatusModalVisible(true)
+                setStatusModalVisible(true);
                 setUploadProgress(0);
             } else {
                 progress += 10;
@@ -80,56 +125,130 @@ export default function Index() {
         }, 500);
     };
 
+    const closeStatusModal = () => {
+        setStatusModalVisible(false);
+    };
+
     const openCreateModal = () => setCreateModalVisible(true);
     const closeCreateModal = () => setCreateModalVisible(false);
 
-    const handleCreateChecklist = (newItem: any) => {
-        setDataList((prevData) => [newItem, ...prevData]);
+    const handleCreateChecklist = (newItem: Omit<ChecklistItem, 'completed'>) => {
+        setDataList(prevData => [
+            { ...newItem, completed: false },
+            ...prevData,
+        ]);
     };
-    // const handleCreateChecklist = () => {
-    //     // router.push('/(home)/(checklist)/createchecklist')
 
-
-    // };
-    const handleRemoveItem = () => {
-        if (selectedIndex !== null) {
-            setDataList((prevData) => prevData.filter((_, index) => index !== selectedIndex));
-            closeConfirmationModal();
-        }
-    };
-    const showConfirmationModal = (index: any) => {
+    const showConfirmationModal = (index: number, action: ConfirmationAction) => {
         setSelectedIndex(index);
+        setConfirmationAction(action);
         setConfirmationModalVisible(true);
-    }
+    };
+
     const closeConfirmationModal = () => {
         setSelectedIndex(null);
+        setConfirmationAction(null);
         setConfirmationModalVisible(false);
-    }
+    };
+
+    const handleConfirmAction = () => {
+        if (confirmationAction === 'remove') {
+            handleRemoveItem();
+        } else if (confirmationAction === 'complete') {
+            handleMarkItemCompleted();
+        }
+        closeConfirmationModal();
+    };
+
+    const handleRemoveItem = () => {
+        if (selectedIndex !== null) {
+            setDataList((prevData) => prevData.filter((_, idx) => idx !== selectedIndex));
+        }
+    };
+
+    const handleMarkItemCompleted = () => {
+        if (selectedIndex !== null) {
+            setDataList(prevData =>
+                prevData.map((item, i) =>
+                    i === selectedIndex ? { ...item, completed: true } : item
+                )
+            );
+        }
+    };
+
+    const handleCheckboxClick = (index: number) => {
+        const item = dataList[index];
+        if (!item.completed) {
+            showConfirmationModal(index, 'complete');
+        } else {
+            setDataList(prevData =>
+                prevData.map((itm, i) =>
+                    i === index ? { ...itm, completed: false } : itm
+                )
+            );
+        }
+    };
+
+    const handleItemDelete = (index: number) => {
+        showConfirmationModal(index, 'remove');
+    };
+
+    const incompleteItems = dataList.filter(item => !item.completed);
+    const completedItems = dataList.filter(item => item.completed);
+
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1`}>
-                <CheckListNavigation openModal={openUploadModal} title="Checklist" />
+                {/* <CheckListNavigation
+                    openModal={openUploadModal}
+                    title="Checklist"
+                /> */}
+                <NavigationHeader
+                title='Checklist'
+                />
                 <MainNavigationBar />
-                <ScrollView
-                    contentContainerStyle={tw`flex-grow`}
-                    style={tw`w-full h-full`}
-                >
-                    <View
-                        style={tw`w-full h-full flex pt-[19px] px-[11px] items-center gap-[8px]`}
-                    >
-                        {dataList.map((data, index) => (
+
+                <ScrollView contentContainerStyle={tw`flex-grow`} style={tw`w-full h-full`}>
+                    <View style={tw`w-full pt-[19px] px-[31px] items-center gap-[8px] pb-[120px]`}>
+                        {incompleteItems.map((data, index) => (
                             <CheckListCardItem
                                 key={index}
                                 data={data}
-                                // onRemove={() => handleRemoveItem(index)}
-                                onRemove={() => showConfirmationModal(index)}
+                                onCheck={() => handleCheckboxClick(dataList.indexOf(data))}
+                                onRemove={() => handleItemDelete(dataList.indexOf(data))}
                             />
                         ))}
-                    </View>
-                </ScrollView>
-                <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`, { zIndex: 30 }]}>
+                        {completedItems.length > 0 && (
+                            <View style={tw`items-center gap-[10px]`}>
+                                <View style={tw`mt-[10px] w-full px-[30px] gap-[10px] flex-row items-center`}>
+                                    <View style={tw`bg-[#004CFF] h-[1px] w-[35%]`} />
+                                    <ThemedText variant='title14' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>
+                                        Completed
+                                    </ThemedText>
+                                    <View style={tw`bg-[#004CFF] h-[1px] w-[35%]`} />
+                                </View>
 
-                    <TouchableOpacity onPress={openCreateModal} >
+                                {completedItems.map((data, index) => (
+                                    <CheckListCardItem
+                                        key={`completed-${index}`}
+                                        data={data}
+                                        onCheck={() => handleCheckboxClick(dataList.indexOf(data))}
+                                        onRemove={() => handleItemDelete(dataList.indexOf(data))}
+                                    />
+                                ))}
+                            </View>
+                        )}
+                    </View>
+
+                </ScrollView>
+
+                <View
+                    style={[
+                        tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`,
+                        { zIndex: 30 },
+                    ]}
+                >
+                    <TouchableOpacity onPress={openCreateModal}>
                         <Image source={require("@/assets/images/09. More.png")} />
                     </TouchableOpacity>
                 </View>
@@ -158,13 +277,22 @@ export default function Index() {
                 onClose={closeCreateModal}
                 onCreate={handleCreateChecklist}
             />
+
             <ConfirmationModal
                 visible={isConfirmationModalVisible}
-                onConfirm={handleRemoveItem}
+                onConfirm={handleConfirmAction}
                 onCancel={closeConfirmationModal}
-                title='Confirm Checklist'
-                message='Are you sure to confirm this Checklist?'
+                title={
+                    confirmationAction === 'remove'
+                        ? 'Confirm Removal'
+                        : 'Confirm Checklist'
+                }
+                message={
+                    confirmationAction === 'remove'
+                        ? 'Are you sure you want to delete this checklist?'
+                        : 'Are you sure you want to mark this checklist as completed?'
+                }
             />
         </MainBackground>
     );
-   }
+}

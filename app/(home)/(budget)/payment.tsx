@@ -1,22 +1,13 @@
 import React, { useState } from 'react';
 import {
-    ScrollView,
-    TextInput,
-    View,
-    Image,
-    TouchableOpacity,
-    Switch
+    View
 } from 'react-native';
 import { router } from "expo-router";
 import tw from "twrnc";
 import MainBackground from '@/components/background/MainBackground';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
-import MainNavigationBar from '@/components/navigation/MainNavigationBar';
 import { ThemedText } from '@/components/ThemedText';
-import { PrimaryButton } from '@/components/button/PrimaryButton';
-import NormalInput from '@/components/input/NormalInput';
 import PaymentInput from '@/components/input/PaymentInput';
-import FormInput from '@/components/input/FormInput';
 import { ThemedCheckBox } from '@/components/input/ThemedCheckBox';
 import PaypalIcon from '@/components/icons/PaypalIcon';
 import { BlueButton } from '@/components/button/BlueButton';

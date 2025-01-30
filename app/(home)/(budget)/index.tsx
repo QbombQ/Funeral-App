@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-    ScrollView,
-    TextInput,
     View,
     Image,
-    TouchableOpacity,
-    Switch
 } from 'react-native';
 import { router } from "expo-router";
 import tw from "twrnc";
@@ -13,7 +9,6 @@ import MainBackground from '@/components/background/MainBackground';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';
 import { ThemedText } from '@/components/ThemedText';
-import { PrimaryButton } from '@/components/button/PrimaryButton';
 import { NormalButton } from '@/components/button/NormalButton';
 
 
@@ -39,7 +34,7 @@ export default function Index() {
                             <View
                                 style={tw`w-full `}
                             >
-                                <ThemedText variant='title22' fontFamily='RaleWaySemiBold' textcolor='#FFFFFF' style={tw`text-center`} >Unlock Full Access for just $9.99/Month</ThemedText>
+                                <ThemedText variant='title22' fontFamily='RaleWaySemiBold' textcolor='#FFFFFF' style={tw`text-center`} >Unlock Full Access for just $19.99/Month</ThemedText>
                             </View>
 
                             <View

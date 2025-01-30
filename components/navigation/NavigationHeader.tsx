@@ -29,7 +29,9 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
         router.push('/(auth)')
         setIsModalVisible(false);
     };
-
+    const showNotification = () =>{
+        router.push("/(home)/(notification)")
+    }
     const cancelLogout = () => {
         setIsModalVisible(false);
     };
@@ -72,6 +74,7 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
                         >
                             <TouchableOpacity
                                 style={tw`w-[30px] h-[30px] rounded-[56px] border border-[#004CFF] flex justify-center items-center`}
+                                onPress={showNotification}
                             >
                                 <View style={tw`absolute w-full h-full rounded-[50px] bg-[#004CFF] opacity-20`} />
                                 <Notification />

@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { View, TouchableOpacity, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, TouchableWithoutFeedback, Image } from 'react-native';
 import tw from "twrnc";
 import { ThemedText } from '../ThemedText';
 import MainBackground from '../background/MainBackground';
-import { PrimaryButton } from '../button/PrimaryButton';
 import { NormalButton } from '../button/NormalButton';
 
 type PaymentSuccessModalProps = {

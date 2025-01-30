@@ -1,76 +1,18 @@
 import React, { useState } from 'react';
 import {
-    ScrollView,
-    TextInput,
     View,
-    Image,
-    TouchableOpacity,
-    Switch
 } from 'react-native';
 import { router } from "expo-router";
 import tw from "twrnc";
 import MainBackground from '@/components/background/MainBackground';
-import NavigationHeader from '@/components/navigation/NavigationHeader';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';
 import { ThemedText } from '@/components/ThemedText';
-import DashBoardCardComponent from '@/components/ui/DashBoardCardComponent';
 import CheckListNavigation from '@/components/navigation/CheckListNavigation';
-import OptionIcon from '@/components/icons/OptionIcon';
-import { FeSpotLight } from 'react-native-svg';
-import LocationsIcon from '@/components/icons/LocationsIcon';
-import PhoneNumberIcon from '@/components/icons/PhoneNumberIcon';
-import CheckListCardItem from '@/components/Item/CheckListCardItem';
 import CheckListUploadModal from '@/components/modal/CheckListUploadModal';
 import UploadingModal from '@/components/modal/UpLoadingModal';
 import SuccessModal from '@/components/modal/SuccessModal';
 import ManIcon from '@/components/icons/ManIcon';
-const dataList = [
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-    {
-        title: 'Burial',
-        name: 'Willams Alex',
-        dob: '07-02-1963',
-        kin: 'Alex John',
-        location: 'Karnail Singh Stadium',
-        phone: '+1 0211420420',
-        uploadDate: '30 min ago',
-    },
-];
+import NavigationHeader from '@/components/navigation/NavigationHeader';
 export default function Index() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
@@ -107,7 +49,9 @@ export default function Index() {
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1`}>
-                <CheckListNavigation openModal={openUploadModal} title="Checklist" />
+                <NavigationHeader
+                    title='View Checklist'
+                />
                 <MainNavigationBar />
                 <View
                     style={tw`pt-[46px] flex flex px-[30px] w-full gap-[34px]`}
@@ -118,16 +62,16 @@ export default function Index() {
                         <View
                             style={tw`flex flex-row gap-[6.5px]`}
                         >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Name:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>Willams Alex</ThemedText>
+                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Title:</ThemedText>
+                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>Burial1</ThemedText>
                         </View>
                         <View
                             style={tw`flex flex-row gap-[6.5px]`}
                         >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Date of Birth:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>o7-02-1963</ThemedText>
+                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Description:</ThemedText>
+                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>1.Buy Flower</ThemedText>
                         </View>
-                        <View
+                        {/* <View
                             style={tw`flex flex-row gap-[6.5px]`}
                         >
                             <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Next of Kin:</ThemedText>
@@ -156,13 +100,13 @@ export default function Index() {
                         >
                             <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Budget:</ThemedText>
                             <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>$4000</ThemedText>
-                        </View>
+                        </View> */}
 
                     </View>
-                    <View style={tw`w-full justify-center items-center`}>
+                    {/* <View style={tw`w-full justify-center items-center`}>
                         <ManIcon />
                         <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Picture</ThemedText>
-                    </View>
+                    </View> */}
                 </View>
             </View>
 

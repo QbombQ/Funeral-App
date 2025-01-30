@@ -22,8 +22,9 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete }) => {
   };
 
   return (
-    <View style={tw`w-[332px] h-[73.62px] items-center`}>
-      <Image source={require('@/assets/images/Frame 1000005982 (1).png')} style={tw`w-full absolute`} />
+    <View style={tw`w-full h-[71.62px] items-center border border-[#004CFF] rounded-lg`}>
+      {/* <Image source={require('@/assets/images/Frame 1000005982 (1).png')} style={tw`w-full absolute`} /> */}
+      <Image source={require('@/assets/images/carditem(chechlist).png')} style={tw`w-full absolute h-full rounded-lg`} />
       <View style={tw`w-full h-full justify-between items-center flex flex-row px-[8px]`}>
         <View style={tw`flex flex-row gap-[10px] items-center`}>
           <VaultCardIcon />
