@@ -212,15 +212,15 @@ export default function Index() {
                     style={tw`flex flex-row w-full px-[31px] gap-[15px] pt-[10px] pb-[12px]`}
                 >
                     <TouchableOpacity
-                        onPress={() => router.push("/(checklist)")}
-                        style={tw`border-b-2 border-[#004CFF] p-[5px] justify-center items-center`}
+                    onPress={()=>router.push("/(checklist)")}
+                        style={tw` p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
                             My Checklist
                         </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => router.push('/(home)/(checklist)/shareme')}
+                        onPress={()=>router.push('/(home)/(checklist)/shareme')}
                         style={tw`p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
@@ -228,15 +228,15 @@ export default function Index() {
                         </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => router.push('/(home)/(checklist)/shareother')}
-                        style={tw` p-[5px] justify-center items-center`}
+                    onPress={()=>router.push('/(home)/(checklist)/shareother')}
+                        style={tw`border-b-2 border-[#004CFF] p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
                             Shared by others
                         </ThemedText>
                     </TouchableOpacity>
 
-
+                    
 
                 </View>
                 <ScrollView contentContainerStyle={tw`flex-grow`} style={tw`w-full h-full`}>

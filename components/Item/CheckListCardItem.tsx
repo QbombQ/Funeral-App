@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity, Share } from 'react-native';
 import tw from 'twrnc';
 import { ThemedText } from '../ThemedText';
 import OptionIcon from '../icons/OptionIcon';
 import { ThemedCheckBox } from '../input/ThemedCheckBox';
 import { router } from 'expo-router';
+import ShareChecklistModal from '../modal/ShareChecklistModal';
 interface ChecklistItem {
     title: string;
     description: string;
@@ -24,15 +25,18 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
     onRemove,
 }) => {
     const [showOptionItem, setShowOptionItem] = useState(false);
-
+    const [showShareChecklistModal, setShowShareChecklistModal] = useState(false);
     const handleOptionToggle = () => {
         setShowOptionItem((prev) => !prev);
     };
-    const viewChecklist  = () =>{
+    const viewChecklist = () => {
         router.push("/(checklist)/viewchecklist")
     }
-    const editChecklist = () =>{
+    const editChecklist = () => {
         router.push("/(checklist)/editchecklist")
+    }
+    const shareChecklist = () => {
+        setShowShareChecklistModal(!showShareChecklistModal);
     }
     return (
         <View style={tw`w-full h-[100px] rounded-lg border border-[#004CFF] bg-transparent`}>
@@ -70,7 +74,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
                                         View
                                     </ThemedText>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={tw`px-2 h-6 flex justify-center`}>
+                                <TouchableOpacity style={tw`px-2 h-6 flex justify-center`} onPress={shareChecklist}>
                                     <ThemedText variant='title12' textcolor='#F6FBFD'>
                                         Share
                                     </ThemedText>
@@ -125,6 +129,10 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
                     </View>
                 </View>
             </View>
+            <ShareChecklistModal
+                visible={showShareChecklistModal}
+                onClose={shareChecklist}
+            />
         </View>
     );
 };

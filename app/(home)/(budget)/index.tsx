@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Image,
+    TouchableOpacity,
+    ScrollView
 } from 'react-native';
 import { router } from "expo-router";
 import tw from "twrnc";
@@ -9,55 +11,146 @@ import MainBackground from '@/components/background/MainBackground';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';
 import { ThemedText } from '@/components/ThemedText';
-import { NormalButton } from '@/components/button/NormalButton';
+import NormalInput from '@/components/input/NormalInput';
+import CreateBudgetItemModal from '@/components/modal/CreateBudgetItemModal';
+import CrossIcon from '@/components/icons/CrossIcon';
+import BudgetItemComponent from '@/components/Item/BudgetItem';
 
+interface BudgetItem {
+    title: any,
+    budget: number
+}
 
 export default function Index() {
-    const toPayment = () => {
-        router.push('/(home)/(budget)/payment')
-    }
+    const [totalBudget, setTotalBudget] = useState(0);
+    const [remainingBudget, setRemainingBudget] = useState(0);
+    const [isCreateModalVisible, setCreateModalVisible] = useState(false);
+    const [dataList, setDataList] = useState<BudgetItem[]>([
+        // {
+        //     title: 'Burial A',
+        //     budget: 1000
+        // },
+        // {
+        //     title: 'Burial B',
+        //     budget: 3000
+        // }
+    ]);
+
+    const [temporaryBudget, setTemporaryBudget] = useState(0);
+
+    const openCreateModal = () => setCreateModalVisible(!isCreateModalVisible);
+    const handleCreateBudgetItem = (newItem: BudgetItem) => {
+        setDataList(prevList => {
+            const updatedList = [...prevList, newItem];
+            const updatedRemainingBudget = totalBudget - updatedList.reduce((acc, item) => acc + Number(item.budget), 0);
+            setRemainingBudget(updatedRemainingBudget);
+            return updatedList;
+        });
+        setCreateModalVisible(false);
+    };
+
+    const handleRemoveItem = (index: number) => {
+        setDataList(prevList => {
+            const updatedList = prevList.filter((_, idx) => idx !== index);
+            const updatedRemainingBudget = totalBudget - updatedList.reduce((acc, item) => acc + Number(item.budget), 0);
+            setRemainingBudget(updatedRemainingBudget);
+            return updatedList;
+        });
+    };
+
+    const handleTotalBudgetChange = (value: number) => {
+        setTemporaryBudget(Number(value));
+    };
+
+    const handleSetTotalBudget = () => {
+        const newTotalBudget = temporaryBudget || 0;
+        setTotalBudget(newTotalBudget);
+
+        const sumOfItemsBudget = dataList.reduce((acc, item) => acc + Number(item.budget), 0);
+
+        const newRemainingBudget = Math.max(0, newTotalBudget - sumOfItemsBudget);
+        setRemainingBudget(newRemainingBudget);
+    };
+
     return (
-        <MainBackground title=''>
-            <View style={tw`w-full h-full flex flex-1 `}>
-                <NavigationHeader title="" />
-                <MainNavigationBar />
-                <View
-                    style={tw`w-full h-full flex-1 flex items-center pt-[30%]`}
-                >
-                    <View
-                        style={tw`w-[300px] h-[370px]`}
+        <>
+            <MainBackground title="">
+                <View style={tw`w-full h-full flex flex-1`}>
+                    <NavigationHeader title="Budget" />
+                    <MainNavigationBar />
+                    <ScrollView
+                        contentContainerStyle={tw`flex-grow justify-center`}
+                        style={tw`w-full h-full`}
                     >
-                        <Image source={require("@/assets/images/budgetback.png")} style={tw`absolute w-full h-full`} />
-                        <View
-                            style={tw`px-[7px] py-[22px] w-full h-full flex flex-col justify-between`}
-                        >
-                            <View
-                                style={tw`w-full `}
-                            >
-                                <ThemedText variant='title22' fontFamily='RaleWaySemiBold' textcolor='#FFFFFF' style={tw`text-center`} >Unlock Full Access for just $19.99/Month</ThemedText>
-                            </View>
-
-                            <View
-                                style={tw`gap-[10px]`}
-                            >
-                                <ThemedText textcolor='#BAC1C4' variant='title14' fontFamily='RaleWaySemiBold'>• To upload unlimited legal document</ThemedText>
-                                <ThemedText textcolor='#BAC1C4' variant='title14' fontFamily='RaleWaySemiBold'>• To add second set of checklist items</ThemedText>
-                                <ThemedText textcolor='#BAC1C4' variant='title14' fontFamily='RaleWaySemiBold'>• Store unlimited document</ThemedText>
-                                <ThemedText textcolor='#BAC1C4' variant='title14' fontFamily='RaleWaySemiBold'>• Access complete planning tools</ThemedText>
-                                <ThemedText textcolor='#BAC1C4' variant='title14' fontFamily='RaleWaySemiBold'>• Securely share plans with executors</ThemedText>
-                            </View>
-                            <View
-                                style={tw`flex w-full flex-col gap-[10px] justify-center items-center`}
-                            >
-                                <NormalButton width={209} height={44} text='Subscribe Now' onPress={toPayment} />
-                                <ThemedText textcolor='#BAC1C4' variant='title12' fontFamily='RaleWaySemiBold'>Your 7-days free trial has ended</ThemedText>
-
+                        <View style={tw`w-full h-full flex-1 flex items-center pt-[20px] px-[20px]`}>
+                            <View style={tw`w-full rounded-[12px] w-full bg-[#1D2C4F] bg-opacity-60 flex flex-col gap-[12px] p-4`}>
+                                <View style={tw`flex flex-row w-full`}>
+                                    <View style={tw`w-[50%]`}>
+                                        <ThemedText variant="title12" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
+                                            Total Budget: ${totalBudget}
+                                        </ThemedText>
+                                    </View>
+                                    <View style={tw`w-[50%]`}>
+                                        <ThemedText variant="title12" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
+                                            Remaining Budget: ${remainingBudget}
+                                        </ThemedText>
+                                    </View>
+                                </View>
+                                <View style={tw`w-full gap-[6px]`}>
+                                    <ThemedText variant="title14" textcolor="#FFFFFF">Total Budget:</ThemedText>
+                                    <View style={tw`flex flex-row justify-start items-center w-full gap-[20px]`}>
+                                        <View style={tw`w-[60%]`}>
+                                            <NormalInput
+                                                placeholder="5000"
+                                                value={temporaryBudget}
+                                                onChangeText={handleTotalBudgetChange}
+                                                keyboardType="numeric"
+                                            />
+                                        </View>
+                                        <TouchableOpacity
+                                            style={[tw`w-[100px] h-[30px] flex flex-row justify-center items-center border border-[#004CFF] rounded-[56px]`]}
+                                            onPress={handleSetTotalBudget}
+                                        >
+                                            <Image
+                                                source={require('@/assets/images/ModalBack1.png')}
+                                                style={tw`w-full h-full absolute top-0 left-0 rounded-full`}
+                                            />
+                                            <ThemedText variant="title14" textcolor="#F6FBFD" style={{ fontFamily: "NunitoMedium" }}>
+                                                Set
+                                            </ThemedText>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={tw`gap-[8px]`}>
+                                    {dataList.map((data, index) => (
+                                        <BudgetItemComponent
+                                            key={index}
+                                            data={data}
+                                            onRemove={() => handleRemoveItem(index)}
+                                        />
+                                    ))}
+                                </View>
                             </View>
                         </View>
-                    </View>
-                </View>
-            </View>
 
-        </MainBackground>
+                    </ScrollView>
+                </View>
+                <View
+                    style={[
+                        tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`,
+                        { zIndex: 30 },
+                    ]}
+                >
+                    <TouchableOpacity onPress={openCreateModal}>
+                        <Image source={require("@/assets/images/09. More.png")} />
+                    </TouchableOpacity>
+                </View>
+            </MainBackground>
+            <CreateBudgetItemModal
+                visible={isCreateModalVisible}
+                onClose={openCreateModal}
+                onCreate={handleCreateBudgetItem}
+            />
+        </>
     );
 }

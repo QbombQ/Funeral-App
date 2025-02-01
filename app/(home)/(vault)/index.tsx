@@ -15,6 +15,8 @@ import SuccessModal from '@/components/modal/SuccessModal';
 import VaultCard from '@/components/Item/VaultCardItem';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import VaultUploadModal from '@/components/modal/VaultUploadModal';
+import NeedMembershipModal from '@/components/modal/NeedMembershipModal';
+import { router } from 'expo-router';
 const dataList = [
     {
         id: 1,
@@ -31,34 +33,34 @@ const dataList = [
         title: 'Last will and testament',
         uploadDate: "03-01-2025"
     },
-    {
-        id: 4,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 5,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    }, {
-        id: 6,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 7,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    }, {
-        id: 8,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 9,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
+    // {
+    //     id: 4,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // },
+    // {
+    //     id: 5,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // }, {
+    //     id: 6,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // },
+    // {
+    //     id: 7,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // }, {
+    //     id: 8,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // },
+    // {
+    //     id: 9,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // },
 
 ];
 export default function Index() {
@@ -66,6 +68,8 @@ export default function Index() {
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
+    const [showNeedMembershipModal, setShowNeedMembershipModal] = useState(false);
+
     const openUploadModal = () => setUploadModalVisible(true);
     const closeUploadModal = () => setUploadModalVisible(false);
     const closeStatusModal = () => {
@@ -103,9 +107,18 @@ export default function Index() {
     const cancelDelete = () => {
         setShowDeleteConfirmModal(!showDeleteConfirmModal)
     }
-    const showVaultCreateOption = () => {
-        setShowAddVaultOption(!showAddVaultOption)
-    };
+    // const showVaultCreateOption = () => {
+    //     setShowAddVaultOption(!showAddVaultOption)
+    // };
+    const showVaultCreateOption  = () =>{
+        setShowNeedMembershipModal(!showNeedMembershipModal)
+    }
+    const toSubscription = () =>{
+        router.push('/(budget)/subscription')
+    }
+    const toCreatePage = () =>{
+        router.push('/(home)/(vault)/createvault')
+    }
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1 `}>
@@ -136,7 +149,7 @@ export default function Index() {
                 </ScrollView>
                 <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`, { zIndex: 30 }]}>
 
-                    <TouchableOpacity onPress={showVaultCreateOption} >
+                    <TouchableOpacity onPress={toCreatePage} >
                         <Image source={require("@/assets/images/09. More.png")} />
                     </TouchableOpacity>
                     {showAddVaultOption &&
@@ -192,6 +205,12 @@ export default function Index() {
                 visible={showDeleteConfirmModal}
                 onConfirm={confirmDelete}
                 onCancel={cancelDelete}
+            />
+            <NeedMembershipModal
+            visible={showNeedMembershipModal}
+            onConfirm={toSubscription}
+            title='Please Upgrade Your Membership'
+            onCancel={showVaultCreateOption}
             />
         </MainBackground>
     );

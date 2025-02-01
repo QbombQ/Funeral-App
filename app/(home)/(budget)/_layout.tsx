@@ -7,6 +7,7 @@ export default function BudgetLayout() {
     <Stack screenOptions={{headerShown:false}}>
       <Stack.Screen name="index"/>
       <Stack.Screen name="payment"/>
+      <Stack.Screen name="subscription"/>
     </Stack>
   );
 }

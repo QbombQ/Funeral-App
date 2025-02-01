@@ -56,7 +56,7 @@ export default function HomeScreen() {
                             onPress={handlePress}
                         >
 
-                            <Image source={require('@/assets/images/logbutton.png')} style={tw`w-full h-full absolute top-0 left-0 z-[2]`} />
+                            <Image source={require('@/assets/images/logbutton.png')} style={tw`w-full h-full absolute top-0 left-0 z-2`} />
 
                             <ThemedText variant='title16' textcolor='#F6FBFD' style={{fontFamily:"NunitoMedium"}}>
                                 Get Started

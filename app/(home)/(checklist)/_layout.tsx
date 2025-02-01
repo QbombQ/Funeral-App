@@ -8,6 +8,8 @@ export default function ChecklistLayout() {
       <Stack.Screen name="createchecklist" />
       <Stack.Screen name="viewchecklist" />
       <Stack.Screen name="editchecklist" />
+      <Stack.Screen name="shareme" />
+      <Stack.Screen name="shareother" />
     </Stack>
   );
 }

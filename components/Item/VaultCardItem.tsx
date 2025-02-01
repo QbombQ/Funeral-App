@@ -37,9 +37,9 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete }) => {
           <OptionIcon />
         </TouchableOpacity>
         {showOptions && (
-          <View style={tw`absolute bottom-[-91px] right-[12px] gap-[3px] flex justify-end items-end z-1`}>
+          <View style={tw`absolute bottom-[-121px] right-[12px] gap-[3px] flex justify-end items-end z-1`}>
             <Image source={require('@/assets/images/Polygon 2.png')} />
-            <View style={tw`w-[111px] h-[104px] border border-[#004CFF] rounded-[4px] justify-between`}>
+            <View style={tw`w-[111px]  border border-[#004CFF] rounded-[4px] justify-between`}>
                 <Image source={require("@/assets/images/checklistoptionback.png")} style={tw`w-full h-full absolute`} />
               <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`}>
                 <ThemedText variant="title12" textcolor="#F6FBFD" fontFamily="NunitoMedium">
@@ -49,6 +49,11 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete }) => {
               <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`}>
                 <ThemedText variant="title12" textcolor="#F6FBFD" fontFamily="NunitoMedium">
                   Share
+                </ThemedText>
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`}>
+                <ThemedText variant="title12" textcolor="#F6FBFD" fontFamily="NunitoMedium">
+                  Edit
                 </ThemedText>
               </TouchableOpacity>
               <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`}>
