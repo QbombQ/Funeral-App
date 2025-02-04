@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     ScrollView,
     View,
@@ -21,88 +21,34 @@ import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import { ThemedText } from '@/components/ThemedText';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
 import { router } from 'expo-router';
-
+import axiosInstance from '@/context/api';
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
+import { useAuth } from '@/context/AuthContext';
 interface ChecklistItem {
     title: string;
-    description: string;
-    uploadDate: string;
+    desc: string;
+    created: string;
     completed: boolean;
+    id: any;
+    sharedTo: any;
 }
 
 type ConfirmationAction = 'remove' | 'complete' | null;
 
 export default function Index() {
+    const { userId } = useAuth()
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
 
-    const [dataList, setDataList] = useState<ChecklistItem[]>([
-        {
-            title: 'Burial A',
-            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-            uploadDate: '30 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial B',
-            description: 'Second item desc',
-            uploadDate: '10 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial A',
-            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-            uploadDate: '30 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial B',
-            description: 'Second item desc',
-            uploadDate: '10 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial A',
-            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-            uploadDate: '30 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial B',
-            description: 'Second item desc',
-            uploadDate: '10 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial A',
-            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-            uploadDate: '30 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial B',
-            description: 'Second item desc',
-            uploadDate: '10 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial A',
-            description: 'Some descriptionaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-            uploadDate: '30 min ago',
-            completed: false,
-        },
-        {
-            title: 'Burial B',
-            description: 'Second item desc',
-            uploadDate: '10 min ago',
-            completed: false,
-        },
-    ]);
+    const [dataList, setDataList] = useState<ChecklistItem[]>([]);
 
     const [confirmationAction, setConfirmationAction] = useState<ConfirmationAction>(null);
     const [isConfirmationModalVisible, setConfirmationModalVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [openOptionId, setOpenOptionId] = useState<string | number | null>(null);
 
     const [isCreateModalVisible, setCreateModalVisible] = useState(false);
 
@@ -132,12 +78,47 @@ export default function Index() {
 
     const openCreateModal = () => setCreateModalVisible(true);
     const closeCreateModal = () => setCreateModalVisible(false);
+    const fetchChecklists = async () => {
+        const data = { userId }
+        try {
+            const response = await axiosInstance.post("/check-list/getAllByUser", data);
+            console.log(response.data.data.sharedByMe)
+            setDataList(response.data.data.sharedByMe);
+        } catch (error) {
+            console.error("Error fetching checklist:", error);
+        }
 
-    const handleCreateChecklist = (newItem: Omit<ChecklistItem, 'completed'>) => {
-        setDataList(prevData => [
-            { ...newItem, completed: false },
-            ...prevData,
-        ]);
+    };
+    useEffect(() => {
+        fetchChecklists();
+    }, []);
+    const handleCreateChecklist = async (newItem: Omit<ChecklistItem, "completed">) => {
+        try {
+            const payload = { ...newItem };
+            const data = { userId: userId, title: payload.title, desc: payload.desc }
+
+            const response = await axiosInstance.post('/check-list/create', data);
+
+
+            Toast.show({
+                type: "success",
+                text1: "Checklist Created",
+                text2: "Your checklist has been added successfully.",
+            });
+
+            closeCreateModal();
+            fetchChecklists();
+        } catch (error) {
+            console.log(error);
+
+            Toast.show({
+                type: "error",
+                text1: "Failed to Create",
+                text2: "There was an error creating the checklist.",
+            });
+        } finally {
+            // setIsUploading(false);
+        }
     };
 
     const showConfirmationModal = (index: number, action: ConfirmationAction) => {
@@ -161,34 +142,98 @@ export default function Index() {
         closeConfirmationModal();
     };
 
-    const handleRemoveItem = () => {
+    const handleRemoveItem = async () => {
         if (selectedIndex !== null) {
-            setDataList((prevData) => prevData.filter((_, idx) => idx !== selectedIndex));
+            const item = dataList[selectedIndex];
+            const data = {
+                id: item.id
+            }
+            try {
+                const response = await axiosInstance.post("/check-list/delete", data);
+                console.log(response.data);
+
+                Toast.show({
+                    type: "success",
+                    text1: "Checklist Deleted",
+                    text2: "Checklist deleted successfully",
+                });
+                fetchChecklists();
+            } catch (error) {
+                console.error("Error updating checklist", error);
+                Toast.show({
+                    type: "error",
+                    text1: "Error",
+                    text2: "Failed to update checklist.",
+                });
+            }
         }
     };
 
-    const handleMarkItemCompleted = () => {
+    const handleMarkItemCompleted = async () => {
         if (selectedIndex !== null) {
-            setDataList(prevData =>
-                prevData.map((item, i) =>
-                    i === selectedIndex ? { ...item, completed: true } : item
-                )
-            );
+            const item = dataList[selectedIndex];
+            const data = {
+                id: item.id,
+                userId: userId,
+                title: item.title,
+                desc: item.desc,
+                completed: true
+            }
+            try {
+                const response = await axiosInstance.post("/check-list/update", data);
+                console.log(response.data);
+
+                Toast.show({
+                    type: "success",
+                    text1: "Checklist Updated",
+                    text2: "Checklist marked as completed.",
+                });
+                fetchChecklists();
+            } catch (error) {
+                console.error("Error updating checklist", error);
+                Toast.show({
+                    type: "error",
+                    text1: "Error",
+                    text2: "Failed to update checklist.",
+                });
+            }
         }
     };
 
-    const handleCheckboxClick = (index: number) => {
+
+    const handleCheckboxClick = async (index: number) => {
         const item = dataList[index];
+        const data = {
+            id: item.id,
+            userId: userId,
+            title: item.title,
+            desc: item.desc,
+            completed: false
+        }
         if (!item.completed) {
             showConfirmationModal(index, 'complete');
         } else {
-            setDataList(prevData =>
-                prevData.map((itm, i) =>
-                    i === index ? { ...itm, completed: false } : itm
-                )
-            );
+            try {
+                const response = await axiosInstance.post("/check-list/update", data);
+                console.log(response.data);
+
+                Toast.show({
+                    type: "success",
+                    text1: "Checklist Updated",
+                    text2: "Checklist unmarked",
+                });
+                fetchChecklists();
+            } catch (error) {
+                console.error("Error updating checklist", error);
+                Toast.show({
+                    type: "error",
+                    text1: "Error",
+                    text2: "Failed to update checklist.",
+                });
+            }
         }
     };
+
 
     const handleItemDelete = (index: number) => {
         showConfirmationModal(index, 'remove');
@@ -196,6 +241,8 @@ export default function Index() {
 
     const incompleteItems = dataList.filter(item => !item.completed);
     const completedItems = dataList.filter(item => item.completed);
+    // const incompleteItems = <data value=""></data>
+    // const completedItems = dataList
 
     return (
         <MainBackground title=''>
@@ -212,15 +259,15 @@ export default function Index() {
                     style={tw`flex flex-row w-full px-[31px] gap-[15px] pt-[10px] pb-[12px]`}
                 >
                     <TouchableOpacity
-                    onPress={()=>router.push("/(checklist)")}
-                        style={tw` p-[5px] justify-center items-center`}
+                        onPress={() => router.push("/(checklist)")}
+                        style={tw`p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
                             My Checklist
                         </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={()=>router.push('/(home)/(checklist)/shareme')}
+                        onPress={() => router.push('/(home)/(checklist)/shareme')}
                         style={tw`border-b-2 border-[#004CFF] p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
@@ -228,7 +275,7 @@ export default function Index() {
                         </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
-                    onPress={()=>router.push('/(home)/(checklist)/shareother')}
+                        onPress={() => router.push('/(home)/(checklist)/shareother')}
                         style={tw` p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
@@ -237,7 +284,6 @@ export default function Index() {
                     </TouchableOpacity>
 
 
-                    
 
                 </View>
                 <ScrollView contentContainerStyle={tw`flex-grow`} style={tw`w-full h-full`}>
@@ -248,6 +294,9 @@ export default function Index() {
                                 data={data}
                                 onCheck={() => handleCheckboxClick(dataList.indexOf(data))}
                                 onRemove={() => handleItemDelete(dataList.indexOf(data))}
+                                onRefresh={fetchChecklists}
+                                openOptionId={openOptionId}
+                                setOpenOptionId={setOpenOptionId}
                             />
                         ))}
                         {completedItems.length > 0 && (
@@ -266,6 +315,9 @@ export default function Index() {
                                         data={data}
                                         onCheck={() => handleCheckboxClick(dataList.indexOf(data))}
                                         onRemove={() => handleItemDelete(dataList.indexOf(data))}
+                                        onRefresh={fetchChecklists}
+                                        openOptionId={openOptionId}
+                                        setOpenOptionId={setOpenOptionId}
                                     />
                                 ))}
                             </View>

@@ -27,7 +27,6 @@ export default function Payment() {
         setShowPaymentModal(!showPamentModal)
     }
     const toDashBoard = () =>{
-        console.log("sdf");
         router.push("/(home)/home")
     }
     const toBudget = () =>{

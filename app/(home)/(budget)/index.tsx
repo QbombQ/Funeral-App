@@ -130,6 +130,27 @@ export default function Index() {
                                         />
                                     ))}
                                 </View>
+                                <View
+                                    style={tw`w-full justify-center items-center`}
+                                >
+                                    {/* <TouchableOpacity onPress={openCreateModal}>
+                                        <Image source={require("@/assets/images/09. More.png")} />
+                                    </TouchableOpacity> */}
+                                    <TouchableOpacity
+                                        onPress={openCreateModal}
+                                        style={[
+                                            tw`w-[283px] h-[50px] flex flex-row justify-center items-center border border-[#004CFF] rounded-[56px]`
+                                        ]}
+                                    >
+                                        <Image
+                                            source={require('@/assets/images/01. Primary Button.png')}
+                                            style={tw`w-full h-full absolute top-0 left-0 rounded-full`}
+                                        />
+                                        <ThemedText variant='title16' textcolor='#F6FBFD' style={{ fontFamily: "NunitoMedium" }}>
+                                            Add Budget Plan
+                                        </ThemedText>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
 
@@ -141,9 +162,7 @@ export default function Index() {
                         { zIndex: 30 },
                     ]}
                 >
-                    <TouchableOpacity onPress={openCreateModal}>
-                        <Image source={require("@/assets/images/09. More.png")} />
-                    </TouchableOpacity>
+
                 </View>
             </MainBackground>
             <CreateBudgetItemModal

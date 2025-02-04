@@ -52,7 +52,6 @@ export default function CreateVault() {
     const openUploadModal = () => setUploadModalVisible(true);
     const closeConfirmationModal = () => {
         setShowConfirmationModal(false);
-        console.log("sdfsdf");
 
     }
     const closeStatusModal = () => {

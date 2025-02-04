@@ -10,18 +10,24 @@ import {
 import tw from 'twrnc';
 import FormInput from '../input/FormInput';
 import { ThemedText } from '../ThemedText';
-const CreateChecklistModal = ({ visible, onClose, onCreate }:any) => {
+import Toast from 'react-native-toast-message';
+const CreateChecklistModal = ({ visible, onClose, onCreate }: any) => {
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const [desc, setDescription] = useState('');
 
     const handleCreate = () => {
-        if (title.trim() && description.trim()) {
-            onCreate({ title, description, uploadDate: 'Just now' });
+        if (title.trim() && desc.trim()) {
+            onCreate({ title, desc});
             setTitle('');
             setDescription('');
-            onClose(); 
+            onClose();
         } else {
-            alert('Please fill in both fields.');
+            Toast.show({
+                type: "error",
+                text1: "Invalid Data",
+                text2: "Please enter correct value",
+            });
+
         }
     };
 
@@ -45,7 +51,7 @@ const CreateChecklistModal = ({ visible, onClose, onCreate }:any) => {
                     />
                     <FormInput
                         placeholder="Description"
-                        value={description}
+                        value={desc}
                         onChangeText={setDescription}
                         multiline
                     />

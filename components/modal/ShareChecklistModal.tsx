@@ -10,19 +10,30 @@ import {
 import tw from 'twrnc';
 import FormInput from '../input/FormInput';
 import { ThemedText } from '../ThemedText';
-const ShareChecklistModal = ({ visible, onClose, onCreate }:any) => {
-    const [title, setTitle] = useState('');
-    // const [description, setDescription] = useState('');
+import Toast from 'react-native-toast-message';
+import { usePathname } from 'expo-router';
 
+const ShareChecklistModal = ({ visible, onClose, onCreate, title, btntext, sharedUser }: any) => {
+    const [email, setEmail] = useState('');
+    const pathname = usePathname();
+    // const [description, setDescription] = useState('');
+    const validateEmail = (email: string): boolean => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
     const handleCreate = () => {
-        // if (title.trim()) {
-        //     onCreate({ title});
-        //     setTitle('');
-        //     // setDescription('');
-        //     onClose(); 
-        // } else {
-        //     alert('Please fill in both fields.');
-        // }
+        if (email.trim() && validateEmail(email)) {
+            onCreate({ email });
+            setEmail('');
+            // setDescription('');
+            onClose();
+        } else {
+            Toast.show({
+                type: "error",
+                text1: "Invalid Email",
+                text2: "Please enter a valid email address.",
+            });
+        }
     };
 
     return (
@@ -36,12 +47,23 @@ const ShareChecklistModal = ({ visible, onClose, onCreate }:any) => {
             <View style={tw`flex-1 justify-center items-center bg-black bg-opacity-50`}>
                 <View style={tw`w-[90%] bg-[#0D1B3B] p-5 rounded-lg gap-[20px]`}>
                     <ThemedText variant="title20" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
-                        Share Checklist
+                        {title}
                     </ThemedText>
+                    {
+                        pathname == "/shareme" &&
+                        <View>
+                            <ThemedText variant="title16" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
+                                Shared User
+                            </ThemedText>
+                            <ThemedText variant="title14" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
+                                {sharedUser}
+                            </ThemedText>
+                        </View>
+                    }
                     <FormInput
                         placeholder="Email"
-                        value={title}
-                        onChangeText={setTitle}
+                        value={email}
+                        onChangeText={setEmail}
                     />
                     {/* <FormInput
                         placeholder="Description"
@@ -65,7 +87,7 @@ const ShareChecklistModal = ({ visible, onClose, onCreate }:any) => {
                         >
                             <Image source={require('@/assets/images/ModalBack1.png')} style={tw`absolute w-full h-full rounded-full`} />
                             <ThemedText variant="title20" textcolor="#FFFFFF" fontFamily="NunitoMedium" style={tw`text-center`}>
-                                Share
+                                {btntext}
                             </ThemedText>
                         </TouchableOpacity>
                     </View>

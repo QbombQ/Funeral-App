@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     View,
 } from 'react-native';
-import { router, useGlobalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import tw from "twrnc";
 import MainBackground from '@/components/background/MainBackground';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';
@@ -13,20 +13,12 @@ import UploadingModal from '@/components/modal/UpLoadingModal';
 import SuccessModal from '@/components/modal/SuccessModal';
 import ManIcon from '@/components/icons/ManIcon';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
-export default function Index() {
-    const params = useGlobalSearchParams();
+export default function ViewVault() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
 
-    const { id, title, desc, created, completed } = params as {
-        id: string;
-        title: string;
-        desc: string;
-        created: string;
-        completed: string;
-    };
     const openUploadModal = () => setUploadModalVisible(true);
     const closeUploadModal = () => setUploadModalVisible(false);
     const closeStatusModal = () => {
@@ -58,7 +50,7 @@ export default function Index() {
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1`}>
                 <NavigationHeader
-                    title='View Checklist'
+                    title='View Vault'
                 />
                 <MainNavigationBar />
                 <View
@@ -71,13 +63,13 @@ export default function Index() {
                             style={tw`flex flex-row gap-[6.5px]`}
                         >
                             <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Title:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{title}</ThemedText>
+                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>Burial1</ThemedText>
                         </View>
                         <View
                             style={tw`flex flex-row gap-[6.5px]`}
                         >
                             <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Description:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{desc}</ThemedText>
+                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>1.Buy Flower</ThemedText>
                         </View>
                         {/* <View
                             style={tw`flex flex-row gap-[6.5px]`}
@@ -111,10 +103,10 @@ export default function Index() {
                         </View> */}
 
                     </View>
-                    {/* <View style={tw`w-full justify-center items-center`}>
+                    <View style={tw`w-full justify-center items-center`}>
                         <ManIcon />
-                        <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Picture</ThemedText>
-                    </View> */}
+                        <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Attached File</ThemedText>
+                    </View>
                 </View>
             </View>
 

@@ -4,6 +4,7 @@ import tw from 'twrnc';
 import { ThemedText } from '../ThemedText';
 import OptionIcon from '@/components/icons/OptionIcon';
 import VaultCardIcon from '@/components/icons/VaultCardIcon';
+import { router } from 'expo-router';
 
 interface VaultCardProps {
   item: {
@@ -20,7 +21,12 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete }) => {
   const handleOptionToggle = () => {
     setShowOptions(!showOptions);
   };
-
+  const toViewVault = () =>{
+    router.push("/(home)/(vault)/viewvault")
+  }
+const toEditVault = () =>{
+  router.push('/(home)/(vault)/editvault')
+}
   return (
     <View style={tw`w-full h-[71.62px] items-center border border-[#004CFF] rounded-lg`}>
       {/* <Image source={require('@/assets/images/Frame 1000005982 (1).png')} style={tw`w-full absolute`} /> */}
@@ -41,7 +47,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete }) => {
             <Image source={require('@/assets/images/Polygon 2.png')} />
             <View style={tw`w-[111px]  border border-[#004CFF] rounded-[4px] justify-between`}>
                 <Image source={require("@/assets/images/checklistoptionback.png")} style={tw`w-full h-full absolute`} />
-              <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`}>
+              <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`} onPress={toViewVault}>
                 <ThemedText variant="title12" textcolor="#F6FBFD" fontFamily="NunitoMedium">
                   View
                 </ThemedText>
@@ -51,7 +57,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete }) => {
                   Share
                 </ThemedText>
               </TouchableOpacity>
-              <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`}>
+              <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex justify-center`} onPress={toEditVault}>
                 <ThemedText variant="title12" textcolor="#F6FBFD" fontFamily="NunitoMedium">
                   Edit
                 </ThemedText>

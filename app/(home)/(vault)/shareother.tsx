@@ -33,6 +33,35 @@ const dataList = [
         title: 'Last will and testament',
         uploadDate: "03-01-2025"
     },
+    // {
+    //     id: 4,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // },
+    // {
+    //     id: 5,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // }, {
+    //     id: 6,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // },
+    // {
+    //     id: 7,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // }, {
+    //     id: 8,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // },
+    // {
+    //     id: 9,
+    //     title: 'Last will and testament',
+    //     uploadDate: "03-01-2025"
+    // },
+
 ];
 export default function Index() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
@@ -104,7 +133,7 @@ export default function Index() {
                     >
                         <TouchableOpacity
                             onPress={() => router.push("/(vault)")}
-                            style={tw`border-b-2 border-[#004CFF] p-[5px] justify-center items-center`}
+                            style={tw`p-[5px] justify-center items-center`}
                         >
                             <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
                                 My Vault
@@ -120,7 +149,7 @@ export default function Index() {
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => router.push('/(vault)/shareother')}
-                            style={tw` p-[5px] justify-center items-center`}
+                            style={tw`border-b-2 border-[#004CFF] p-[5px] justify-center items-center`}
                         >
                             <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
                                 Shared by others

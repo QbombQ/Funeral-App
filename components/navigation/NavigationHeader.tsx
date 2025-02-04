@@ -8,12 +8,14 @@ import OptionIcon from '../icons/OptionIcon';
 import { Image } from 'react-native';
 import ConfirmationModal from '../modal/ConfirmationModal';
 import { router } from 'expo-router';
-
-interface NavigationHeaderProps{
-    title:string;
+import { useAuth } from '@/context/AuthContext';
+interface NavigationHeaderProps {
+    title: string;
 }
 
-const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
+const NavigationHeader: React.FC<NavigationHeaderProps> = ({ title }) => {
+    const { logout } = useAuth();
+
     const [showLogoutOption, setShowLogoutOption] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -29,17 +31,20 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
         router.push('/(auth)')
         setIsModalVisible(false);
     };
-    const showNotification = () =>{
+    const showNotification = () => {
         router.push("/(home)/(notification)")
     }
     const cancelLogout = () => {
         setIsModalVisible(false);
     };
+    const goBack = () =>{
+        router.back();
+    }
     return (
         <>
             <ConfirmationModal
                 visible={isModalVisible}
-                onConfirm={confirmLogout}
+                onConfirm={logout}
                 onCancel={cancelLogout}
                 title="Log Out"
                 message="Are you sure you want to log out?"
@@ -60,6 +65,7 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
 
                         <TouchableOpacity
                             style={tw`w-[30px] h-[30px] rounded-[50px] flex justify-center items-center`}
+                            onPress={goBack}
                         >
                             <View style={tw`absolute w-full h-full rounded-[50px] bg-[#004CFF] opacity-40`} />
                             <LeftIcon />
@@ -95,7 +101,7 @@ const NavigationHeader: React.FC<NavigationHeaderProps> =({title})=> {
                             <View
                                 style={[
                                     tw`absolute bottom-[-40px] right-[15px] gap-[3px] flex justify-end items-end`,
-                                    { zIndex: 50, position: 'absolute' } 
+                                    { zIndex: 50, position: 'absolute' }
                                 ]}
                             >
                                 <Image source={require("@/assets/images/Polygon 2.png")} />

@@ -3,6 +3,7 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
+  Platform
 } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import tw from "twrnc";
@@ -13,6 +14,11 @@ import { router } from "expo-router"
 import { PrimaryButton } from '@/components/button/PrimaryButton';
 import { SocialAuthButton } from '@/components/button/SocialAuthButton';
 import SwitchForm from "@/components/input/SwitchForm";
+import axios from "axios";
+// import * as Notifications from 'expo-notifications';
+import Toast from 'react-native-toast-message';
+import axiosInstance from '@/context/api';
+
 
 export default function Index() {
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -27,10 +33,96 @@ export default function Index() {
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const tosignin = () => {
     router.push("/(auth)/signin")
+
   }
   const toOnboarding = () => {
-    router.push('/(auth)/onboarding')
+    // router.push('/(auth)/onboarding')
+
   }
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    return passwordRegex.test(password);
+  };
+  const setSignup = async () => {
+    if (!name) {
+      Toast.show({
+        type: "error",
+        text1: "Invalid Name",
+        text2: "Name value can't be empty.",
+      });
+      return;
+    }
+
+    // ✅ Email validation
+    if (!email || !validateEmail(email)) {
+      Toast.show({
+        type: "error",
+        text1: "Invalid Email",
+        text2: "Please enter a valid email address.",
+      });
+      return;
+    }
+
+    // ✅ Password validation
+    if (!password) {
+      Toast.show({
+        type: "error",
+        text1: "Password error",
+        // text2: "Password must be at least 6 characters long and include an uppercase letter, a number, and a special character.",
+        text2: "You have to enter the password.",
+      });
+      return;
+    }
+
+    if (!check) {
+      Toast.show({
+        type: "error",
+        text1: "Agreement Required ⚖️",
+        text2: "You must agree to the Terms of Service and Privacy Policy to continue.",
+      });
+      return;
+    }
+
+    const data = { name, email, password };
+
+    try {
+      const response = await axiosInstance.post("/signup", data);
+
+      if (response.data.message === "success") {
+        Toast.show({
+          type: 'success',
+          text1: 'Signup Successful 🎉',
+          text2: 'Your account has been created!',
+        });
+        router.push("/(auth)/signin")
+      } else if (response.data.message === "email is already exist!") {
+        Toast.show({
+          type: "error",
+          text1: "Signup Failed",
+          text2: "This email might already be in use.",
+        });
+
+      }
+      else {
+        Toast.show({
+          type: 'error',
+          text1: 'Signup Failed',
+          text2: 'This username might already be in use.',
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Network Error',
+        text2: 'Something went wrong. Please try again later.',
+      });
+    }
+  };
+
   return (
     <AuthBackground title=''>
       <ScrollView
@@ -91,7 +183,7 @@ export default function Index() {
           <View
             style={tw`mt-[25px] flex flex-col gap-[18px] w-full justify-center items-center`}
           >
-            <PrimaryButton text='Sign Up' onPress={toOnboarding} />
+            <PrimaryButton text='Sign Up' onPress={setSignup} />
             <TouchableOpacity style={tw`flex justify-center items-center`}>
               <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                 or sign up with

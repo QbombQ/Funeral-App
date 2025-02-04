@@ -3,8 +3,11 @@ import {
     View,
     Image,
     TouchableOpacity,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView
 } from 'react-native';
-import { router, useGlobalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import tw from "twrnc";
 import MainBackground from '@/components/background/MainBackground';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';
@@ -25,13 +28,8 @@ import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import CheckListUploadModal from '@/components/modal/CheckListUploadModal';
 import { BlueButton } from '@/components/button/BlueButton';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
-import axiosInstance from '@/context/api';
-import Toast from 'react-native-toast-message';
-import { useAuth } from '@/context/AuthContext';
-
-export default function EditCheckList() {
-    const { userId } = useAuth()
-    const params = useGlobalSearchParams();
+import UploadImageIcon from '@/components/icons/UploadImageIcon';
+export default function EditVault() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [showItem, setShowItem] = useState(false)
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
@@ -42,17 +40,8 @@ export default function EditCheckList() {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
 
-    const { id, title: initialTitle, desc: initialDesc, created, completed } = params as {
-        id: string;
-        title: string;
-        desc: string;
-        created: string;
-        completed: string;
-    };
-
-    const [title, setTitle] = useState(initialTitle || '');
-    const [desc, setDesc] = useState(initialDesc || '');
-
+    const [name, setName] = useState('');
+    const [descrption, setDescription] = useState('')
     const showOptionItem = () => {
         setShowItem(!showItem)
     }
@@ -63,6 +52,7 @@ export default function EditCheckList() {
     const openUploadModal = () => setUploadModalVisible(true);
     const closeConfirmationModal = () => {
         setShowConfirmationModal(false);
+        console.log("sdfsdf");
 
     }
     const closeStatusModal = () => {
@@ -70,17 +60,7 @@ export default function EditCheckList() {
         if (isUploadSuccessful) {
             setIsUploadSuccessful(false);
         } else {
-            // router.push("/(home)/(checklist)/viewchecklist");
-            router.push({
-                pathname: "/(home)/(checklist)/viewchecklist",
-                params: {
-                    id: id,
-                    title: title,
-                    desc: desc,
-                    created: created,
-                    completed: completed ? "true" : "false",
-                },
-            });
+            router.push("/(home)/(vault)");
         }
     }
     const handleFileUpload = () => {
@@ -102,7 +82,7 @@ export default function EditCheckList() {
             }
         }, 500);
     };
-    const showEditChecklistModal = () => {
+    const addChecklist = () => {
         setShowConfirmationModal(true)
     }
     const showSuccessfulModal = () => {
@@ -112,69 +92,42 @@ export default function EditCheckList() {
     }
     const closeUploadModal = () => setUploadModalVisible(false);
     const handleCreateChecklist = () => {
-        router.push('/(home)/(checklist)/createchecklist')
+        router.push('/(home)/(vault)')
     };
-
-    const editCheckilist = async () => {
-        try {
-            const data = {
-                id,
-                title,
-                desc,
-                userId: userId,
-                completed
-            };
-            console.log(data);
-
-            const response = await axiosInstance.post("/check-list/update", data);
-            console.log("Update response:", response.data);
-            if (response.data.message == "success") {
-                Toast.show({
-                    type: "success",
-                    text1: "Checklist Updated",
-                    text2: "Your checklist has been updated successfully.",
-                });
-                setShowConfirmationModal(false);
-                setStatusModalVisible(true);
-                return;
-                // router.push("/(checklist)/viewchecklist");
-            }
-        } catch (error) {
-            console.error("Error updating checklist", error);
-            Toast.show({
-                type: "error",
-                text1: "Update Failed",
-                text2: "There was an error updating the checklist.",
-            });
-        }
-    }
-
     return (
-        <MainBackground title=''>
-            <View style={tw`flex-1`}>
-                <NavigationHeader
-                    title='Edit Checklist'
-                />
-                <MainNavigationBar />
-                <View
-                    style={tw`mt-[10px] w-full h-full px-[23px] justify-between gap-[12px]`}
+        // <KeyboardAvoidingView
+        //     style={tw`flex-1`}
+        //     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        // >
+            <MainBackground title=''>
+                <ScrollView
+                    contentContainerStyle={tw`flex-grow justify-center`}
+                    style={tw`w-full h-full`}
                 >
-                    <View
-                        style={tw`gap-[12px] justify-center w-full`}
-                    >
+
+                    <View style={tw`flex-1`}>
+                        {/* <CheckListNavigation openModal={openUploadModal} title='Add Vault' /> */}
+                        <NavigationHeader title='Edit Vault' />
+                        <MainNavigationBar />
                         <View
+                            style={tw`mt-[20px] w-full h-full px-[23px] justify-between gap-[18px]`}
+                        >
+                            <View
+                                style={tw`gap-[12px] justify-center w-full`}
+                            >
+                                {/* <View
                             style={tw`w-full flex flex-row justify-end gap-[5px] items-center`}
                         >
-                            {/* <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
+                            <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
                                 Create a New Title
                             </ThemedText>
                             <TouchableOpacity
                                 onPress={showOptionItem}
                             >
                                 <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
-                            </TouchableOpacity> */}
+                            </TouchableOpacity>
 
-                            {/* {showItem && (
+                            {showItem && (
                                 <View style={[tw`absolute bottom-[-185px] right-[6px] gap-[3px] flex justify-end items-end`, { zIndex: 4, position: 'absolute' }]}>
                                     <Image source={require('@/assets/images/Polygon 2.png')} />
                                     <View style={tw`w-[151px] h-[170px] border border-[#004CFF] rounded-[4px] justify-between`}>
@@ -212,31 +165,31 @@ export default function EditCheckList() {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                            )} */}
-                        </View>
+                            )}
+                        </View> */}
 
-                        <View
-                            style={tw`w-full rounded-[12px] w-full bg-[#1D2C4F] bg-opacity-60 flex flex-col gap-[8px]`}
-                        >
-                            <View
-                                style={tw`p-[12px] gap-[8px]`}
-                            >
                                 <View
-                                    style={tw`w-full flex flex-row w-full`}
+                                    style={tw`w-full rounded-[12px] w-full bg-[#1D2C4F] bg-opacity-60 flex flex-col gap-[8px]`}
                                 >
                                     <View
-                                        style={tw`flex flex-col gap-[6px] w-full`}
+                                        style={tw`p-[12px] gap-[8px]`}
                                     >
-                                        <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
-                                            Title:
-                                        </ThemedText>
-                                        <NormalInput
-                                            placeholder="E.g Burial"
-                                            value={title}
-                                            onChangeText={setTitle}
-                                        />
-                                    </View>
-                                    {/* <View
+                                        <View
+                                            style={tw`w-full flex flex-row`}
+                                        >
+                                            <View
+                                                style={tw`flex flex-col gap-[6px] w-full`}
+                                            >
+                                                <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
+                                                    Title:
+                                                </ThemedText>
+                                                <NormalInput
+                                                    placeholder="E.g Name"
+                                                    value={name}
+                                                    onChangeText={setName}
+                                                />
+                                            </View>
+                                            {/* <View
                                         style={tw`flex-1 justify-center items-center pt-[10px] gap-[5px]`}
                                     >
                                         <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
@@ -244,23 +197,23 @@ export default function EditCheckList() {
                                             Create List
                                         </ThemedText>
                                     </View> */}
-                                </View>
-                                <View
-                                    style={tw`w-full flex flex-row w-full`}
-                                >
-                                    <View
-                                        style={tw`flex flex-col gap-[6px] w-full`}
-                                    >
-                                        <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
-                                            Description:
-                                        </ThemedText>
-                                        <NormalInput
-                                            placeholder="E.g Buy Flower"
-                                            value={desc}
-                                            onChangeText={setDesc}
-                                        />
-                                    </View>
-                                    {/* <View
+                                        </View>
+                                        <View
+                                            style={tw`w-full flex flex-row`}
+                                        >
+                                            <View
+                                                style={tw`flex flex-col gap-[6px] w-full`}
+                                            >
+                                                <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
+                                                    Description:
+                                                </ThemedText>
+                                                <NormalInput
+                                                    placeholder="E.g Description"
+                                                    value={descrption}
+                                                    onChangeText={setDescription}
+                                                />
+                                            </View>
+                                            {/* <View
                                         style={tw`flex-1 justify-center items-center pt-[10px] gap-[5px]`}
                                     >
                                         <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
@@ -268,76 +221,103 @@ export default function EditCheckList() {
                                             Add List
                                         </ThemedText>
                                     </View> */}
+                                        </View>
+
+                                    </View>
+
                                 </View>
+                                {/* {isShowUploadedImage ? */}
+                                    <View style={tw`w-full justify-center items-center`}>
+                                        <ManIcon />
+                                        <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Attached File</ThemedText>
+                                    </View>
+                                    {/* : */}
+                                    <View style={tw`w-full h-[205px] bg-[#181818] rounded-[24px] justify-center items-center`}>
+                                        <TouchableOpacity style={tw`w-[133px] h-[133px] rounded-[12px] bg-[#004CFF] bg-opacity-50 justify-center items-center gap-[8.5px]`}
+                                            onPress={handleFileUpload}
+                                        >
+                                            <View
+                                                style={tw`w-[58px] h-[58px] justify-center items-center border border-[#95989A] rounded-[5px]`}
+                                            >
+                                                <UploadImageIcon />
+                                            </View>
+                                            <ThemedText
+                                                variant="title14"
+                                                textcolor="#C2C2C2"
+                                                fontFamily="PoppinsMedium"
+                                                style={tw`text-center`}
+                                            >
+                                                Upload from Device
+                                            </ThemedText>
+                                        </TouchableOpacity>
+                                        <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsMedium' style={tw`text-center pt-[10px]`}>
+                                            You may upload any file type (e.g., PDF, JPG, MP4 etc.).
+                                            {/* There are no restrictions on file formats. */}
+                                        </ThemedText>
+                                    </View>
+
+                                {/* } */}
 
                             </View>
-
-
-                        </View>
-                        {isShowUploadedImage &&
-                            <View style={tw`w-full justify-center items-center`}>
-                                <ManIcon />
-                                <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Picture</ThemedText>
-                            </View>
-                        }
-
-                    </View>
-                    <View
-                        style={tw`pb-[220px] w-full`}
-                    >
-                        <View
-                            style={tw`w-full flex-row justify-between`}
-                        >
                             <View
+                                style={tw`pb-[220px] w-full`}
+                            >
+                                <View
+                                    style={tw`w-full flex-row justify-between`}
+                                >
+                                    {/* <View
                                 style={tw`w-[105px] flex flex-col justify-center items-center gap-[4px]`}
                             >
                                 <SwitchForm />
                                 <ThemedText variant='title12' fontFamily='NunitoRegular' textcolor='#C2C2C2'>
                                     Add Reminder
                                 </ThemedText>
+                            </View> */}
+                                    <BlueButton
+                                        width={142}
+                                        height={48}
+                                        text='Save'
+                                        onPress={addChecklist}
+                                    />
+                                </View>
                             </View>
-                            <BlueButton
-                                width={142}
-                                height={48}
-                                text='Save'
-                                onPress={showEditChecklistModal}
-                            />
+
                         </View>
                     </View>
+                </ScrollView>
+                <CheckListUploadModal
+                    visible={isUploadModalVisible}
+                    onClose={closeUploadModal}
+                    onCreateChecklist={handleCreateChecklist}
+                    onUpload={handleFileUpload}
+                    isLoading={false}
+                />
+                <UploadImageComponent
+                    visible={isModalVisible}
+                    text='Upload from Device'
+                    onPress={handleFileUpload}
+                    onCancel={closeModal}
+                />
+                <UploadingModal
+                    visible={isUploadingModalVisible}
+                    progress={uploadProgress}
+                />
+                <SuccessModal
+                    visible={isStatusModalVisible}
+                    onCancel={closeStatusModal}
+                    onConfirm={closeStatusModal}
+                    statusText={isUploadSuccessful ? 'Completed!' : 'Successful!'}
+                    btnText={isUploadSuccessful ? 'Done' : 'View File'}
+                />
 
-                </View>
-            </View>
-            <CheckListUploadModal
-                visible={isUploadModalVisible}
-                onClose={closeUploadModal}
-                onCreateChecklist={handleCreateChecklist}
-                onUpload={handleFileUpload}
-                isLoading={false}
-            />
-            <UploadImageComponent
-                visible={isModalVisible}
-                text='Upload from Device'
-                onPress={handleFileUpload}
-                onCancel={closeModal}
-            />
-            <UploadingModal
-                visible={isUploadingModalVisible}
-                progress={uploadProgress}
-            />
-            <SuccessModal
-                visible={isStatusModalVisible}
-                onCancel={closeStatusModal}
-                onConfirm={closeStatusModal}
-                statusText={isUploadSuccessful ? 'Completed!' : 'Successful!'}
-                btnText={isUploadSuccessful ? 'Done' : 'View File'}
-            />
+                <ConfirmationModal
+                    visible={showConfirmationModal}
+                    onConfirm={() => { setStatusModalVisible(true); setShowConfirmationModal(false); }}
+                    onCancel={closeConfirmationModal}
+                    title="Are you sure you want to save this checklist?"
+                />
+            </MainBackground>
 
-            <ConfirmationModal
-                visible={showConfirmationModal}
-                onConfirm={() => { editCheckilist() }}
-                onCancel={closeConfirmationModal}
-                title="Are you sure you want to save this checklist?"
-            />
-        </MainBackground>
+        // </KeyboardAvoidingView>
     )
 }

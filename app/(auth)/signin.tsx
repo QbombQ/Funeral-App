@@ -12,8 +12,17 @@ import { router } from "expo-router"
 import { PrimaryButton } from '@/components/button/PrimaryButton';
 import { SocialAuthButton } from '@/components/button/SocialAuthButton';
 import SwitchForm from '@/components/input/SwitchForm';
+import Toast from 'react-native-toast-message';
+import axios from 'axios';
+import * as SecureStore from "expo-secure-store";
+import axiosInstance from "../../context/api";
+import { useAuth } from "@/context/AuthContext";
+
 
 export default function Index() {
+
+  const { login } = useAuth();
+
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -27,6 +36,76 @@ export default function Index() {
   const tosignin = () => {
     router.push("/(auth)")
   }
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  const validatePassword = (password: string): boolean => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    return passwordRegex.test(password);
+  };
+  const setSignin = async () => {
+    if (!email || !validateEmail(email)) {
+      Toast.show({
+        type: "error",
+        text1: "Invalid Email",
+        text2: "Please enter a valid email address.",
+      });
+      return;
+    }
+
+    if (!password) {
+      Toast.show({
+        type: "error",
+        text1: "Password error",
+        // text2: "Password must be at least 6 characters long and include an uppercase letter, a number, and a special character.",
+        text2: "You have to enter the password.",
+      });
+      return;
+    }
+
+
+    const data = { email, password };
+
+    try {
+      const response = await axiosInstance.post("/login", data);
+
+      if (response.data.message === "success") {
+        Toast.show({
+          type: 'success',
+          text1: 'Login Successful',
+          text2: 'You have successfully logged in.',
+        });
+        const token = response.data.token;
+        const userId = response.data.email;
+        // await SecureStore.setItemAsync("userToken", response.data.token);
+        await login(token, userId);
+        router.replace("/(home)/home");
+      } else if (response.data.message === "No exists user.") {
+        Toast.show({
+          type: "error",
+          text1: "User Not Found",
+          text2: "No account is associated with this email. Please check your email or sign up.",
+        });
+
+      }
+      else {
+        Toast.show({
+          type: 'error',
+          text1: 'Invalid username or password',
+          text2: 'You have used incorrect email or password. Please try again.',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      Toast.show({
+        type: 'error',
+        text1: 'Network Error',
+        text2: 'Something went wrong. Please try again later.',
+      });
+    }
+  };
   return (
     <AuthBackground title=''>
       <ScrollView
@@ -69,7 +148,7 @@ export default function Index() {
           <View
             style={tw`mt-[25px] flex flex-col gap-[18px] w-full justify-center`}
           >
-            <PrimaryButton text='Sign In' />
+            <PrimaryButton text='Sign In' onPress={setSignin} />
             <TouchableOpacity style={tw`flex justify-center items-center`}>
               <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                 or sign in with

@@ -46,7 +46,6 @@ export default function CreateCheckList() {
     const openUploadModal = () => setUploadModalVisible(true);
     const closeConfirmationModal = () => {
         setShowConfirmationModal(false);
-        console.log("sdfsdf");
 
     }
     const closeStatusModal = () => {
