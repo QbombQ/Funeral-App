@@ -12,15 +12,17 @@ import { useEffect } from 'react';
 export default function HomeScreen() {
     const { userToken } = useAuth();
     const handlePress = () => {
-        router.push("/(auth)")
-    }
-    useEffect(() => {
         if (userToken) {
             router.replace("/(home)/home"); // Redirect to login if not authenticated
+        }else{
+            router.push("/(auth)")
+
         }
-    }, [userToken]);
+    }
     return (
-        <ThemedView>
+        // <ThemedView>
+        <View style={tw`w-full h-full`}>
+
             <ImageBackground
                 source={require('@/assets/images/background.jpg')}
                 style={tw`w-full h-full`}
@@ -75,7 +77,8 @@ export default function HomeScreen() {
                 </View>
 
             </ImageBackground>
-        </ThemedView>
+        </View>
+        // </ThemedView>
 
     );
 }

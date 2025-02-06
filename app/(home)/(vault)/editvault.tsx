@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Image,
@@ -7,7 +7,7 @@ import {
     Platform,
     ScrollView
 } from 'react-native';
-import { router } from "expo-router";
+import { router, useGlobalSearchParams } from "expo-router";
 import tw from "twrnc";
 import MainBackground from '@/components/background/MainBackground';
 import MainNavigationBar from '@/components/navigation/MainNavigationBar';
@@ -29,7 +29,23 @@ import CheckListUploadModal from '@/components/modal/CheckListUploadModal';
 import { BlueButton } from '@/components/button/BlueButton';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
 import UploadImageIcon from '@/components/icons/UploadImageIcon';
-export default function EditVault() {
+import * as DocumentPicker from 'expo-document-picker';
+import axiosInstance from '@/context/api';
+import { NormalButton } from '@/components/button/NormalButton';
+import FilePreview from '@/components/modal/FilePreview';
+import { useAuth } from '@/context/AuthContext';
+import Toast from 'react-native-toast-message';
+import { Video } from 'expo-av';
+import WebView from 'react-native-webview';
+interface SelectedFile {
+    uri: string;
+    name: string;
+    type: string;
+}
+
+export default function CreateVault() {
+    const { userId } = useAuth()
+    const params = useGlobalSearchParams();
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [showItem, setShowItem] = useState(false)
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
@@ -39,9 +55,17 @@ export default function EditVault() {
     const [isShowUploadedImage, setShowUploadedImage] = useState(false)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<SelectedFile | null>(null);
+    const [isUploading, setIsUploading] = useState<boolean>(false);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('')
+    const [isVisiblePreviewModal, setIsVisiblePreviewModal] = useState(false);
+    const [vaultId, setVaultId] = useState('')
+    const { id } = params as { id: string };
 
-    const [name, setName] = useState('');
-    const [descrption, setDescription] = useState('')
+    const showPreviewModal = () => {
+        setIsVisiblePreviewModal(!isVisiblePreviewModal)
+    }
     const showOptionItem = () => {
         setShowItem(!showItem)
     }
@@ -52,7 +76,6 @@ export default function EditVault() {
     const openUploadModal = () => setUploadModalVisible(true);
     const closeConfirmationModal = () => {
         setShowConfirmationModal(false);
-        console.log("sdfsdf");
 
     }
     const closeStatusModal = () => {
@@ -60,8 +83,61 @@ export default function EditVault() {
         if (isUploadSuccessful) {
             setIsUploadSuccessful(false);
         } else {
-            router.push("/(home)/(vault)");
+            router.push({
+                pathname: "/(home)/(vault)/viewvault",
+                params: {
+                    id: vaultId
+                }
+            });
         }
+    }
+    useEffect(() => {
+        if (id) {
+            fetchVaultDetail(id);
+            // setIsEditing(true);
+        }
+    }, [id]);
+    const fetchVaultDetail = async (id: string) => {
+        try {
+            const response = await axiosInstance.post("/vault/getDetail", { userId, id: id });
+            const vaultData = response.data.data;
+            setTitle(vaultData.title);
+            setDescription(vaultData.desc);
+            let fileUri = vaultData.filePath;
+            if (!fileUri.startsWith("file://")) {
+                fileUri = `file://${fileUri.replace(/\\/g, '/')}`;
+            }
+            setSelectedFile({ uri: fileUri, name: vaultData.filePath.split('/').pop() || '', type: vaultData.fileType });
+
+        } catch (error) {
+            console.error("Error fetching vault details:", error);
+        }
+    };
+    const pickFile = async (): Promise<void> => {
+        try {
+            const result = await DocumentPicker.getDocumentAsync({
+                type: '*/*',
+                copyToCacheDirectory: true,
+            });
+
+            if (result.canceled) {
+                return;
+            }
+
+            const file: SelectedFile = {
+                uri: result.assets[0].uri,
+                name: result.assets[0].name,
+                type: result.assets[0].mimeType || 'application/octet-stream'
+            };
+
+            setSelectedFile(file);
+            setShowUploadedImage(true)
+        } catch (error) {
+            console.error("Error picking file:", error);
+        }
+    };
+    const removeSelectedFile = () => {
+        setSelectedFile(null);
     }
     const handleFileUpload = () => {
         closeModal();
@@ -82,7 +158,24 @@ export default function EditVault() {
             }
         }, 500);
     };
-    const addChecklist = () => {
+    const editVault = () => {
+        if (!title || !description || !userId) {
+            // alert("Please enter a title and description.");
+            Toast.show({
+                type: "error",
+                text1: "Missing field",
+                text2: "Please enter a title and description.",
+            });
+            return;
+        }
+        if (!selectedFile) {
+            Toast.show({
+                type: "error",
+                text1: "Missing field",
+                text2: "Please select a file to upload.",
+            });
+            return;
+        }
         setShowConfirmationModal(true)
     }
     const showSuccessfulModal = () => {
@@ -94,230 +187,234 @@ export default function EditVault() {
     const handleCreateChecklist = () => {
         router.push('/(home)/(vault)')
     };
+    const createVault = async (): Promise<void> => {
+        setIsUploading(true);
+        if (!selectedFile) {
+            return;
+        }
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("title", title);
+        formData.append("desc", description);
+        formData.append("userId", userId || '');
+        let fileUri = selectedFile?.uri || '';
+
+        // Fix file URI for Android
+        if (Platform.OS === "android" && !fileUri.startsWith("file://")) {
+            fileUri = "file://" + fileUri;
+        }
+        formData.append("file", {
+            uri: selectedFile.uri,
+            name: selectedFile.name,
+            type: selectedFile.type
+        } as any);
+
+        try {
+            const response = await axiosInstance.post("/vault/update", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
+            });
+
+            Toast.show({
+                type: "success",
+                text1: "Vault Created",
+                text2: "Vault created successfully!",
+            });
+            setStatusModalVisible(true)
+            setShowConfirmationModal(false);
+            setVaultId(response.data.id)
+        } catch (error: any) {
+            console.error("Error creating vault:", error.response?.data || error.message);
+            alert("Error creating vault. Please try again.");
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
     return (
-        // <KeyboardAvoidingView
-        //     style={tw`flex-1`}
-        //     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        // >
-            <MainBackground title=''>
+        <MainBackground title=''>
+            <View style={tw`flex-1`}>
+                <NavigationHeader title='Add Vault' />
+                <MainNavigationBar />
                 <ScrollView
                     contentContainerStyle={tw`flex-grow justify-center`}
                     style={tw`w-full h-full`}
                 >
-
-                    <View style={tw`flex-1`}>
-                        {/* <CheckListNavigation openModal={openUploadModal} title='Add Vault' /> */}
-                        <NavigationHeader title='Edit Vault' />
-                        <MainNavigationBar />
+                    <View
+                        style={tw`mt-[20px] w-full h-full px-[23px] gap-[18px]`}
+                    >
                         <View
-                            style={tw`mt-[20px] w-full h-full px-[23px] justify-between gap-[18px]`}
+                            style={tw`gap-[12px] justify-center w-full`}
                         >
                             <View
-                                style={tw`gap-[12px] justify-center w-full`}
+                                style={tw`w-full rounded-[12px] w-full bg-[#1D2C4F] bg-opacity-60 flex flex-col gap-[8px]`}
                             >
-                                {/* <View
-                            style={tw`w-full flex flex-row justify-end gap-[5px] items-center`}
-                        >
-                            <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
-                                Create a New Title
-                            </ThemedText>
-                            <TouchableOpacity
-                                onPress={showOptionItem}
-                            >
-                                <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
-                            </TouchableOpacity>
-
-                            {showItem && (
-                                <View style={[tw`absolute bottom-[-185px] right-[6px] gap-[3px] flex justify-end items-end`, { zIndex: 4, position: 'absolute' }]}>
-                                    <Image source={require('@/assets/images/Polygon 2.png')} />
-                                    <View style={tw`w-[151px] h-[170px] border border-[#004CFF] rounded-[4px] justify-between`}>
-                                        <Image source={require('@/assets/images/addback.png')} style={tw`absolute w-full h-full`} />
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex items-center flex flex-row gap-[10px]`}>
-                                            <PlusIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Add New title
-                                            </ThemedText>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] flex items-center flex flex-row gap-[10px]`}>
-                                            <MusicIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Music
-                                            </ThemedText>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] flex items-center flex flex-row gap-[10px]`}>
-                                            <PhotoIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Take Picture
-                                            </ThemedText>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] flex items-center flex flex-row gap-[10px]`} onPress={() => { setModalVisible(true), setShowItem(false) }}>
-                                            <GalleryIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Add from gallery
-                                            </ThemedText>
-                                        </TouchableOpacity>
-
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] flex items-center flex flex-row gap-[10px]`}>
-                                            <VideoIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Add Video
-                                            </ThemedText>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            )}
-                        </View> */}
-
                                 <View
-                                    style={tw`w-full rounded-[12px] w-full bg-[#1D2C4F] bg-opacity-60 flex flex-col gap-[8px]`}
+                                    style={tw`p-[12px] gap-[8px]`}
                                 >
                                     <View
-                                        style={tw`p-[12px] gap-[8px]`}
+                                        style={tw`w-full flex flex-row`}
                                     >
                                         <View
-                                            style={tw`w-full flex flex-row`}
+                                            style={tw`flex flex-col gap-[6px] w-full`}
                                         >
-                                            <View
-                                                style={tw`flex flex-col gap-[6px] w-full`}
-                                            >
-                                                <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
-                                                    Title:
-                                                </ThemedText>
-                                                <NormalInput
-                                                    placeholder="E.g Name"
-                                                    value={name}
-                                                    onChangeText={setName}
-                                                />
-                                            </View>
-                                            {/* <View
-                                        style={tw`flex-1 justify-center items-center pt-[10px] gap-[5px]`}
-                                    >
-                                        <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
-                                        <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsLight'>
-                                            Create List
-                                        </ThemedText>
-                                    </View> */}
+                                            <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
+                                                Title:
+                                            </ThemedText>
+                                            <NormalInput
+                                                placeholder="E.g Name"
+                                                value={title}
+                                                onChangeText={setTitle}
+                                            />
                                         </View>
-                                        <View
-                                            style={tw`w-full flex flex-row`}
-                                        >
-                                            <View
-                                                style={tw`flex flex-col gap-[6px] w-full`}
-                                            >
-                                                <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
-                                                    Description:
-                                                </ThemedText>
-                                                <NormalInput
-                                                    placeholder="E.g Description"
-                                                    value={descrption}
-                                                    onChangeText={setDescription}
-                                                />
-                                            </View>
-                                            {/* <View
-                                        style={tw`flex-1 justify-center items-center pt-[10px] gap-[5px]`}
-                                    >
-                                        <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
-                                        <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsLight'>
-                                            Add List
-                                        </ThemedText>
-                                    </View> */}
-                                        </View>
-
                                     </View>
-
+                                    <View
+                                        style={tw`w-full flex flex-row`}
+                                    >
+                                        <View
+                                            style={tw`flex flex-col gap-[6px] w-full`}
+                                        >
+                                            <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
+                                                Description:
+                                            </ThemedText>
+                                            <NormalInput
+                                                placeholder="E.g Description"
+                                                value={description}
+                                                onChangeText={setDescription}
+                                            />
+                                        </View>
+                                    </View>
                                 </View>
-                                {/* {isShowUploadedImage ? */}
+                            </View>
+                            {selectedFile ?
+                                <>
                                     <View style={tw`w-full justify-center items-center`}>
-                                        <ManIcon />
-                                        <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Attached File</ThemedText>
+                                        {selectedFile.type.includes('image') && (
+                                            <Image source={{ uri: selectedFile.uri }} style={tw`w-[90%] h-[250px] rounded-lg`} />
+                                        )}
+                                        {selectedFile.type.includes('video') && (
+                                            <Video source={{ uri: selectedFile.uri }} style={tw`w-[90%] h-[250px] rounded-lg`} useNativeControls />
+                                        )}
+                                        {selectedFile.type.includes('pdf') && (
+                                            <WebView source={{ uri: selectedFile.uri }} style={{ flex: 1, width: '100%', height: 400 }} />
+                                        )}
+                                        <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>{selectedFile.name}</ThemedText>
                                     </View>
-                                    {/* : */}
-                                    <View style={tw`w-full h-[205px] bg-[#181818] rounded-[24px] justify-center items-center`}>
-                                        <TouchableOpacity style={tw`w-[133px] h-[133px] rounded-[12px] bg-[#004CFF] bg-opacity-50 justify-center items-center gap-[8.5px]`}
-                                            onPress={handleFileUpload}
+                                    <View style={tw`flex flex-row w-full gap-3 justify-around`}>
+                                        <TouchableOpacity
+                                            onPress={showPreviewModal}
+                                            style={[
+                                                tw`w-[45%] h-[50px] flex flex-row justify-center items-center border border-[#004CFF] rounded-[56px]`]}
                                         >
-                                            <View
-                                                style={tw`w-[58px] h-[58px] justify-center items-center border border-[#95989A] rounded-[5px]`}
-                                            >
-                                                <UploadImageIcon />
-                                            </View>
-                                            <ThemedText
-                                                variant="title14"
-                                                textcolor="#C2C2C2"
-                                                fontFamily="PoppinsMedium"
-                                                style={tw`text-center`}
-                                            >
-                                                Upload from Device
+                                            <Image
+                                                source={require('@/assets/images/ModalBack1.png')}
+                                                style={tw`w-full h-full absolute top-0 left-0 rounded-full`}
+                                            />
+                                            <ThemedText variant='title16' textcolor='#F6FBFD' style={{ fontFamily: "NunitoMedium" }}>
+                                                Preview
                                             </ThemedText>
                                         </TouchableOpacity>
-                                        <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsMedium' style={tw`text-center pt-[10px]`}>
-                                            You may upload any file type (e.g., PDF, JPG, MP4 etc.).
-                                            {/* There are no restrictions on file formats. */}
-                                        </ThemedText>
+                                        <TouchableOpacity
+                                            onPress={removeSelectedFile}
+                                            style={[
+                                                tw`w-[45%] h-[50px] flex flex-row justify-center items-center border border-[#004CFF] rounded-[56px]`]}
+                                        >
+                                            <Image
+                                                source={require('@/assets/images/ModalBack2.png')}
+                                                style={tw`w-full h-full absolute top-0 left-0 rounded-full`}
+                                            />
+                                            <ThemedText variant='title16' textcolor='#F6FBFD' style={{ fontFamily: "NunitoMedium" }}>
+                                                Remove
+                                            </ThemedText>
+                                        </TouchableOpacity>
+
                                     </View>
-
-                                {/* } */}
-
-                            </View>
-                            <View
-                                style={tw`pb-[220px] w-full`}
-                            >
-                                <View
-                                    style={tw`w-full flex-row justify-between`}
-                                >
-                                    {/* <View
-                                style={tw`w-[105px] flex flex-col justify-center items-center gap-[4px]`}
-                            >
-                                <SwitchForm />
-                                <ThemedText variant='title12' fontFamily='NunitoRegular' textcolor='#C2C2C2'>
-                                    Add Reminder
-                                </ThemedText>
-                            </View> */}
-                                    <BlueButton
-                                        width={142}
-                                        height={48}
-                                        text='Save'
-                                        onPress={addChecklist}
-                                    />
+                                    {isVisiblePreviewModal &&
+                                        <FilePreview
+                                            fileUri={selectedFile.uri}
+                                            fileType={selectedFile.type}
+                                            fileName={selectedFile.name}
+                                            onClose={showPreviewModal}
+                                        />
+                                    }
+                                </>
+                                :
+                                <View style={tw`w-full h-[205px] bg-[#181818] rounded-[24px] justify-center items-center`}>
+                                    <TouchableOpacity style={tw`w-[133px] h-[133px] rounded-[12px] bg-[#004CFF] bg-opacity-50 justify-center items-center gap-[8.5px]`}
+                                        onPress={pickFile}
+                                    >
+                                        <View
+                                            style={tw`w-[58px] h-[58px] justify-center items-center border border-[#95989A] rounded-[5px]`}
+                                        >
+                                            <UploadImageIcon />
+                                        </View>
+                                        <ThemedText
+                                            variant="title14"
+                                            textcolor="#C2C2C2"
+                                            fontFamily="PoppinsMedium"
+                                            style={tw`text-center`}
+                                        >
+                                            Upload from Device
+                                        </ThemedText>
+                                    </TouchableOpacity>
+                                    <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsMedium' style={tw`text-center pt-[10px]`}>
+                                        You may upload any file type (e.g., PDF, JPG, MP4 etc.).
+                                    </ThemedText>
                                 </View>
-                            </View>
+
+                            }
 
                         </View>
+                        <View
+                            style={tw`pt-[20px] w-full`}
+                        >
+                            <View
+                                style={tw`w-full flex-row justify-between`}
+                            >
+                                <BlueButton
+                                    width={142}
+                                    height={48}
+                                    text='Save'
+                                    onPress={editVault}
+                                />
+                            </View>
+                        </View>
+
                     </View>
                 </ScrollView>
-                <CheckListUploadModal
-                    visible={isUploadModalVisible}
-                    onClose={closeUploadModal}
-                    onCreateChecklist={handleCreateChecklist}
-                    onUpload={handleFileUpload}
-                    isLoading={false}
-                />
-                <UploadImageComponent
-                    visible={isModalVisible}
-                    text='Upload from Device'
-                    onPress={handleFileUpload}
-                    onCancel={closeModal}
-                />
-                <UploadingModal
-                    visible={isUploadingModalVisible}
-                    progress={uploadProgress}
-                />
-                <SuccessModal
-                    visible={isStatusModalVisible}
-                    onCancel={closeStatusModal}
-                    onConfirm={closeStatusModal}
-                    statusText={isUploadSuccessful ? 'Completed!' : 'Successful!'}
-                    btnText={isUploadSuccessful ? 'Done' : 'View File'}
-                />
+            </View>
+            <CheckListUploadModal
+                visible={isUploadModalVisible}
+                onClose={closeUploadModal}
+                onCreateChecklist={handleCreateChecklist}
+                onUpload={handleFileUpload}
+                isLoading={false}
+            />
+            <UploadImageComponent
+                visible={isModalVisible}
+                text='Upload from Device'
+                onPress={handleFileUpload}
+                onCancel={closeModal}
+            />
+            <UploadingModal
+                visible={isUploadingModalVisible}
+                progress={uploadProgress}
+            />
+            <SuccessModal
+                visible={isStatusModalVisible}
+                onCancel={closeStatusModal}
+                onConfirm={closeStatusModal}
+                statusText={isUploadSuccessful ? 'Completed!' : 'Successful!'}
+                btnText={isUploadSuccessful ? 'Done' : 'View File'}
+            />
 
-                <ConfirmationModal
-                    visible={showConfirmationModal}
-                    onConfirm={() => { setStatusModalVisible(true); setShowConfirmationModal(false); }}
-                    onCancel={closeConfirmationModal}
-                    title="Are you sure you want to save this checklist?"
-                />
-            </MainBackground>
-
-        // </KeyboardAvoidingView>
+            <ConfirmationModal
+                visible={showConfirmationModal}
+                onConfirm={createVault}
+                onCancel={closeConfirmationModal}
+                title="Are you sure you want to save this checklist?"
+            />
+        </MainBackground>
     )
 }

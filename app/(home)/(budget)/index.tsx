@@ -82,19 +82,15 @@ export default function Index() {
                         contentContainerStyle={tw`flex-grow justify-center`}
                         style={tw`w-full h-full`}
                     >
-                        <View style={tw`w-full h-full flex-1 flex items-center pt-[20px] px-[20px]`}>
+                        <View style={tw`w-full h-full flex-1 flex items-center pt-[20px] px-[20px] pb-[120px]`}>
                             <View style={tw`w-full rounded-[12px] w-full bg-[#1D2C4F] bg-opacity-60 flex flex-col gap-[12px] p-4`}>
-                                <View style={tw`flex flex-row w-full`}>
-                                    <View style={tw`w-[50%]`}>
-                                        <ThemedText variant="title12" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
+                                <View style={tw`flex w-full`}>
+                                    <View style={tw`w-full`}>
+                                        <ThemedText variant="title14" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
                                             Total Budget: ${totalBudget}
                                         </ThemedText>
                                     </View>
-                                    <View style={tw`w-[50%]`}>
-                                        <ThemedText variant="title12" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
-                                            Remaining Budget: ${remainingBudget}
-                                        </ThemedText>
-                                    </View>
+
                                 </View>
                                 <View style={tw`w-full gap-[6px]`}>
                                     <ThemedText variant="title14" textcolor="#FFFFFF">Total Budget:</ThemedText>
@@ -129,6 +125,11 @@ export default function Index() {
                                             onRemove={() => handleRemoveItem(index)}
                                         />
                                     ))}
+                                </View>
+                                <View style={tw`w-full items-end`}>
+                                    <ThemedText variant="title14" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
+                                        Remaining Budget: ${remainingBudget}
+                                    </ThemedText>
                                 </View>
                                 <View
                                     style={tw`w-full justify-center items-center`}

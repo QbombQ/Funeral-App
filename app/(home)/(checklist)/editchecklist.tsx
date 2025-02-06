@@ -124,10 +124,8 @@ export default function EditCheckList() {
                 userId: userId,
                 completed
             };
-            console.log(data);
 
             const response = await axiosInstance.post("/check-list/update", data);
-            console.log("Update response:", response.data);
             if (response.data.message == "success") {
                 Toast.show({
                     type: "success",

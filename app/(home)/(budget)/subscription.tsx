@@ -2,6 +2,7 @@ import React from 'react';
 import {
     View,
     Image,
+    ScrollView,
 } from 'react-native';
 import { router } from "expo-router";
 import tw from "twrnc";
@@ -21,8 +22,12 @@ export default function Subscription() {
             <View style={tw`w-full h-full flex flex-1 `}>
                 <NavigationHeader title="" />
                 <MainNavigationBar />
+                <ScrollView
+                contentContainerStyle={tw`flex-grow`}
+                style={tw`w-full h-full`}
+                >
                 <View
-                    style={tw`w-full h-full flex-1 flex items-center pt-[30%]`}
+                    style={tw`w-full h-full flex-1 flex items-center pt-[20%] pb-[120px]`}
                 >
                     <View
                         style={tw`w-[300px] h-[370px]`}
@@ -56,6 +61,8 @@ export default function Subscription() {
                         </View>
                     </View>
                 </View>
+
+                </ScrollView>
             </View>
 
         </MainBackground>

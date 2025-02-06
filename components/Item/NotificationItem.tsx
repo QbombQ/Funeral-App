@@ -10,15 +10,17 @@ import ShareChecklistModal from '../modal/ShareChecklistModal';
 import axiosInstance from '@/context/api';
 import Toast from 'react-native-toast-message';
 interface VaultCardProps {
-  data: {
-    id: string,
+  item: {
+    // id: string,
+    id:number
     title: string,
-    desc: string,
-    filePath: string,
-    fileType: string,
-    sharedTo: any,
-    created: number,
-    userId:string
+    // desc: string,
+    // filePath: string,
+    // fileType: string,
+    // sharedTo: any,
+    // created: number,
+    // userId:string
+    uploadDate:string
   };
   onDelete: () => void;
   onRefresh?: () => void;
@@ -26,7 +28,7 @@ interface VaultCardProps {
   setOpenOptionId: (id: string | number | null) => void;
 }
 
-const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOptionId, setOpenOptionId }) => {
+const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete, onRefresh, openOptionId, setOpenOptionId }) => {
   const pathname = usePathname();
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [timeAgo, setTimeAgo] = useState("");
@@ -34,21 +36,21 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
   const toggleShareModal = () => {
     setShowShareVaultModal(!showShareVaultModal);
   };
-  const isOptionOpen = openOptionId === data.id;
+  const isOptionOpen = openOptionId === item.id;
 
   const handleOptionToggle = () => {
-    setOpenOptionId(isOptionOpen ? null : data.id);
+    setOpenOptionId(isOptionOpen ? null : item.id);
   };
 
-  useEffect(() => {
-    const updateTime = () => {
-      const newTimeAgo = moment(data.created).fromNow();
-      setTimeAgo(newTimeAgo);
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, [data.created]);
+//   useEffect(() => {
+//     const updateTime = () => {
+//       const newTimeAgo = moment(item.created).fromNow();
+//       setTimeAgo(newTimeAgo);
+//     };
+//     updateTime();
+//     const interval = setInterval(updateTime, 1000);
+//     return () => clearInterval(interval);
+//   }, [item.created]);
   // const handleOptionToggle = () => {
   //   setShowOptions(!showOptions);
   // };
@@ -57,7 +59,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
     router.push({
       pathname: "/(home)/(vault)/viewvault",
       params: {
-        id: data.id
+        id: item.id
       }
     })
   }
@@ -65,14 +67,14 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
     router.push({
       pathname: '/(home)/(vault)/editvault',
       params: {
-        id: data.id
+        id: item.id
       }
     })
   }
   const confirmShareVault = async (shareData: { email: string }) => {
     try {
       await axiosInstance.post("/vault/share", {
-        id: data.id,
+        id: item.id,
         recevierId: shareData.email,
       });
       Toast.show({
@@ -93,7 +95,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
   const confirmUnShareVault = async (unshareData: { email: string }) => {
     try {
       await axiosInstance.post("/vault/unshare", {
-        id: data.id,
+        id: item.id,
         recevierId: unshareData.email,
       });
       Toast.show({
@@ -124,16 +126,8 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
           <View style={tw`flex flex-row gap-[10px] items-center`}>
             <VaultCardIcon />
             <View style={tw`flex flex-col gap-[7px]`}>
-              <ThemedText variant="title16" textcolor="#FFFFFF" fontFamily="RaleWayBold">{data.title}</ThemedText>
-              {
-                pathname == "/shareme" &&
-                <ThemedText variant="title12" textcolor="#FFFFFF" fontFamily="RaleWayBold" numberOfLines={1} ellipsizeMode='tail'>SharedTo : {data.sharedTo}</ThemedText>
-              }
-              {
-                pathname=="/shareother"&&
-                <ThemedText variant="title12" textcolor="#FFFFFF" fontFamily="RaleWayBold" numberOfLines={1} ellipsizeMode='tail'>SharedFrom : {data.userId}</ThemedText>
-              }
-              <ThemedText variant="title14" textcolor="#BAC1C4" fontFamily="RaleWaySemiBold">{`Upload Date: ${timeAgo}`}</ThemedText>
+              <ThemedText variant="title16" textcolor="#FFFFFF" fontFamily="RaleWayBold">{item.title}</ThemedText>
+              <ThemedText variant="title14" textcolor="#BAC1C4" fontFamily="RaleWaySemiBold">{`Upload Date: ${item.uploadDate}`}</ThemedText>
             </View>
           </View>
           {/* Options Button */}
@@ -189,7 +183,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
       <ShareChecklistModal
         visible={showShareVaultModal}
         onClose={toggleShareModal}
-        sharedUser={data.sharedTo}
+        // sharedUser={item.sharedTo}
         title={pathname === "/shareme" ? "UnShare Vault" : "Share Vault"}
         btntext={pathname === "/shareme" ? "Unshare" : "Share"}
         onCreate={pathname === "/shareme" ? confirmUnShareVault : confirmShareVault}

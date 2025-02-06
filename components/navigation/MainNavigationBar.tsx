@@ -98,7 +98,7 @@ const MainNavigationBar: React.FC = () => {
             </ThemedText>
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={tw`flex flex-col justify-center items-center px-[5px]`}
             onPress={() => {handleTabSelect('location'),toLocation()}}
           >
@@ -108,7 +108,7 @@ const MainNavigationBar: React.FC = () => {
             <ThemedText variant='title14' textcolor={selectedTab === 'location' ? '#004CFF' : '#BAC1C4'} fontFamily='NunitoRegular'>
               Location
             </ThemedText>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>

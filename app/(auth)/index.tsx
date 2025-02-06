@@ -135,7 +135,7 @@ export default function Index() {
               Create Your Account
             </ThemedText>
           </View>
-          <View style={tw`mt-[40px] py-[15px] px-[8px] gap-[9px] flex flex-col justify-center items-center relative`}>
+          <View style={tw`mt-[40px] w-full py-[15px] px-9 gap-[9px] flex flex-col justify-center items-center relative`}>
             <View style={tw`absolute inset-0 rounded-xl bg-[#FAFAFA] opacity-3`}></View>
             <FormInput
               placeholder="Name"

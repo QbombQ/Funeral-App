@@ -15,6 +15,7 @@ import SuccessModal from '@/components/modal/SuccessModal';
 import VaultCard from '@/components/Item/VaultCardItem';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import VaultUploadModal from '@/components/modal/VaultUploadModal';
+import NotificationItem from '@/components/Item/NotificationItem';
 const dataList = [
     {
         id: 1,
@@ -66,8 +67,11 @@ export default function Index() {
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
+    const [openOptionId, setOpenOptionId] = useState<string | number | null>(null);
+
     const openUploadModal = () => setUploadModalVisible(true);
     const closeUploadModal = () => setUploadModalVisible(false);
+
     const closeStatusModal = () => {
         setStatusModalVisible(false);
     }
@@ -130,7 +134,7 @@ export default function Index() {
                         style={tw`w-full h-full flex items-center gap-[8px] pb-[120px] pt-[24px]`}
                     >
                         {dataList.map(item => (
-                            <VaultCard key={item.id} item={item} onDelete={handleDelete} />
+                            <NotificationItem key={item.id} item={item} onDelete={handleDelete} openOptionId={openOptionId} setOpenOptionId={setOpenOptionId    } />
                         ))}
                     </View>
                 </ScrollView>

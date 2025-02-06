@@ -16,6 +16,7 @@ interface ChecklistItem {
   created: string;
   completed: boolean;
   sharedTo: any;
+  userId: string;
   id: any;
 }
 
@@ -45,7 +46,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
       setTimeAgo(newTimeAgo);
     };
     updateTime();
-    const interval = setInterval(updateTime, 1000); 
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, [data.created]);
   const isOptionOpen = openOptionId === data.id;
@@ -56,7 +57,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
 
   const viewChecklist = () => {
     router.push({
-      pathname: "/(checklist)/viewchecklist",
+      pathname: "/(home)/(checklist)/viewchecklist",
       params: {
         id: data.id,
         title: data.title,
@@ -69,7 +70,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
 
   const editChecklist = () => {
     router.push({
-      pathname: "/(checklist)/editchecklist",
+      pathname: "/(home)/(checklist)/editchecklist",
       params: {
         id: data.id,
         title: data.title,
@@ -130,13 +131,13 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
   };
 
   return (
-    <View style={tw`w-full h-[100px] rounded-lg border border-[#004CFF] bg-transparent`}>
+    <View style={tw`w-full ${pathname === "/shareme" ? `h-[110px]` : pathname === "/shareother" ? `h-[110px]` : `h-[90px]`} rounded-lg border border-[#004CFF] bg-transparent`}>
       <Image
         source={require('@/assets/images/carditem(chechlist).png')}
         style={tw`absolute w-full h-full rounded-lg`}
       />
 
-      <View style={tw`px-4 py-3 flex flex-row h-full w-full gap-3`}>
+      <View style={tw`px-4 py-2 flex flex-row h-full w-full gap-3`}>
         <View style={tw`flex flex-col justify-between flex-grow`}>
           <View style={tw`flex flex-row justify-between`}>
             <ThemedText variant='title16' textcolor='#FFFFFF' fontFamily='RalewayBold'>
@@ -181,11 +182,11 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
                         {pathname === "/shareme" ? "UnShare" : "Share"}
                       </ThemedText>
                     </TouchableOpacity>
-                    <TouchableOpacity style={tw`px-2 h-6 flex justify-center`}>
+                    {/* <TouchableOpacity style={tw`px-2 h-6 flex justify-center`}>
                       <ThemedText variant='title12' textcolor='#F6FBFD'>
                         Download
                       </ThemedText>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <TouchableOpacity onPress={onRemove} style={tw`px-2 h-6 flex justify-center`}>
                       <ThemedText variant='title12' textcolor='#F6FBFD'>
                         Delete
@@ -208,11 +209,41 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
               {data.desc}
             </ThemedText>
           </View>
+          {
+            pathname == "/shareme" &&
+            <View style={tw`flex-1 mt-1`}>
+              <ThemedText
+                variant='title12'
+                fontFamily='RaleWaySemiBold'
+                textcolor='#BAC1C4'
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >
+                SharedTo : {data.sharedTo}
+              </ThemedText>
+            </View>
+
+          }
+          {
+            pathname == "/shareother" &&
+            <View style={tw`flex-1 mt-1`}>
+              <ThemedText
+                variant='title12'
+                fontFamily='RaleWaySemiBold'
+                textcolor='#BAC1C4'
+                numberOfLines={1}
+                ellipsizeMode='tail'
+              >
+                SharedFrom : {data.userId}
+              </ThemedText>
+            </View>
+
+          }
 
           <View style={tw`flex flex-row items-center justify-between mt-1`}>
             <View style={tw`flex flex-row items-center gap-1`}>
               <ThemedText variant='title12' fontFamily='RaleWaySemiBold' textcolor='#BAC1C4'>
-                Upload Date:
+                Upload Date :
               </ThemedText>
               <ThemedText variant='title14' fontFamily='RaleWaySemiBold' textcolor='#BAC1C4'>
                 {timeAgo}

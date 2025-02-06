@@ -32,6 +32,7 @@ interface ChecklistItem {
     completed: boolean;
     id: any;
     sharedTo: any;
+    userId:string;
 }
 
 type ConfirmationAction = 'remove' | 'complete' | null;
@@ -82,7 +83,6 @@ export default function Index() {
         const data = { userId }
         try {
             const response = await axiosInstance.post("/check-list/getAllByUser", data);
-            console.log(response.data.data.sharedByMe)
             setDataList(response.data.data.sharedByMe);
         } catch (error) {
             console.error("Error fetching checklist:", error);
@@ -150,8 +150,6 @@ export default function Index() {
             }
             try {
                 const response = await axiosInstance.post("/check-list/delete", data);
-                console.log(response.data);
-
                 Toast.show({
                     type: "success",
                     text1: "Checklist Deleted",
@@ -181,8 +179,6 @@ export default function Index() {
             }
             try {
                 const response = await axiosInstance.post("/check-list/update", data);
-                console.log(response.data);
-
                 Toast.show({
                     type: "success",
                     text1: "Checklist Updated",
@@ -215,8 +211,6 @@ export default function Index() {
         } else {
             try {
                 const response = await axiosInstance.post("/check-list/update", data);
-                console.log(response.data);
-
                 Toast.show({
                     type: "success",
                     text1: "Checklist Updated",
@@ -256,10 +250,10 @@ export default function Index() {
                 />
                 <MainNavigationBar />
                 <View
-                    style={tw`flex flex-row w-full px-[31px] gap-[15px] pt-[10px] pb-[12px]`}
+                    style={tw`flex flex-row w-full px-[11px] pt-[10px] pb-[12px] justify-between`}
                 >
                     <TouchableOpacity
-                        onPress={() => router.push("/(checklist)")}
+                        onPress={() => router.push("/(home)/(checklist)")}
                         style={tw`p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>

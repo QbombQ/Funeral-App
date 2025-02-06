@@ -17,7 +17,7 @@ import axios from 'axios';
 import * as SecureStore from "expo-secure-store";
 import axiosInstance from "../../context/api";
 import { useAuth } from "@/context/AuthContext";
-
+import { connectSocket } from '@/context/socket';
 
 export default function Index() {
 
@@ -80,6 +80,7 @@ export default function Index() {
         const userId = response.data.email;
         // await SecureStore.setItemAsync("userToken", response.data.token);
         await login(token, userId);
+        connectSocket(email);
         router.replace("/(home)/home");
       } else if (response.data.message === "No exists user.") {
         Toast.show({
@@ -118,7 +119,7 @@ export default function Index() {
               Sign In
             </ThemedText>
           </View>
-          <View style={tw`mt-[100px] py-[15px] px-[8px] gap-[9px] flex flex-col justify-center items-center relative`}>
+          <View style={tw`mt-[10%] w-full py-[15px] px-9 gap-[9px] flex flex-col justify-center items-center relative`}>
             <View style={tw`absolute inset-0 rounded-xl bg-[#FAFAFA] opacity-3`}></View>
             <FormInput
               placeholder="Email"

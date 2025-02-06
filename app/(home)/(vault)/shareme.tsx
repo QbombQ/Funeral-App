@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ScrollView,
     View,
@@ -17,59 +17,31 @@ import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import VaultUploadModal from '@/components/modal/VaultUploadModal';
 import NeedMembershipModal from '@/components/modal/NeedMembershipModal';
 import { router } from 'expo-router';
-const dataList = [
-    {
-        id: 1,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 2,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 3,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    // {
-    //     id: 4,
-    //     title: 'Last will and testament',
-    //     uploadDate: "03-01-2025"
-    // },
-    // {
-    //     id: 5,
-    //     title: 'Last will and testament',
-    //     uploadDate: "03-01-2025"
-    // }, {
-    //     id: 6,
-    //     title: 'Last will and testament',
-    //     uploadDate: "03-01-2025"
-    // },
-    // {
-    //     id: 7,
-    //     title: 'Last will and testament',
-    //     uploadDate: "03-01-2025"
-    // }, {
-    //     id: 8,
-    //     title: 'Last will and testament',
-    //     uploadDate: "03-01-2025"
-    // },
-    // {
-    //     id: 9,
-    //     title: 'Last will and testament',
-    //     uploadDate: "03-01-2025"
-    // },
+import { useAuth } from '@/context/AuthContext';
+import axiosInstance from '@/context/api';
+import Toast from 'react-native-toast-message';
+interface VaultItem {
+    id: string,
+    title: string,
+    desc: string,
+    filePath: string,
+    fileType: string,
+    sharedTo: any,
+    userId:string
+    created: number
 
-];
+}
 export default function Index() {
+    const { userId } = useAuth()
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
     const [showNeedMembershipModal, setShowNeedMembershipModal] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [openOptionId, setOpenOptionId] = useState<string | number | null>(null);
 
+    const [dataList, setDataList] = useState<VaultItem[]>([]);
     const openUploadModal = () => setUploadModalVisible(true);
     const closeUploadModal = () => setUploadModalVisible(false);
     const closeStatusModal = () => {
@@ -98,11 +70,35 @@ export default function Index() {
 
     const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false)
     const [showAddVaultOption, setShowAddVaultOption] = useState(false)
-    const handleDelete = () => {
+    const handleDelete = (index: number) => {
+        setSelectedIndex(index);
         setShowDeleteConfirmModal(!showDeleteConfirmModal)
     }
-    const confirmDelete = () => {
-        setShowDeleteConfirmModal(!showDeleteConfirmModal)
+    const confirmDelete = async () => {
+        if (selectedIndex !== null) {
+            const item = dataList[selectedIndex];
+            const data = {
+                id: item.id
+            }
+            try {
+                const response = await axiosInstance.post("/vault/delete", data);
+
+                Toast.show({
+                    type: "success",
+                    text1: "Checklist Deleted",
+                    text2: "Checklist deleted successfully",
+                });
+                fetchVault();
+                setShowDeleteConfirmModal(!showDeleteConfirmModal)
+            } catch (error) {
+                console.error("Error updating checklist", error);
+                Toast.show({
+                    type: "error",
+                    text1: "Error",
+                    text2: "Failed to update checklist.",
+                });
+            }
+        }
     }
     const cancelDelete = () => {
         setShowDeleteConfirmModal(!showDeleteConfirmModal)
@@ -119,62 +115,77 @@ export default function Index() {
     const toCreatePage = () => {
         router.push('/(home)/(vault)/createvault')
     }
+    const fetchVault = async () => {
+        const data = {
+            userId: userId
+        }
+        try {
+            const response = await axiosInstance.post("/vault/getAllByUser", data)
+            setDataList(response.data.data.sharedByMe)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    useEffect(() => {
+        fetchVault()
+    }, [])
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1 `}>
                 <NavigationHeader title="Vault" />
                 <MainNavigationBar />
+
+                <View
+                    style={tw`flex flex-row w-full gap-[15px] pt-[10px] pb-[12px] justify-around px-[25px]`}
+                >
+                    <TouchableOpacity
+                        onPress={() => router.push("/(vault)")}
+                        style={tw`p-[5px] justify-center items-center`}
+                    >
+                        <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
+                            My Vault
+                        </ThemedText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => router.push('/(vault)/shareme')}
+                        style={tw`border-b-2 border-[#004CFF] p-[5px] justify-center items-center`}
+                    >
+                        <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
+                            Shared by me
+                        </ThemedText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => router.push('/(vault)/shareother')}
+                        style={tw` p-[5px] justify-center items-center`}
+                    >
+                        <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
+                            Shared by others
+                        </ThemedText>
+                    </TouchableOpacity>
+
+
+
+                </View>
+                <View
+                    style={tw`flex flex-col gap-[8px] pb-[24px] px-[25px]`}
+                >
+                    <ThemedText variant='title18' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
+                        Documents Vault
+                    </ThemedText>
+                    <ThemedText variant='title14' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>
+                        Securely store and access your important documents anytime
+                    </ThemedText>
+                </View>
+
                 <ScrollView
                     contentContainerStyle={tw`flex-grow`}
-                    style={tw`w-full h-full px-[25px]`}
+                    style={tw`w-full h-full `}
                 >
                     <View
-                        style={tw`flex flex-row w-full gap-[15px] pt-[10px] pb-[12px] justify-around`}
+                        style={tw`w-full h-full flex items-center gap-[8px] pb-[120px] px-[25px]`}
                     >
-                        <TouchableOpacity
-                            onPress={() => router.push("/(vault)")}
-                            style={tw`p-[5px] justify-center items-center`}
-                        >
-                            <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
-                                My Vault
-                            </ThemedText>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => router.push('/(vault)/shareme')}
-                            style={tw`border-b-2 border-[#004CFF] p-[5px] justify-center items-center`}
-                        >
-                            <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
-                                Shared by me
-                            </ThemedText>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => router.push('/(vault)/shareother')}
-                            style={tw` p-[5px] justify-center items-center`}
-                        >
-                            <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
-                                Shared by others
-                            </ThemedText>
-                        </TouchableOpacity>
-
-
-
-                    </View>
-                    <View
-                        style={tw`flex flex-col gap-[8px] pb-[24px]`}
-                    >
-                        <ThemedText variant='title18' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
-                            Documents Vault
-                        </ThemedText>
-                        <ThemedText variant='title14' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>
-                            Securely store and access your important documents anytime
-                        </ThemedText>
-                    </View>
-
-                    <View
-                        style={tw`w-full h-full flex items-center gap-[8px] pb-[120px]`}
-                    >
-                        {dataList.map(item => (
-                            <VaultCard key={item.id} item={item} onDelete={handleDelete} />
+                        {dataList.map((data, index) => (
+                            <VaultCard key={index} data={data} onDelete={() => handleDelete(dataList.indexOf(data))} onRefresh={fetchVault} openOptionId={openOptionId} setOpenOptionId={setOpenOptionId} />
                         ))}
                     </View>
                 </ScrollView>

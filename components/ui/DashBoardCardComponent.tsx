@@ -52,9 +52,13 @@ const DashBoardCardComponent: React.FC<DashBoardCardComponentProps> = ({
                             </ThemedText>
                         </View>
                     </TouchableOpacity>
+                    {
+                        extraText&&
                     <ThemedText variant='title10' fontFamily='RalewaySemiBold' textcolor='#BAC1C4' style={{ textAlign: "center" }}>
                         {extraText}
                     </ThemedText>
+
+                    }
                 </View>
             </View>
         </View>
