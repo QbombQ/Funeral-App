@@ -43,6 +43,11 @@ export default function Home() {
         handleTabSelect("location")
         router.push("/(home)/(location)")
     };
+    const upgradeMembership = () =>{
+        handleTabSelect("subscription")
+        router.push('/(home)/(budget)/subscription')
+        
+    }
     const fetchUserData = async () => {
         const data = {
             userId: userId
@@ -107,13 +112,13 @@ export default function Home() {
                                 buttonAction={trackBudget}
                                 extraText={userAccessInfor == true ? "Budget Tracker with detailed breakdown" : undefined}
                             />
-                            {/* <DashBoardCardComponent
-                                title="Funeral Home Locator"
-                                description="Find funeral homes near you"
-                                buttonText="Explore Map"
-                                buttonAction={exploreMap}
-                                extraText="Funeral Home Locator for ongoing access to map and providers"
-                            /> */}
+                            <DashBoardCardComponent
+                                title="Subscription"
+                                description="Upgrade membership for full access"
+                                buttonText="Subscribe Now"
+                                buttonAction={upgradeMembership}
+                                extraText={userAccessInfor == true ? "You already have full access" : undefined}
+                            />
 
 
                         </View>

@@ -15,6 +15,7 @@ import LocationIcon from '../icons/LocationIcon';
 import { router } from 'expo-router';
 import { useNavigationState, useRoute } from '@react-navigation/native';
 import { useNavigationContext } from '@/context/NavigationContext';
+import SubscriptionIcon from '../icons/SubscriptionIcon';
 
 const MainNavigationBar: React.FC = () => {
   const { selectedTab, setSelectedTab } = useNavigationContext();
@@ -36,13 +37,19 @@ const MainNavigationBar: React.FC = () => {
     handleTabSelect('vault');
     router.push('/(home)/(vault)');
   }
-  const toBudget = () =>{
+  const toBudget = () => {
     handleTabSelect("budget");
     router.push('/(home)/(budget)')
   }
-  const toLocation = () =>{
+  const toLocation = () => {
     handleTabSelect("location")
     router.push('/(home)/(location)')
+  }
+  const toSubscription = () => {
+    handleTabSelect("subscription")
+    
+    router.push('/(home)/(budget)/subscription')
+
   }
   return (
     <View style={[tw`w-full absolute bottom-[30px] px-[8px] justify-center`, { position: "absolute", zIndex: 2 }]}>
@@ -109,6 +116,17 @@ const MainNavigationBar: React.FC = () => {
               Location
             </ThemedText>
           </TouchableOpacity> */}
+          <TouchableOpacity
+            style={tw`flex flex-col justify-center items-center px-[5px]`}
+            onPress={() => { handleTabSelect('subscription'), toSubscription() }}
+          >
+            <View style={tw`w-[40px] h-[40px] flex justify-center items-center rounded-[50px] ${selectedTab === 'subscription' ? 'bg-[#004CFF] bg-opacity-20 border border-[#004CFF]' : ''}`}>
+              <SubscriptionIcon color={selectedTab === 'subscription' ? '#004CFF' : undefined} />
+            </View>
+            <ThemedText variant='title14' textcolor={selectedTab === 'subscription' ? '#004CFF' : '#BAC1C4'} fontFamily='NunitoRegular'>
+              Subscribe
+            </ThemedText>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

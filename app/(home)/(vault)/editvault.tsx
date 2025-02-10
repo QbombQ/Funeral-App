@@ -37,6 +37,8 @@ import { useAuth } from '@/context/AuthContext';
 import Toast from 'react-native-toast-message';
 import { Video } from 'expo-av';
 import WebView from 'react-native-webview';
+import config from "@/config.json"
+
 interface SelectedFile {
     uri: string;
     name: string;
@@ -104,9 +106,9 @@ export default function CreateVault() {
             setTitle(vaultData.title);
             setDescription(vaultData.desc);
             let fileUri = vaultData.filePath;
-            if (!fileUri.startsWith("file://")) {
-                fileUri = `file://${fileUri.replace(/\\/g, '/')}`;
-            }
+            // if (!fileUri.startsWith("file://")) {
+            //     fileUri = `file://${fileUri.replace(/\\/g, '/')}`;
+            // }
             setSelectedFile({ uri: fileUri, name: vaultData.filePath.split('/').pop() || '', type: vaultData.fileType });
 
         } catch (error) {
@@ -242,7 +244,7 @@ export default function CreateVault() {
                     style={tw`w-full h-full`}
                 >
                     <View
-                        style={tw`mt-[20px] w-full h-full px-[23px] gap-[18px]`}
+                        style={tw`mt-[20px] w-full h-full px-[23px] gap-[18px] pb-[120px]`}
                     >
                         <View
                             style={tw`gap-[12px] justify-center w-full`}
@@ -291,7 +293,7 @@ export default function CreateVault() {
                                 <>
                                     <View style={tw`w-full justify-center items-center`}>
                                         {selectedFile.type.includes('image') && (
-                                            <Image source={{ uri: selectedFile.uri }} style={tw`w-[90%] h-[250px] rounded-lg`} />
+                                            <Image source={{ uri: `${config.server_base_url}:${config.server_port}${selectedFile.uri}`}} style={tw`w-[90%] h-[250px] rounded-lg`} />
                                         )}
                                         {selectedFile.type.includes('video') && (
                                             <Video source={{ uri: selectedFile.uri }} style={tw`w-[90%] h-[250px] rounded-lg`} useNativeControls />
@@ -332,7 +334,7 @@ export default function CreateVault() {
                                     </View>
                                     {isVisiblePreviewModal &&
                                         <FilePreview
-                                            fileUri={selectedFile.uri}
+                                            fileUri={`${config.server_base_url}:${config.server_port}${selectedFile.uri}`}
                                             fileType={selectedFile.type}
                                             fileName={selectedFile.name}
                                             onClose={showPreviewModal}

@@ -18,6 +18,7 @@ import axios from "axios";
 // import * as Notifications from 'expo-notifications';
 import Toast from 'react-native-toast-message';
 import axiosInstance from '@/context/api';
+import Expo from "expo";
 
 
 export default function Index() {

@@ -110,7 +110,7 @@ export default function Index() {
         setShowNeedMembershipModal(!showNeedMembershipModal)
     }
     const toSubscription = () => {
-        router.push('/(budget)/subscription')
+        router.push('/(home)/(budget)/subscription')
     }
     const toCreatePage = () => {
         router.push('/(home)/(vault)/createvault')
@@ -139,7 +139,7 @@ export default function Index() {
                     style={tw`flex flex-row w-full gap-[15px] pt-[10px] pb-[12px] justify-around px-[25px]`}
                 >
                     <TouchableOpacity
-                        onPress={() => router.push("/(vault)")}
+                        onPress={() => router.push("/(home)/(vault)")}
                         style={tw`p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
@@ -147,7 +147,7 @@ export default function Index() {
                         </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => router.push('/(vault)/shareme')}
+                        onPress={() => router.push('/(home)/(vault)/shareme')}
                         style={tw`border-b-2 border-[#004CFF] p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>
@@ -155,7 +155,7 @@ export default function Index() {
                         </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => router.push('/(vault)/shareother')}
+                        onPress={() => router.push('/(home)/(vault)/shareother')}
                         style={tw` p-[5px] justify-center items-center`}
                     >
                         <ThemedText variant='title14' textcolor='#FFFFFF' fontFamily='RaleWaySemiBold'>

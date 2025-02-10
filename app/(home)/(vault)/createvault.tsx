@@ -184,7 +184,7 @@ export default function CreateVault() {
         if (Platform.OS === "android" && !fileUri.startsWith("file://")) {
             fileUri = "file://" + fileUri;
         }
-        formData.append("file", {
+        formData.append("file", {   
             uri: selectedFile.uri,
             name: selectedFile.name,
             type: selectedFile.type

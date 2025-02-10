@@ -42,9 +42,14 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
 
   useEffect(() => {
     const updateTime = () => {
-      const newTimeAgo = moment(data.created).fromNow();
-      setTimeAgo(newTimeAgo);
+      const createdMoment = moment(data.created);
+      if (moment().diff(createdMoment, 'days') >= 7) {
+        setTimeAgo(createdMoment.format("MMM DD, YYYY"));
+      } else {
+        setTimeAgo(createdMoment.fromNow());
+      }
     };
+
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);

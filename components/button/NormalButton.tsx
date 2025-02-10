@@ -7,6 +7,7 @@ type NormalButtonProps = {
   width?: number;
   height?: number;
   text: string;
+  status?:boolean;
   onPress?: () => void;
 };
 
@@ -14,17 +15,21 @@ export const NormalButton: React.FC<NormalButtonProps> = ({
   width,
   height,
   text,
+  status= false,
   onPress,
 }) => {
   return (
     <View style={tw`w-full flex justify-center items-center`}>
       <TouchableOpacity
-        onPress={onPress}
+        onPress={!status ? onPress : undefined}
+        activeOpacity={status ? 1 : 0.7}
+        disabled={status}
         style={[
           tw`w-[283px] h-[50px] flex flex-row justify-center items-center border border-[#004CFF] rounded-[56px]`,
           {
             width: width ?? 283,
             height: height ?? 50,
+            opacity: status ? 0.5 : 1,
           },
         ]}
       >

@@ -70,7 +70,7 @@ export default function ViewVault() {
                                 <View style={tw`w-full justify-center items-center`}>
                                     {getFileComponent(vaultData.filePath, vaultData.fileType)}
                                    
-                                    {/* <Image source={require('@/../../../funeral-app-backend/src/uploads/1738686809035-516917461.png')} style={tw`w-[100px] h-[100px]`} /> */}
+                                    <Image source={{uri:`https://i.sstatic.net/ZG7rI.png`}} style={tw`w-[100px] h-[100px]`} />
 
                                     <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Attached File</ThemedText>
                                 </View>

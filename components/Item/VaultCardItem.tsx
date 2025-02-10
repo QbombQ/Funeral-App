@@ -18,7 +18,7 @@ interface VaultCardProps {
     fileType: string,
     sharedTo: any,
     created: number,
-    userId:string
+    userId: string
   };
   onDelete: () => void;
   onRefresh?: () => void;
@@ -42,9 +42,14 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
 
   useEffect(() => {
     const updateTime = () => {
-      const newTimeAgo = moment(data.created).fromNow();
-      setTimeAgo(newTimeAgo);
+      const createdMoment = moment(data.created);
+      if (moment().diff(createdMoment, 'days') >= 7) {
+        setTimeAgo(createdMoment.format("MMM DD, YYYY"));
+      } else {
+        setTimeAgo(createdMoment.fromNow());
+      }
     };
+
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
@@ -118,7 +123,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
       activeOpacity={1}
     // onStartShouldSetResponderCapture={() => showOptions} // Prevent closing when options are open
     > */}
-      <View style={tw`w-full ${pathname==="/shareme"?`h-[85px]`:pathname==="/shareother"?`h-[85px]`:`h-[71.62px]`} items-center border border-[#004CFF] rounded-lg`}>
+      <View style={tw`w-full ${pathname === "/shareme" ? `h-[85px]` : pathname === "/shareother" ? `h-[85px]` : `h-[71.62px]`} items-center border border-[#004CFF] rounded-lg`}>
         <Image source={require('@/assets/images/vaultCardBack.png')} style={tw`absolute w-full h-full rounded-lg`} />
         <View style={tw`w-full h-full justify-between items-center flex flex-row px-[8px]`}>
           <View style={tw`flex flex-row gap-[10px] items-center`}>
@@ -130,7 +135,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
                 <ThemedText variant="title12" textcolor="#FFFFFF" fontFamily="RaleWayBold" numberOfLines={1} ellipsizeMode='tail'>SharedTo : {data.sharedTo}</ThemedText>
               }
               {
-                pathname=="/shareother"&&
+                pathname == "/shareother" &&
                 <ThemedText variant="title12" textcolor="#FFFFFF" fontFamily="RaleWayBold" numberOfLines={1} ellipsizeMode='tail'>SharedFrom : {data.userId}</ThemedText>
               }
               <ThemedText variant="title14" textcolor="#BAC1C4" fontFamily="RaleWaySemiBold">{`Upload Date: ${timeAgo}`}</ThemedText>

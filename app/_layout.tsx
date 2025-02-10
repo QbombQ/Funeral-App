@@ -9,7 +9,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import { NavigationProvider } from "@/context/NavigationContext";
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { AuthProvider } from "@/context/AuthContext";
-
+import config from "@/config.json"
 import { connectSocket, disconnectSocket } from "@/context/socket";
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();

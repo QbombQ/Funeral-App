@@ -243,7 +243,7 @@ export default function Index() {
                 />
                 <MainNavigationBar />
                 <View
-                    style={tw`flex flex-row w-full px-[11px] pt-[10px] pb-[12px] justify-between`}
+                    style={tw`flex flex-row w-full px-[31px] pt-[10px] pb-[12px] justify-between`}
                 >
                     <TouchableOpacity
                         onPress={() => router.push("/(home)/(checklist)")}

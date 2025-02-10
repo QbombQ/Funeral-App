@@ -1,18 +1,17 @@
 {
   "expo": {
+    "id": "ad25d90a-227d-4428-b8fb-06ca420cace5",
+    "owner": "nandes",
     "name": "FuneralApp",
-    "slug": "FuneralApp",
+    "slug": "funeralapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "com.anonymous.FuneralApp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "UIBackgroundModes": [
-        "remote-notification"
-      ]
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -21,9 +20,11 @@
       },
       "permissions": [
         "INTERNET",
+        "NOTIFICATIONS",
+        "INTERNET",
         "NOTIFICATIONS"
       ],
-      "usesCleartextTraffic": true
+      "package": "com.anonymous.FuneralApp"
     },
     "web": {
       "bundler": "metro",
@@ -41,7 +42,13 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps._some_id_here_"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
