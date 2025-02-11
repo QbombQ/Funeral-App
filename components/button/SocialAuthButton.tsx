@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import tw from 'twrnc';
 import { ThemedText } from '@/components/ThemedText';
@@ -7,6 +7,7 @@ import { makeRedirectUri } from 'expo-auth-session';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import axiosInstance from '@/context/api';
 import config from "@/config.json";
+import { GoogleSignin } from './GoogleSignin';
 
 type SocialAuthButtonProps = {
   provider: 'google' | 'apple';
@@ -97,18 +98,81 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
     }
   };
 
-  const handleSignIn = () => {
-    if (provider === 'google' && request) {
-      promptAsync();
-    } else if (provider === 'apple') {
-      handleAppleSignIn();
+  // const handleSignIn = async () => {
+  //   // if (provider === 'google' && request) {
+  //   //   promptAsync();
+  //   // } else if (provider === 'apple') {
+  //   //   handleAppleSignIn();
+  //   // }
+  //   console.log("Sdefsdf");
+
+  //   await GoogleSignin.hasPlayServices();
+  //   const { type, data } = await GoogleSignin.signIn();
+  //   console.log('response of google signing :::', type, data);
+  // };
+
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const [isSigninInProgress, setIsSigninInProgress] = useState<any>(false);
+  GoogleSignin.configure({
+    webClientId: '361140166748-dkscj29k38ivecu48nof73hcagr878id.apps.googleusercontent.com', // Get this from Google Developer Console
+    offlineAccess: true, // If you need to access Google API on backend
+    forceCodeForRefreshToken: true,
+  });
+  useEffect(() => {
+    // Check if user is already signed in
+    checkCurrentUser();
+  }, []);
+
+  const checkCurrentUser = async () => {
+    try {
+      const isSignedIn = await GoogleSignin.signIn();
+      if (isSignedIn) {
+        const currentUser = await GoogleSignin.getCurrentUser();
+        setUserInfo(currentUser);
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
+  const signIn = async () => {
+    if (isSigninInProgress) return; // Prevent multiple sign-in calls
+
+    try {
+      setIsSigninInProgress(true);
+      await GoogleSignin.hasPlayServices();
+
+      const userInfo = await GoogleSignin.signIn();
+      // Hypothetical adjustment based on potential restructuring:
+      // const token = userInfo?.accessToken ?? userInfo?.idToken; // Try different properties if available
+
+      console.log('Google Sign-In Response:', userInfo);
+
+      // Call backend with token
+      const backendResponse = await axiosInstance.post('/google-login',/*{ token: userInfo.idToken }*/);
+      if (backendResponse.data.token && onSuccess) {
+        onSuccess(backendResponse.data.token);
+      } else {
+        console.error('Google authentication failed:', backendResponse.data.message);
+      }
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('User cancelled the login flow.');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Operation (e.g., sign in) already in progress.');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('Play services not available or outdated.');
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+    } finally {
+      setIsSigninInProgress(false); // Reset after completion
+    }
+  };
   return (
     <View style={tw`w-full flex items-center`}>
       <TouchableOpacity
-        onPress={handleSignIn}
+        onPress={signIn}
         style={tw`w-[335px] h-[49px] border border-[#004CFF] rounded-[56px] flex flex-row gap-[12px] justify-center items-center`}
       >
         <Image
