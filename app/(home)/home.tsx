@@ -57,7 +57,6 @@ export default function Home() {
             const response = await axiosInstance.post('/getUserData', data)
             setUserAccessInfor(response.data.data.isFullAccess)
         } catch (error) {
-            console.log('fetch userdata:', error)
         }
 
     }

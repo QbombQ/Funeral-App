@@ -84,7 +84,6 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete, onRefresh, openOp
       });
       onRefresh && onRefresh();
     } catch (error) {
-      console.error("Error sharing checklist", error);
       Toast.show({
         type: "error",
         text1: "Error",
@@ -105,7 +104,6 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete, onRefresh, openOp
       });
       onRefresh && onRefresh();
     } catch (error) {
-      console.error("Error unsharing checklist", error);
       Toast.show({
         type: "error",
         text1: "Error",

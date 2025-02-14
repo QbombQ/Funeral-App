@@ -16,52 +16,7 @@ import VaultCard from '@/components/Item/VaultCardItem';
 import ConfirmationModal from '@/components/modal/ConfirmationModal';
 import VaultUploadModal from '@/components/modal/VaultUploadModal';
 import NotificationItem from '@/components/Item/NotificationItem';
-const dataList = [
-    {
-        id: 1,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 2,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 3,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 4,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 5,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    }, {
-        id: 6,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 7,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    }, {
-        id: 8,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
-    {
-        id: 9,
-        title: 'Last will and testament',
-        uploadDate: "03-01-2025"
-    },
 
-];
 export default function Index() {
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
@@ -133,9 +88,9 @@ export default function Index() {
                     <View
                         style={tw`w-full h-full flex items-center gap-[8px] pb-[120px] pt-[24px]`}
                     >
-                        {dataList.map(item => (
+                        {/* {dataList.map(item => (
                             <NotificationItem key={item.id} item={item} onDelete={handleDelete} openOptionId={openOptionId} setOpenOptionId={setOpenOptionId    } />
-                        ))}
+                        ))} */}
                     </View>
                 </ScrollView>
                 {/* <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`, { zIndex: 30 }]}>

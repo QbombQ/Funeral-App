@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+    ActivityIndicator,
     View,
 } from 'react-native';
 import { router, useGlobalSearchParams } from "expo-router";
@@ -13,19 +14,22 @@ import UploadingModal from '@/components/modal/UpLoadingModal';
 import SuccessModal from '@/components/modal/SuccessModal';
 import ManIcon from '@/components/icons/ManIcon';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
+import LoadingComponent from '@/components/modal/LoadingComponent';
 export default function Index() {
     const params = useGlobalSearchParams();
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
     const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const { id, title, desc, created, completed } = params as {
+    const { id, title, desc, created, completed, sharedTo } = params as {
         id: string;
         title: string;
         desc: string;
         created: string;
         completed: string;
+        sharedTo: any;
     };
     const openUploadModal = () => setUploadModalVisible(true);
     const closeUploadModal = () => setUploadModalVisible(false);
@@ -54,6 +58,9 @@ export default function Index() {
     const handleCreateChecklist = () => {
         router.push('/(home)/(checklist)/createchecklist')
     };
+    // if (isLoading) {
+    //     return <ActivityIndicator size="large" color="#004CFF" />;
+    // }
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1`}>
@@ -61,6 +68,18 @@ export default function Index() {
                     title='View Checklist'
                 />
                 <MainNavigationBar />
+                {
+                    isLoading &&
+                    <>
+                        <View
+                            style={tw`w-full flex-1 justify-center items-center absolute h-full bg-black bg-opacity-30`}
+                        >
+
+                            <ActivityIndicator size="large" color="#004CFF" />
+                        </View>
+
+                    </>
+                }
                 <View
                     style={tw`pt-[46px] flex flex px-[30px] w-full gap-[34px]`}
                 >
@@ -79,6 +98,16 @@ export default function Index() {
                             <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Description:</ThemedText>
                             <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{desc}</ThemedText>
                         </View>
+                        {
+                            sharedTo &&
+                            <View
+                                style={tw`flex flex-row gap-[6.5px]`}
+                            >
+                                <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>SharedTo:</ThemedText>
+                                <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{sharedTo}</ThemedText>
+                            </View>
+                        }
+
                         {/* <View
                             style={tw`flex flex-row gap-[6.5px]`}
                         >
@@ -117,7 +146,6 @@ export default function Index() {
                     </View> */}
                 </View>
             </View>
-
             <CheckListUploadModal
                 visible={isUploadModalVisible}
                 onClose={closeUploadModal}

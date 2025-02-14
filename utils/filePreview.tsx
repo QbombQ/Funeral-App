@@ -1,23 +1,68 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Video } from 'expo-av';
 import { WebView } from 'react-native-webview';
 import { Audio } from 'expo-av';
 import { Image, TouchableOpacity, Text, View } from 'react-native';
 import tw from 'twrnc';
+import PDFReader from 'react-native-pdf';
 
 export const getFileComponent = (filePath: string, fileType: string) => {
-    const formattedFilePath = filePath.startsWith("file://") ? filePath : `file://${filePath.replace(/\\/g, '/')}`;
+    const formattedFilePath = filePath;
+
+    // useEffect(() => {
+    //     console.log('getrFileComponent is called:::');
+
+    // }, [])
 
     if (fileType.includes('image')) {
-        return <Image source={{ uri: formattedFilePath }} style={tw`w-[90%] h-[50%] rounded-lg`} />;
+        return <Image source={{ uri: formattedFilePath }} style={tw`w-[100%] h-full rounded-lg`} />;
     }
 
     if (fileType.includes('video')) {
-        return <Video source={{ uri: formattedFilePath }} style={tw`w-[90%] h-[50%] rounded-lg`} useNativeControls />;
+        return <Video source={{ uri: formattedFilePath }} style={tw`w-[100%] h-full rounded-lg`} useNativeControls />;
     }
 
     if (fileType.includes('pdf')) {
-        return <WebView source={{ uri: formattedFilePath }} style={{ flex: 1, width: '100%', height: 400 }} />;
+        // return <WebView
+        //     source={{ uri: "http://172.20.100.19:8000/uploads/1739411056945-206393567.pdf" }}
+        //     originWhitelist={['*']}
+        //     allowFileAccess={true}
+        //     allowUniversalAccessFromFileURLs={true}
+        //     style={{width: '100%', height: '100%'}}
+        // />;
+        // useEffect(() => {
+        // console.log('PDFReader is triggered:::');
+
+        // }, [])
+        return <View style={{ flex: 1, width: '100%', height: "100%" }}>
+            {/* <PDFReader
+                trustAllCerts={false}
+                source={{ uri: `http://172.20.100.19:8000/uploads/1739411056945-206393567.pdf`, cache: true }}
+                onLoadComplete={(a, b) => { console.log('onLoadComplete:::', a, b) }}
+                onError={(err) => { console.error('ErrorPDFReader:::', err) }}
+            /> */}
+            <PDFReader
+                trustAllCerts={false}
+                source={{
+                    uri: formattedFilePath,
+                    cache: true,
+                }}
+                onLoadComplete={(numberOfPages, filePath) => {
+                    console.log(`Number of pages: ${numberOfPages}, filePath: ${filePath}`);
+                }}
+                onPageChanged={(page, numberOfPages) => {
+                    console.log(`Current page: ${page}`);
+                }}
+                onError={error => {
+                    console.log('Error PDFReader:::', error);
+                }}
+                onPressLink={uri => {
+                    console.log(`Link pressed: ${uri}`);
+                }}
+                style={tw`w-full h-full rounded-lg`}
+            />
+        </View>;
+
     }
 
     if (fileType.includes('audio')) {

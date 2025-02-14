@@ -24,9 +24,10 @@ interface VaultCardProps {
   onRefresh?: () => void;
   openOptionId: string | number | null;
   setOpenOptionId: (id: string | number | null) => void;
+  setLoading?: (loading: boolean) => void;
 }
 
-const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOptionId, setOpenOptionId }) => {
+const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOptionId, setOpenOptionId, setLoading }) => {
   const pathname = usePathname();
   const [showOptions, setShowOptions] = useState<boolean>(false);
   const [timeAgo, setTimeAgo] = useState("");
@@ -75,6 +76,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
     })
   }
   const confirmShareVault = async (shareData: { email: string }) => {
+    setLoading?.(true);
     try {
       await axiosInstance.post("/vault/share", {
         id: data.id,
@@ -85,9 +87,10 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
         text1: "Shared",
         text2: "Vault shared successfully.",
       });
+      setLoading?.(false);
       onRefresh && onRefresh();
     } catch (error) {
-      console.error("Error sharing checklist", error);
+      setLoading?.(false);
       Toast.show({
         type: "error",
         text1: "Error",
@@ -96,6 +99,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
     }
   }
   const confirmUnShareVault = async (unshareData: { email: string }) => {
+    setLoading?.(true);
     try {
       await axiosInstance.post("/vault/unshare", {
         id: data.id,
@@ -106,9 +110,10 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
         text1: "Unshared",
         text2: "Vault unshared successfully.",
       });
+      setLoading?.(false);
       onRefresh && onRefresh();
     } catch (error) {
-      console.error("Error unsharing checklist", error);
+      setLoading?.(false);
       Toast.show({
         type: "error",
         text1: "Error",

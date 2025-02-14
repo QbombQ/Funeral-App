@@ -3,7 +3,8 @@ import {
   ScrollView,
   View,
   TouchableOpacity,
-  Platform
+  Platform,
+  ActivityIndicator
 } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import tw from "twrnc";
@@ -28,6 +29,8 @@ export default function Index() {
   const [password, setPassword] = useState('');
   const [check, setCheck] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const togglePasswordVisibility = () => {
     setIsPasswordHidden(!isPasswordHidden);
   };
@@ -87,7 +90,7 @@ export default function Index() {
       });
       return;
     }
-
+    setLoading(true)
     const data = { name, email, password };
 
     try {
@@ -106,6 +109,7 @@ export default function Index() {
           text1: "Signup Failed",
           text2: "This email might already be in use.",
         });
+        setLoading(false)
 
       }
       else {
@@ -114,6 +118,8 @@ export default function Index() {
           text1: 'Signup Failed',
           text2: 'This username might already be in use.',
         });
+        setLoading(false)
+
       }
     } catch (error) {
       Toast.show({
@@ -121,6 +127,8 @@ export default function Index() {
         text1: 'Network Error',
         text2: 'Something went wrong. Please try again later.',
       });
+      setLoading(false)
+
     }
   };
 
@@ -190,8 +198,8 @@ export default function Index() {
                 or sign up with
               </ThemedText>
             </TouchableOpacity>
-            <SocialAuthButton provider='google' action='signUp' />
-            <SocialAuthButton provider='apple' action='signUp' />
+            <SocialAuthButton provider='google' action='signUp' setLoading={setLoading} />
+            <SocialAuthButton provider='apple' action='signUp' setLoading={setLoading} />
 
             <View
               style={tw`w-full flex justify-center items-center`}
@@ -213,6 +221,18 @@ export default function Index() {
             </View>
           </View>
         </View>
+        {
+          loading &&
+          <>
+            <View
+              style={tw`w-full flex-1 justify-center items-center absolute h-full bg-black bg-opacity-30`}
+            >
+
+              <ActivityIndicator size="large" color="#004CFF" />
+            </View>
+
+          </>
+        }
       </ScrollView>
     </AuthBackground>
   );

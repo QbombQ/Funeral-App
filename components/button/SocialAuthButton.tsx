@@ -17,12 +17,14 @@ type SocialAuthButtonProps = {
   provider: 'google' | 'apple';
   action?: 'signIn' | 'signUp';
   onSuccess?: (token: string) => void;
+  setLoading?: (loading: boolean) => void;
 };
 
 export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
   provider,
   action = 'signUp',
   onSuccess,
+  setLoading
 }) => {
   const label = `${action === 'signIn' ? 'Sign In' : 'Sign Up'} with ${provider === 'google' ? 'Google' : 'Apple'
     }`;
@@ -38,35 +40,58 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
   const [userInfo, setUserInfo] = useState<any>(null);
   const [isSigninInProgress, setIsSigninInProgress] = useState<any>(false);
 
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     GoogleSignin.configure({
+  //       webClientId: "361140166748-492betprlmcevc7f77n21up6qjv6f046.apps.googleusercontent.com",
+  //       // androidClientId:"361140166748-jgu1ofin98ddrlv083ss722g4v0njkqo.apps.googleusercontent.com",
+  //       // iosClientId: "361140166748-jgu1ofin98ddrlv083ss722g4v0njkqo.apps.googleusercontent.com",
+  //       offlineAccess: true,
+  //     } as any);
+
+  //     const serviceInfo = await GoogleSignin.hasPlayServices();
+  //     // console.log("service info:::", serviceInfo);
+
+  //     const userInfo = await GoogleSignin.signIn();
+  //     // console.log(`google>>>>>`, JSON.stringify(userInfo, null, 2));
+  //     if (userInfo) {
+  //       signUpWithGoogle(userInfo);
+  //       // console.log("return value is success:::", userInfo)
+  //     }
+  //   }
+  //   catch (error: any) {
+  //     console.warn(error);
+  //     if (Platform.OS !== `ios`) {
+  //       alert(error);
+  //     }
+  //     // setLoadingGoogleToken(false);
+  //   };
+  // };
   const handleGoogleSignIn = async () => {
+    setLoading?.(true)
     try {
       GoogleSignin.configure({
         webClientId: "361140166748-492betprlmcevc7f77n21up6qjv6f046.apps.googleusercontent.com",
-        // androidClientId:"361140166748-jgu1ofin98ddrlv083ss722g4v0njkqo.apps.googleusercontent.com",
-        // iosClientId: "361140166748-jgu1ofin98ddrlv083ss722g4v0njkqo.apps.googleusercontent.com",
         offlineAccess: true,
       } as any);
 
+      await GoogleSignin.signOut();
+
       const serviceInfo = await GoogleSignin.hasPlayServices();
-      // console.log("service info:::", serviceInfo);
 
       const userInfo = await GoogleSignin.signIn();
-      // console.log(`google>>>>>`, JSON.stringify(userInfo, null, 2));
+      setLoading?.(false)
       if (userInfo) {
         signUpWithGoogle(userInfo);
-        // console.log("return value is success:::", userInfo)
+        // setLoading?.(false)
       }
-    }
-    catch (error: any) {
-      console.warn(error);
+    } catch (error: any) {
       if (Platform.OS !== `ios`) {
         alert(error);
       }
-      // setLoadingGoogleToken(false);
-    };
+    }
   };
   const signUpWithGoogle = async (googleUserInfor: any) => {
-    console.log(googleUserInfor.data.user);
     const fomrdata = {
       action: `${action}`,
       username: `${googleUserInfor.data.user.name}`,
@@ -74,7 +99,6 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
     }
     try {
       const response = await axiosInstance.post("/google-login", fomrdata)
-      console.log("SignUp with Google :::", response.data);
       if (response.data.message == "success") {
         Toast.show({
           type: 'success',
@@ -84,9 +108,11 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
         await login(response.data.token, response.data.email);
         connectSocket(response.data.email);
         router.replace("/(home)/home");
+        // setLoading?.(false)
+
       }
     } catch (error) {
-      console.log("request failed with Google SignIn :::", error);
+        setLoading?.(false)
 
     }
 

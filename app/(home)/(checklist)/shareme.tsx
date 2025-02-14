@@ -4,6 +4,7 @@ import {
     View,
     Image,
     TouchableOpacity,
+    ActivityIndicator,
 } from 'react-native';
 import tw from "twrnc";
 
@@ -30,69 +31,72 @@ interface ChecklistItem {
     desc: string;
     created: string;
     completed: boolean;
-    id: any;
+    id: string;
     sharedTo: any;
-    userId:string;
+    userId: string;
 }
 
 type ConfirmationAction = 'remove' | 'complete' | null;
 
 export default function Index() {
     const { userId } = useAuth()
-    const [isUploadModalVisible, setUploadModalVisible] = useState(false);
-    const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState(0);
-    const [isStatusModalVisible, setStatusModalVisible] = useState(false);
+    // const [isUploadModalVisible, setUploadModalVisible] = useState(false);
+    // const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
+    // const [uploadProgress, setUploadProgress] = useState(0);
+    // const [isStatusModalVisible, setStatusModalVisible] = useState(false);
 
     const [dataList, setDataList] = useState<ChecklistItem[]>([]);
 
     const [confirmationAction, setConfirmationAction] = useState<ConfirmationAction>(null);
     const [isConfirmationModalVisible, setConfirmationModalVisible] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-    const [openOptionId, setOpenOptionId] = useState<string | number | null>(null);
 
     const [isCreateModalVisible, setCreateModalVisible] = useState(false);
+    const [openOptionId, setOpenOptionId] = useState<string | number | null>(null);
+    const [loading, setLoading] = useState(false);
 
-    const openUploadModal = () => setUploadModalVisible(true);
-    const closeUploadModal = () => setUploadModalVisible(false);
+    // const openUploadModal = () => setUploadModalVisible(true);
+    // const closeUploadModal = () => setUploadModalVisible(false);
 
-    const handleFileUpload = () => {
-        closeUploadModal();
-        setUploadingModalVisible(true);
-        let progress = 0;
-        const interval = setInterval(() => {
-            if (progress >= 100) {
-                clearInterval(interval);
-                setUploadingModalVisible(false);
-                setStatusModalVisible(true);
-                setUploadProgress(0);
-            } else {
-                progress += 10;
-                setUploadProgress(progress);
-            }
-        }, 500);
-    };
+    // const handleFileUpload = () => {
+    //     closeUploadModal();
+    //     setUploadingModalVisible(true);
+    //     let progress = 0;
+    //     const interval = setInterval(() => {
+    //         if (progress >= 100) {
+    //             clearInterval(interval);
+    //             setUploadingModalVisible(false);
+    //             setStatusModalVisible(true);
+    //             setUploadProgress(0);
+    //         } else {
+    //             progress += 10;
+    //             setUploadProgress(progress);
+    //         }
+    //     }, 500);
+    // };
 
-    const closeStatusModal = () => {
-        setStatusModalVisible(false);
-    };
+    // const closeStatusModal = () => {
+    //     setStatusModalVisible(false);
+    // };
 
     const openCreateModal = () => setCreateModalVisible(true);
     const closeCreateModal = () => setCreateModalVisible(false);
     const fetchChecklists = async () => {
+        setLoading(true)
         const data = { userId }
         try {
             const response = await axiosInstance.post("/check-list/getAllByUser", data);
             setDataList(response.data.data.sharedByMe);
+            setLoading(false)
         } catch (error) {
-            console.error("Error fetching checklist:", error);
+            setLoading(false)
         }
-
     };
     useEffect(() => {
         fetchChecklists();
     }, []);
     const handleCreateChecklist = async (newItem: Omit<ChecklistItem, "completed">) => {
+        setLoading(true)
         try {
             const payload = { ...newItem };
             const data = { userId: userId, title: payload.title, desc: payload.desc }
@@ -108,15 +112,17 @@ export default function Index() {
 
             closeCreateModal();
             fetchChecklists();
+            setLoading(false)
         } catch (error) {
-            console.log(error);
-
             Toast.show({
                 type: "error",
                 text1: "Failed to Create",
                 text2: "There was an error creating the checklist.",
             });
+            setLoading(false)
         } finally {
+            setLoading(false)
+
             // setIsUploading(false);
         }
     };
@@ -144,6 +150,7 @@ export default function Index() {
 
     const handleRemoveItem = async () => {
         if (selectedIndex !== null) {
+            setLoading(true)
             const item = dataList[selectedIndex];
             const data = {
                 id: item.id
@@ -156,13 +163,14 @@ export default function Index() {
                     text2: "Checklist deleted successfully",
                 });
                 fetchChecklists();
+                setLoading(false)
             } catch (error) {
-                console.error("Error updating checklist", error);
                 Toast.show({
                     type: "error",
                     text1: "Error",
                     text2: "Failed to update checklist.",
                 });
+                setLoading(false)
             }
         }
     };
@@ -177,6 +185,7 @@ export default function Index() {
                 desc: item.desc,
                 completed: true
             }
+            setLoading(true)
             try {
                 const response = await axiosInstance.post("/check-list/update", data);
                 Toast.show({
@@ -185,13 +194,14 @@ export default function Index() {
                     text2: "Checklist marked as completed.",
                 });
                 fetchChecklists();
+                setLoading(false)
             } catch (error) {
-                console.error("Error updating checklist", error);
                 Toast.show({
                     type: "error",
                     text1: "Error",
                     text2: "Failed to update checklist.",
                 });
+                setLoading(false)
             }
         }
     };
@@ -209,6 +219,7 @@ export default function Index() {
         if (!item.completed) {
             showConfirmationModal(index, 'complete');
         } else {
+            setLoading(true)
             try {
                 const response = await axiosInstance.post("/check-list/update", data);
                 Toast.show({
@@ -217,17 +228,17 @@ export default function Index() {
                     text2: "Checklist unmarked",
                 });
                 fetchChecklists();
+                setLoading(false)
             } catch (error) {
-                console.error("Error updating checklist", error);
                 Toast.show({
                     type: "error",
                     text1: "Error",
                     text2: "Failed to update checklist.",
                 });
+                setLoading(false)
             }
         }
     };
-
 
     const handleItemDelete = (index: number) => {
         showConfirmationModal(index, 'remove');
@@ -235,16 +246,10 @@ export default function Index() {
 
     const incompleteItems = dataList.filter(item => !item.completed);
     const completedItems = dataList.filter(item => item.completed);
-    // const incompleteItems = <data value=""></data>
-    // const completedItems = dataList
 
     return (
         <MainBackground title=''>
             <View style={tw`w-full h-full flex flex-1`}>
-                {/* <CheckListNavigation
-                    openModal={openUploadModal}
-                    title="Checklist"
-                /> */}
                 <NavigationHeader
                     title='Checklist'
                 />
@@ -291,6 +296,7 @@ export default function Index() {
                                 onRefresh={fetchChecklists}
                                 openOptionId={openOptionId}
                                 setOpenOptionId={setOpenOptionId}
+                                setLoading={setLoading}
                             />
                         ))}
                         {completedItems.length > 0 && (
@@ -312,10 +318,17 @@ export default function Index() {
                                         onRefresh={fetchChecklists}
                                         openOptionId={openOptionId}
                                         setOpenOptionId={setOpenOptionId}
+                                        setLoading={setLoading}
                                     />
                                 ))}
                             </View>
                         )}
+                        {
+                            dataList.length == 0 &&
+                            <View style={tw`w-full flex-1 justify-center items-center pt-[30%]`}>
+                                <ThemedText textcolor="#BAC1C4" fontFamily='RaleWaySemiBold' variant='title16'>Data Not Found</ThemedText>
+                            </View>
+                        }
                     </View>
 
                 </ScrollView>
@@ -331,8 +344,19 @@ export default function Index() {
                     </TouchableOpacity>
                 </View>
             </View>
+            {
+                loading &&
+                <>
+                    <View
+                        style={tw`w-full flex-1 justify-center items-center absolute h-full bg-black bg-opacity-30`}
+                    >
 
-            <CheckListUploadModal
+                        <ActivityIndicator size="large" color="#004CFF" />
+                    </View>
+
+                </>
+            }
+            {/* <CheckListUploadModal
                 visible={isUploadModalVisible}
                 onClose={closeUploadModal}
                 onCreateChecklist={openCreateModal}
@@ -349,7 +373,7 @@ export default function Index() {
                 onConfirm={closeStatusModal}
                 statusText='Completed!'
                 btnText='Check File'
-            />
+            /> */}
             <CreateChecklistModal
                 visible={isCreateModalVisible}
                 onClose={closeCreateModal}

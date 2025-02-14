@@ -3,6 +3,7 @@ import {
     View,
     Image,
     TouchableOpacity,
+    ActivityIndicator,
 } from 'react-native';
 import { router, useGlobalSearchParams } from "expo-router";
 import tw from "twrnc";
@@ -41,13 +42,15 @@ export default function EditCheckList() {
     const [isShowUploadedImage, setShowUploadedImage] = useState(false)
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [isUploadSuccessful, setIsUploadSuccessful] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const { id, title: initialTitle, desc: initialDesc, created, completed } = params as {
+    const { id, title: initialTitle, desc: initialDesc, created, completed, sharedTo } = params as {
         id: string;
         title: string;
         desc: string;
         created: string;
         completed: string;
+        sharedTo: any;
     };
 
     const [title, setTitle] = useState(initialTitle || '');
@@ -78,6 +81,7 @@ export default function EditCheckList() {
                     title: title,
                     desc: desc,
                     created: created,
+                    sharedTp: sharedTo,
                     completed: completed ? "true" : "false",
                 },
             });
@@ -116,6 +120,7 @@ export default function EditCheckList() {
     };
 
     const editCheckilist = async () => {
+        setLoading(true)
         try {
             const data = {
                 id,
@@ -132,13 +137,14 @@ export default function EditCheckList() {
                     text1: "Checklist Updated",
                     text2: "Your checklist has been updated successfully.",
                 });
+                setLoading(false)
                 setShowConfirmationModal(false);
                 setStatusModalVisible(true);
                 return;
                 // router.push("/(checklist)/viewchecklist");
             }
         } catch (error) {
-            console.error("Error updating checklist", error);
+            setLoading(false)
             Toast.show({
                 type: "error",
                 text1: "Update Failed",
@@ -256,6 +262,7 @@ export default function EditCheckList() {
                                             placeholder="E.g Buy Flower"
                                             value={desc}
                                             onChangeText={setDesc}
+                                            multiline
                                         />
                                     </View>
                                     {/* <View
@@ -286,14 +293,14 @@ export default function EditCheckList() {
                         <View
                             style={tw`w-full flex-row justify-between`}
                         >
-                            <View
+                            {/* <View
                                 style={tw`w-[105px] flex flex-col justify-center items-center gap-[4px]`}
                             >
                                 <SwitchForm />
                                 <ThemedText variant='title12' fontFamily='NunitoRegular' textcolor='#C2C2C2'>
                                     Add Reminder
                                 </ThemedText>
-                            </View>
+                            </View> */}
                             <BlueButton
                                 width={142}
                                 height={48}
@@ -304,6 +311,18 @@ export default function EditCheckList() {
                     </View>
 
                 </View>
+                {
+                    loading &&
+                    <>
+                        <View
+                            style={tw`w-full flex-1 justify-center items-center absolute h-full bg-black bg-opacity-30`}
+                        >
+
+                            <ActivityIndicator size="large" color="#004CFF" />
+                        </View>
+
+                    </>
+                }
             </View>
             <CheckListUploadModal
                 visible={isUploadModalVisible}

@@ -36,7 +36,7 @@ const FormInput = ({
             value={value}
             onChangeText={onChangeText}
             style={[
-              tw`w-full h-full pt-[15px] bg-none text-bottom z-[5] rounded-[56px] px-[24px] text-[#C2C2C2] border border-[#004CFF] text-sm`,
+              tw`w-full h-full pt-[8px] bg-none text-bottom z-[5] rounded-[56px] px-[24px] text-[#C2C2C2] border border-[#004CFF] text-sm`,
               { fontFamily: "PoppinsMedium" },
             ]}
             {...props}
@@ -56,7 +56,7 @@ const FormInput = ({
           value={value}
           onChangeText={onChangeText}
           style={[
-            tw`w-full h-full pt-[15px] bg-none text-bottom z-[5] rounded-[56px] px-[24px] text-[#C2C2C2] border border-[#004CFF] text-sm`,
+            tw`w-full h-full pt-[8px] bg-none text-bottom z-[5] rounded-[56px] px-[24px] text-[#C2C2C2] border border-[#004CFF] text-sm`,
             { fontFamily: "PoppinsMedium" },
           ]}
           {...props}

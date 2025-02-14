@@ -27,6 +27,7 @@ interface CheckListCardItemProps {
   onRefresh?: () => void;
   openOptionId: string | number | null;
   setOpenOptionId: (id: string | number | null) => void;
+  setLoading?: (loading: boolean) => void;
 }
 
 const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
@@ -36,6 +37,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
   onRefresh,
   openOptionId,
   setOpenOptionId,
+  setLoading
 }) => {
   const [timeAgo, setTimeAgo] = useState("");
   const pathname = usePathname();
@@ -68,6 +70,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
         title: data.title,
         desc: data.desc,
         created: data.created,
+        sharedTo: data.sharedTo,
         completed: data.completed ? "true" : "false",
       },
     });
@@ -81,6 +84,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
         title: data.title,
         desc: data.desc,
         created: data.created,
+        sharedTo: data.sharedTo,
         completed: data.completed ? "true" : "false",
       },
     });
@@ -92,6 +96,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
   };
 
   const confirmShareChecklist = async (shareData: { email: string }) => {
+    setLoading?.(true)
     try {
       await axiosInstance.post("/check-list/share", {
         id: data.id,
@@ -102,18 +107,20 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
         text1: "Shared",
         text2: "Checklist shared successfully.",
       });
+      setLoading?.(false)
       onRefresh && onRefresh();
     } catch (error) {
-      console.error("Error sharing checklist", error);
       Toast.show({
         type: "error",
         text1: "Error",
         text2: "Failed to share checklist.",
       });
+      setLoading?.(false)
     }
   };
 
   const confirmUnShareChecklist = async (unshareData: { email: string }) => {
+    setLoading?.(true)
     try {
       await axiosInstance.post("/check-list/unshare", {
         id: data.id,
@@ -124,19 +131,21 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
         text1: "Unshared",
         text2: "Checklist unshared successfully.",
       });
+      setLoading?.(false)
       onRefresh && onRefresh();
     } catch (error) {
-      console.error("Error unsharing checklist", error);
       Toast.show({
         type: "error",
         text1: "Error",
         text2: "Failed to unshare checklist.",
       });
+      setLoading?.(false)
     }
   };
+  const emails: string[] = Array.isArray(data.sharedTo) ? data.sharedTo : (data.sharedTo || "");
 
   return (
-    <View style={tw`w-full ${pathname === "/shareme" ? `h-[110px]` : pathname === "/shareother" ? `h-[110px]` : `h-[90px]`} rounded-lg border border-[#004CFF] bg-transparent`}>
+    <View style={tw`w-full ${pathname === "/shareme" ? `h-[110px]` : pathname === "/shareother" ? `h-[110px]` : `h-[95px]`} rounded-lg border border-[#004CFF] bg-transparent`}>
       <Image
         source={require('@/assets/images/carditem(chechlist).png')}
         style={tw`absolute w-full h-full rounded-lg`}
@@ -169,14 +178,14 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
                   </TouchableOpacity>
                 ) : (
                   <>
-                    <TouchableOpacity style={tw`px-2 h-6 flex justify-center`} onPress={editChecklist}>
-                      <ThemedText variant='title12' textcolor='#F6FBFD'>
-                        Edit
-                      </ThemedText>
-                    </TouchableOpacity>
                     <TouchableOpacity style={tw`px-2 h-6 flex justify-center`} onPress={viewChecklist}>
                       <ThemedText variant='title12' textcolor='#F6FBFD'>
                         View
+                      </ThemedText>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={tw`px-2 h-6 flex justify-center`} onPress={editChecklist}>
+                      <ThemedText variant='title12' textcolor='#F6FBFD'>
+                        Edit
                       </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -224,7 +233,7 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
                 numberOfLines={1}
                 ellipsizeMode='tail'
               >
-                SharedTo : {data.sharedTo}
+                SharedTo : {emails.join(", ")}
               </ThemedText>
             </View>
 

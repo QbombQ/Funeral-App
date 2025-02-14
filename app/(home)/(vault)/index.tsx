@@ -4,6 +4,7 @@ import {
     View,
     Image,
     TouchableOpacity,
+    ActivityIndicator
 } from 'react-native';
 import tw from "twrnc";
 import MainBackground from '@/components/background/MainBackground';
@@ -28,7 +29,7 @@ interface VaultItem {
     fileType: string,
     sharedTo: any,
     created: number,
-    userId:string
+    userId: string
 
 }
 export default function Index() {
@@ -40,6 +41,7 @@ export default function Index() {
     const [showNeedMembershipModal, setShowNeedMembershipModal] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [openOptionId, setOpenOptionId] = useState<string | number | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const [dataList, setDataList] = useState<VaultItem[]>([]);
     const openUploadModal = () => setUploadModalVisible(true);
@@ -75,6 +77,7 @@ export default function Index() {
         setShowDeleteConfirmModal(!showDeleteConfirmModal)
     }
     const confirmDelete = async () => {
+        setLoading(true)
         if (selectedIndex !== null) {
             const item = dataList[selectedIndex];
             const data = {
@@ -88,10 +91,11 @@ export default function Index() {
                     text1: "Checklist Deleted",
                     text2: "Checklist deleted successfully",
                 });
+                setLoading(false)
                 fetchVault();
                 setShowDeleteConfirmModal(!showDeleteConfirmModal)
             } catch (error) {
-                console.error("Error updating checklist", error);
+                setLoading(false)
                 Toast.show({
                     type: "error",
                     text1: "Error",
@@ -116,14 +120,17 @@ export default function Index() {
         router.push('/(home)/(vault)/createvault')
     }
     const fetchVault = async () => {
+        setLoading(true)
         const data = {
             userId: userId
         }
         try {
             const response = await axiosInstance.post("/vault/getAllByUser", data)
             setDataList(response.data.data.basicVaults)
+            setLoading(false)
+
         } catch (error) {
-            console.log(error);
+            setLoading(false)
         }
     }
     useEffect(() => {
@@ -187,6 +194,12 @@ export default function Index() {
                         {dataList.map((data, index) => (
                             <VaultCard key={index} data={data} onDelete={() => handleDelete(dataList.indexOf(data))} onRefresh={fetchVault} openOptionId={openOptionId} setOpenOptionId={setOpenOptionId} />
                         ))}
+                        {
+                            dataList.length == 0 &&
+                            <View style={tw`w-full flex-1 justify-center items-center`}>
+                                <ThemedText textcolor="#BAC1C4" fontFamily='RaleWaySemiBold' variant='title16'>Data Not Found</ThemedText>
+                            </View>
+                        }
                     </View>
                 </ScrollView>
                 <View style={[tw`w-[36px] h-[36px] flex justify-center items-center absolute bottom-[116px] right-[27px]`, { zIndex: 30 }]}>
@@ -221,6 +234,16 @@ export default function Index() {
                     }
 
                 </View>
+                {
+                    loading &&
+                    <>
+                        <View
+                            style={tw`w-full flex-1 justify-center items-center absolute h-full bg-black bg-opacity-30`}
+                        >
+                            <ActivityIndicator size="large" color="#004CFF" />
+                        </View>
+                    </>
+                }
             </View>
 
             <VaultUploadModal

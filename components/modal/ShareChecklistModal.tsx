@@ -35,6 +35,7 @@ const ShareChecklistModal = ({ visible, onClose, onCreate, title, btntext, share
             });
         }
     };
+    const emails: string[] = Array.isArray(sharedUser) ? sharedUser : (sharedUser || "");
 
     return (
         <Modal
@@ -55,9 +56,13 @@ const ShareChecklistModal = ({ visible, onClose, onCreate, title, btntext, share
                             <ThemedText variant="title16" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
                                 Shared User
                             </ThemedText>
-                            <ThemedText variant="title14" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold">
-                                {sharedUser}
-                            </ThemedText>
+                            {emails.length > 0 && (
+                                emails.map((email, index) => (
+                                    <ThemedText variant="title14" textcolor="#FFFFFF" fontFamily="RaleWaySemiBold" key={index}>
+                                        {email}
+                                    </ThemedText>
+                                ))
+                            )}
                         </View>
                     }
                     <FormInput

@@ -5,7 +5,8 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
-    ScrollView
+    ScrollView,
+    ActivityIndicator
 } from 'react-native';
 import { router, useGlobalSearchParams } from "expo-router";
 import tw from "twrnc";
@@ -38,6 +39,7 @@ import Toast from 'react-native-toast-message';
 import { Video } from 'expo-av';
 import WebView from 'react-native-webview';
 import config from "@/config.json"
+import { getFileComponent } from '@/utils/filePreview';
 
 interface SelectedFile {
     uri: string;
@@ -62,7 +64,9 @@ export default function CreateVault() {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('')
     const [isVisiblePreviewModal, setIsVisiblePreviewModal] = useState(false);
-    const [vaultId, setVaultId] = useState('')
+    const [vaultId, setVaultId] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const { id } = params as { id: string };
 
     const showPreviewModal = () => {
@@ -100,22 +104,24 @@ export default function CreateVault() {
         }
     }, [id]);
     const fetchVaultDetail = async (id: string) => {
+        setLoading(true);
         try {
             const response = await axiosInstance.post("/vault/getDetail", { userId, id: id });
             const vaultData = response.data.data;
             setTitle(vaultData.title);
             setDescription(vaultData.desc);
-            let fileUri = vaultData.filePath;
+            let fileUri =`${config.server_base_url}:${config.server_port}${vaultData.filePath}`;
             // if (!fileUri.startsWith("file://")) {
             //     fileUri = `file://${fileUri.replace(/\\/g, '/')}`;
             // }
             setSelectedFile({ uri: fileUri, name: vaultData.filePath.split('/').pop() || '', type: vaultData.fileType });
-
+            setLoading(false);
         } catch (error) {
-            console.error("Error fetching vault details:", error);
+            setLoading(false);
         }
     };
     const pickFile = async (): Promise<void> => {
+        setLoading(true);
         try {
             const result = await DocumentPicker.getDocumentAsync({
                 type: '*/*',
@@ -134,8 +140,9 @@ export default function CreateVault() {
 
             setSelectedFile(file);
             setShowUploadedImage(true)
+            setLoading(false);
         } catch (error) {
-            console.error("Error picking file:", error);
+            setLoading(false)
         }
     };
     const removeSelectedFile = () => {
@@ -194,6 +201,8 @@ export default function CreateVault() {
         if (!selectedFile) {
             return;
         }
+        setLoading(true);
+
         const formData = new FormData();
         formData.append("id", id);
         formData.append("title", title);
@@ -217,27 +226,28 @@ export default function CreateVault() {
                     "Content-Type": "multipart/form-data"
                 }
             });
+console.log(response.data.data);
 
             Toast.show({
                 type: "success",
                 text1: "Vault Created",
                 text2: "Vault created successfully!",
             });
+            setLoading(false);
             setStatusModalVisible(true)
             setShowConfirmationModal(false);
-            setVaultId(response.data.id)
+            setVaultId(response.data.data.id)
         } catch (error: any) {
-            console.error("Error creating vault:", error.response?.data || error.message);
-            alert("Error creating vault. Please try again.");
+            setLoading(false)
         } finally {
-            setIsUploading(false);
+            setLoading(false)
         }
     };
 
     return (
         <MainBackground title=''>
             <View style={tw`flex-1`}>
-                <NavigationHeader title='Add Vault' />
+                <NavigationHeader title='Edit Vault' />
                 <MainNavigationBar />
                 <ScrollView
                     contentContainerStyle={tw`flex-grow justify-center`}
@@ -291,17 +301,11 @@ export default function CreateVault() {
                             </View>
                             {selectedFile ?
                                 <>
-                                    <View style={tw`w-full justify-center items-center`}>
-                                        {selectedFile.type.includes('image') && (
-                                            <Image source={{ uri: `${config.server_base_url}:${config.server_port}${selectedFile.uri}`}} style={tw`w-[90%] h-[250px] rounded-lg`} />
-                                        )}
-                                        {selectedFile.type.includes('video') && (
-                                            <Video source={{ uri: selectedFile.uri }} style={tw`w-[90%] h-[250px] rounded-lg`} useNativeControls />
-                                        )}
-                                        {selectedFile.type.includes('pdf') && (
-                                            <WebView source={{ uri: selectedFile.uri }} style={{ flex: 1, width: '100%', height: 400 }} />
-                                        )}
-                                        <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>{selectedFile.name}</ThemedText>
+                                    <View style={tw`w-full justify-center items-center h-[300px]`}>
+                                        {/* <Image source={{ uri: selectedFile.uri }} style={tw`w-[90%] h-[250px] rounded-lg`} /> */}
+
+                                        {getFileComponent(selectedFile.uri, selectedFile.type)}
+                                        {/* <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>{selectedFile.name}</ThemedText> */}
                                     </View>
                                     <View style={tw`flex flex-row w-full gap-3 justify-around`}>
                                         <TouchableOpacity
@@ -334,7 +338,7 @@ export default function CreateVault() {
                                     </View>
                                     {isVisiblePreviewModal &&
                                         <FilePreview
-                                            fileUri={`${config.server_base_url}:${config.server_port}${selectedFile.uri}`}
+                                            fileUri={`${selectedFile.uri}`}
                                             fileType={selectedFile.type}
                                             fileName={selectedFile.name}
                                             onClose={showPreviewModal}
@@ -385,6 +389,16 @@ export default function CreateVault() {
 
                     </View>
                 </ScrollView>
+                {
+                    loading &&
+                    <>
+                        <View
+                            style={tw`w-full flex-1 justify-center items-center absolute h-full bg-black bg-opacity-30`}
+                        >
+                            <ActivityIndicator size="large" color="#004CFF" />
+                        </View>
+                    </>
+                }
             </View>
             <CheckListUploadModal
                 visible={isUploadModalVisible}
