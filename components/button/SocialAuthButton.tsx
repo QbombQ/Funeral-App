@@ -142,3 +142,5 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
     </View>
   );
 };
+
+

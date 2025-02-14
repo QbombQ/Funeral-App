@@ -11,7 +11,17 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.FuneralApp",
+      "infoPlist": {
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.361140166748-bmj9mrcq3ffj1coqvhd0lv9l0hht4jcq"
+            ]
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
