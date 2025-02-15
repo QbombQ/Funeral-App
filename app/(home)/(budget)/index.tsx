@@ -100,7 +100,7 @@ export default function Index() {
                                                 placeholder="5000"
                                                 value={temporaryBudget}
                                                 onChangeText={handleTotalBudgetChange}
-                                                keyboardType="numeric"
+                                                keyboardType="decimal-pad"
                                             />
                                         </View>
                                         <TouchableOpacity

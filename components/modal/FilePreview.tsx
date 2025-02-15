@@ -7,7 +7,7 @@ import {
     Modal,
     Platform
 } from 'react-native';
-import { ResizeMode, Video } from 'expo-av';
+import { AVPlaybackStatus, AVPlaybackStatusSuccess, ResizeMode, Video } from 'expo-av';
 import { WebView } from 'react-native-webview';
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
@@ -102,7 +102,56 @@ const FilePreview: React.FC<FilePreviewProps> = ({ fileUri, fileType, fileName, 
             onClose();
         }, 200);
     };
-    ``
+    const AudioPlayer = ({ audioUri }: { audioUri: string }) => {
+        const [sound, setSound] = useState<Audio.Sound | null>(null);
+        const [isPlaying, setIsPlaying] = useState(false);
+    
+        const handleAudioPlayPause = async () => {
+            if (!sound) {
+                const { sound } = await Audio.Sound.createAsync(
+                    { uri: audioUri },
+                    { shouldPlay: true } // Automatically play when created
+                );
+    
+                // sound.setOnPlaybackStatusUpdate((status) => {
+                //     if (status.didJustFinish) {
+                //         // Reset audio player state when finished
+                //         setIsPlaying(false);
+                //         sound.unloadAsync(); // Unload the sound after playback
+                //         setSound(null); // Set the sound state to null
+                //     }
+                // });
+                sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
+                    // Check if the status is a success status
+                    if ((status as AVPlaybackStatusSuccess).didJustFinish !== undefined) {
+                        const playbackStatus = status as AVPlaybackStatusSuccess;
+    
+                        if (playbackStatus.didJustFinish) {
+                            // Reset audio player state when finished
+                            setIsPlaying(false);
+                            sound.unloadAsync(); // Unload the sound after playback
+                            setSound(null); // Set the sound state to null
+                        }
+                    }
+                });
+                setSound(sound);
+                setIsPlaying(true); // Set to playing
+            } else {
+                if (isPlaying) {
+                    await sound.pauseAsync();
+                } else {
+                    await sound.playAsync();
+                }
+                setIsPlaying(!isPlaying); // Toggle playing state
+            }
+        };
+    
+        return (
+            <TouchableOpacity onPress={handleAudioPlayPause} style={tw`p-4 bg-blue-500 rounded-lg`}>
+                <Text style={tw`text-white text-lg`}>{isPlaying ? "Pause Audio" : "Play Audio"}</Text>
+            </TouchableOpacity>
+        );
+    };
     return (
         <Modal
             animationType="slide"
@@ -156,6 +205,11 @@ const FilePreview: React.FC<FilePreviewProps> = ({ fileUri, fileType, fileName, 
                                 onPressLink={uri => {
                                     console.log(`Link pressed: ${uri}`);
                                 }}
+                                scale={1.0} // Ensure proper scaling
+                                minScale={1.0}
+                                maxScale={3.0} // Allow pinch zooming
+                                enablePaging={false} // Enable scrolling instead of swiping pages
+                                spacing={10} // Adjust spacing between pages
                                 style={tw`w-full h-full rounded-lg`}
                             />
                         </View>
@@ -167,14 +221,15 @@ const FilePreview: React.FC<FilePreviewProps> = ({ fileUri, fileType, fileName, 
                     {fileCategory === 'audio' && (
                         <View style={tw`items-center justify-center`}>
                             <Text style={tw`text-white text-lg mb-4`}>Playing: {fileName}</Text>
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                                 style={tw`p-4 bg-blue-500 rounded-lg`}
                                 onPress={handleAudioPlayPause}
                             >
                                 <Text style={tw`text-white text-lg`}>
                                     {isPlaying ? "Pause Audio" : "Play Audio"}
                                 </Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
+                            <AudioPlayer audioUri={fileUri} />
                         </View>
                     )}
 

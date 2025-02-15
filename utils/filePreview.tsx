@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Video } from 'expo-av';
+import { AVPlaybackStatus, AVPlaybackStatusSuccess, Video } from 'expo-av';
 import { WebView } from 'react-native-webview';
 import { Audio } from 'expo-av';
 import { Image, TouchableOpacity, Text, View } from 'react-native';
@@ -78,13 +78,42 @@ const AudioPlayer = ({ audioUri }: { audioUri: string }) => {
 
     const handleAudioPlayPause = async () => {
         if (!sound) {
-            const { sound } = await Audio.Sound.createAsync({ uri: audioUri });
+            const { sound } = await Audio.Sound.createAsync(
+                { uri: audioUri },
+                { shouldPlay: true } // Automatically play when created
+            );
+
+            // sound.setOnPlaybackStatusUpdate((status) => {
+            //     if (status.didJustFinish) {
+            //         // Reset audio player state when finished
+            //         setIsPlaying(false);
+            //         sound.unloadAsync(); // Unload the sound after playback
+            //         setSound(null); // Set the sound state to null
+            //     }
+            // });
+            sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
+                // Check if the status is a success status
+                if ((status as AVPlaybackStatusSuccess).didJustFinish !== undefined) {
+                    const playbackStatus = status as AVPlaybackStatusSuccess;
+
+                    if (playbackStatus.didJustFinish) {
+                        // Reset audio player state when finished
+                        setIsPlaying(false);
+                        sound.unloadAsync(); // Unload the sound after playback
+                        setSound(null); // Set the sound state to null
+                    }
+                }
+            });
             setSound(sound);
-            await sound.playAsync();
+            setIsPlaying(true); // Set to playing
         } else {
-            isPlaying ? await sound.pauseAsync() : await sound.playAsync();
+            if (isPlaying) {
+                await sound.pauseAsync();
+            } else {
+                await sound.playAsync();
+            }
+            setIsPlaying(!isPlaying); // Toggle playing state
         }
-        setIsPlaying(!isPlaying);
     };
 
     return (
@@ -93,3 +122,4 @@ const AudioPlayer = ({ audioUri }: { audioUri: string }) => {
         </TouchableOpacity>
     );
 };
+

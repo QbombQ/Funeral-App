@@ -34,7 +34,7 @@ export default function ViewVault() {
 
     const { id } = params as { id: string };
     console.log(id);
-    
+
     const fetchVaultDetail = async (vaultId: string) => {
         setLoading(true);
         try {
@@ -44,7 +44,7 @@ export default function ViewVault() {
                 throw new Error("Vault data is null");
             }
             console.log(response.data.data);
-            
+
             setVaultData(response.data.data);
 
             let fileUri = response.data.data.filePath;
@@ -82,16 +82,36 @@ export default function ViewVault() {
                             <>
                                 <View style={tw`gap-[18px] flex flex-col`}>
                                     {/* Title */}
-                                    <View style={tw`flex flex-row gap-[6.5px]`}>
-                                        <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Title:</ThemedText>
-                                        <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{vaultData.title}</ThemedText>
+                                    <View style={tw`flex flex-row flex-wrap gap-[6.5px]`}>
+                                        <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60 flex-shrink-0`} fontFamily='RaleWaySemiBold'>Title:</ThemedText>
+                                        <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold' style={tw`flex-1 flex-wrap`}>{vaultData.title}</ThemedText>
                                     </View>
 
                                     {/* Description */}
-                                    <View style={tw`flex flex-row gap-[6.5px]`}>
-                                        <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Description:</ThemedText>
-                                        <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{vaultData.desc}</ThemedText>
+                                    <View style={tw`flex flex-row flex-wrap gap-[6.5px]`}>
+                                        <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60 flex-shrink-0`} fontFamily='RaleWaySemiBold'>Description:</ThemedText>
+                                        <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold' style={tw`flex-1 flex-wrap`}>{vaultData.desc}</ThemedText>
                                     </View>
+                                    {vaultData.sharedTo.length != 0 && (
+                                        <View style={tw`flex flex-row flex-wrap gap-[6.5px]`}>
+                                            <ThemedText
+                                                variant="title20"
+                                                textcolor="#BAC1C4"
+                                                style={tw`opacity-60 flex-shrink-0`}
+                                                fontFamily="RaleWaySemiBold"
+                                            >
+                                                SharedTo:
+                                            </ThemedText>
+                                            <ThemedText
+                                                variant="title20"
+                                                textcolor="#BAC1C4"
+                                                style={tw`flex-1 flex-wrap`}
+                                                fontFamily="RaleWaySemiBold"
+                                            >
+                                                {vaultData.sharedTo}
+                                            </ThemedText>
+                                        </View>
+                                    )}
                                 </View>
 
                                 {/* Display Attached File */}

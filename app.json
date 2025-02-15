@@ -12,6 +12,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
+      "supportsAppleSignIn": true,
       "bundleIdentifier": "com.anonymous.FuneralApp",
       "infoPlist": {
         "CFBundleURLTypes": [

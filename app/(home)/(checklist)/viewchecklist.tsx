@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     ActivityIndicator,
     View,
@@ -15,6 +15,8 @@ import SuccessModal from '@/components/modal/SuccessModal';
 import ManIcon from '@/components/icons/ManIcon';
 import NavigationHeader from '@/components/navigation/NavigationHeader';
 import LoadingComponent from '@/components/modal/LoadingComponent';
+import axiosInstance from '@/context/api';
+import ChecklistLayout from './_layout';
 export default function Index() {
     const params = useGlobalSearchParams();
     const [isUploadModalVisible, setUploadModalVisible] = useState(false);
@@ -22,7 +24,7 @@ export default function Index() {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [isStatusModalVisible, setStatusModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [checkListData, setCheckListData] = useState<any>(null);
     const { id, title, desc, created, completed, sharedTo } = params as {
         id: string;
         title: string;
@@ -54,7 +56,25 @@ export default function Index() {
             }
         }, 500);
     };
+    const fetchCheckListData = async (checkListId: string) => {
+        const data = { id }
+        const response = await axiosInstance.post("/check-list/getDetail", { id: checkListId });
+        console.log(response.data);
+        if (!response.data || !response.data.data) {
+            throw new Error("Vault data is null");
+        }
+        console.log(response.data.data);
 
+        setCheckListData(response.data.data);
+
+
+    }
+    useEffect(() => {
+        if (!checkListData) {
+            fetchCheckListData(id);
+            return;
+        }
+    }, [id]);
     const handleCreateChecklist = () => {
         router.push('/(home)/(checklist)/createchecklist')
     };
@@ -80,35 +100,75 @@ export default function Index() {
 
                     </>
                 }
-                <View
-                    style={tw`pt-[46px] flex flex px-[30px] w-full gap-[34px]`}
-                >
+                {
+                    checkListData &&
                     <View
-                        style={tw`gap-[18px] flex flex-col`}
+                        style={tw`pt-[46px] flex flex px-[15px] w-full gap-[34px]`}
                     >
                         <View
-                            style={tw`flex flex-row gap-[6.5px]`}
+                            style={tw`gap-[18px] flex flex-col`}
                         >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Title:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{title}</ThemedText>
-                        </View>
-                        <View
-                            style={tw`flex flex-row gap-[6.5px]`}
-                        >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Description:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{desc}</ThemedText>
-                        </View>
-                        {
-                            sharedTo &&
-                            <View
-                                style={tw`flex flex-row gap-[6.5px]`}
-                            >
-                                <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>SharedTo:</ThemedText>
-                                <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>{sharedTo}</ThemedText>
+                            <View style={tw`flex flex-row flex-wrap gap-[6.5px]`}>
+                                <ThemedText
+                                    variant="title20"
+                                    textcolor="#BAC1C4"
+                                    style={tw`opacity-60 flex-shrink-0`}
+                                    fontFamily="RaleWaySemiBold"
+                                >
+                                    Title:
+                                </ThemedText>
+                                <ThemedText
+                                    variant="title20"
+                                    textcolor="#BAC1C4"
+                                    style={tw`flex-1 flex-wrap`}
+                                    fontFamily="RaleWaySemiBold"
+                                >
+                                    {checkListData.title}
+                                </ThemedText>
                             </View>
-                        }
 
-                        {/* <View
+                            <View style={tw`flex flex-row flex-wrap gap-[6.5px]`}>
+                                <ThemedText
+                                    variant="title20"
+                                    textcolor="#BAC1C4"
+                                    style={tw`opacity-60 flex-shrink-0`}
+                                    fontFamily="RaleWaySemiBold"
+                                >
+                                    Description:
+                                </ThemedText>
+                                <ThemedText
+                                    variant="title20"
+                                    textcolor="#BAC1C4"
+                                    style={tw`flex-1 flex-wrap`}
+                                    fontFamily="RaleWaySemiBold"
+                                >
+                                    {checkListData.desc}
+                                </ThemedText>
+                            </View>
+
+                            {checkListData.sharedTo.length != 0 && (
+                                <View style={tw`flex flex-row flex-wrap gap-[6.5px]`}>
+                                    <ThemedText
+                                        variant="title20"
+                                        textcolor="#BAC1C4"
+                                        style={tw`opacity-60 flex-shrink-0`}
+                                        fontFamily="RaleWaySemiBold"
+                                    >
+                                        SharedTo:
+                                    </ThemedText>
+                                    <ThemedText
+                                        variant="title20"
+                                        textcolor="#BAC1C4"
+                                        style={tw`flex-1 flex-wrap`}
+                                        fontFamily="RaleWaySemiBold"
+                                    >
+                                        {checkListData.sharedTo}
+                                    </ThemedText>
+                                </View>
+                            )}
+
+
+                            {/* <View
                             style={tw`flex flex-row gap-[6.5px]`}
                         >
                             <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Next of Kin:</ThemedText>
@@ -139,12 +199,14 @@ export default function Index() {
                             <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>$4000</ThemedText>
                         </View> */}
 
-                    </View>
-                    {/* <View style={tw`w-full justify-center items-center`}>
+                        </View>
+                        {/* <View style={tw`w-full justify-center items-center`}>
                         <ManIcon />
                         <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Picture</ThemedText>
                     </View> */}
-                </View>
+                    </View>
+
+                }
             </View>
             <CheckListUploadModal
                 visible={isUploadModalVisible}

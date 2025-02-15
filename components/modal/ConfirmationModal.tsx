@@ -20,14 +20,14 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 }) => {
     if (!visible) return null;
     return (
-        // <Modal
-        //     animationType="fade"
-        //     transparent={true}
-        //     visible={visible}
-        //     statusBarTranslucent={true}
-        //     style={{zIndex:20}}
-        //     onRequestClose={onCancel}
-        // >
+        <Modal
+            animationType="fade"
+            transparent={true}
+            visible={visible}
+            statusBarTranslucent={true}
+            style={{zIndex:20}}
+            onRequestClose={onCancel}
+        >
         <TouchableWithoutFeedback onPress={onCancel}>
             <View style={tw`flex-1 justify-center items-center w-full h-full bg-black absolute bg-opacity-50 z-5`}>
                 <View style={tw`w-[305px] h-[297px]`}>
@@ -74,7 +74,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
                 </View>
             </View>
         </TouchableWithoutFeedback>
-        // </Modal>
+        </Modal>
     );
 };
 

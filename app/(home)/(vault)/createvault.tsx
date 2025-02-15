@@ -105,7 +105,7 @@ export default function CreateVault() {
         }
     }
     const pickFile = async (): Promise<void> => {
-        setLoading(true);
+        // setLoading(true);
         try {
             const result = await DocumentPicker.getDocumentAsync({
                 type: '*/*',
@@ -129,6 +129,7 @@ export default function CreateVault() {
         } catch (error) {
             setLoading(false);
         }
+        setLoading(false)
     };
     const removeSelectedFile = () => {
         setSelectedFile(null);
@@ -235,10 +236,10 @@ export default function CreateVault() {
             <View style={tw`flex-1`}>
                 <NavigationHeader title='Add Vault' />
                 <MainNavigationBar />
-                {/* <ScrollView
+                <ScrollView
                     contentContainerStyle={tw`flex-grow justify-center`}
                     style={tw`w-full h-full`}
-                > */}
+                >
                     <View
                         style={tw`mt-[20px] w-full h-full px-[23px] gap-[18px] pb-[200px]`}
                     >
@@ -374,7 +375,7 @@ export default function CreateVault() {
                         </View>
 
                     </View>
-                {/* </ScrollView> */}
+                </ScrollView>
                 {
                     loading &&
                     <>

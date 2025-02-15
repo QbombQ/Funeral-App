@@ -75,7 +75,7 @@ export default function Subscription() {
           text1: 'Payment Successful',
           text2: 'Your subscription is now active.',
         });
-        // router.push('/(home)/(budget)/payment-success');
+        router.reload;
       } else {
         setLoading(false);
         Toast.show({
@@ -107,9 +107,9 @@ export default function Subscription() {
   const subscriptionDate = userSubscription ? new Date(userSubscription) : null;  
   const trialEndDate = subscriptionDate ? new Date(subscriptionDate.setFullYear(subscriptionDate.getFullYear() + 1)).toLocaleDateString() : null;  
   
-  if (userSubscription === null && userFullAccess) {  
+  if (userSubscription === 0 && userFullAccess) {  
     trialMessage = "You have 7 days of free trial.";  
-  } else if (userSubscription === null || !userFullAccess) {  
+  } else if (userSubscription === 0 || !userFullAccess) {  
     trialMessage = "Your 7-days free trial has ended.";  
   } else if (userSubscription && userFullAccess) {  
     trialMessage = `Your trial ends on ${trialEndDate}.`;  
@@ -154,7 +154,7 @@ export default function Subscription() {
                   </ThemedText>
                 </View>
                 <View style={tw`flex w-full flex-col gap-[10px] justify-center items-center`}>
-                  <NormalButton width={209} height={44} text='Subscribe Now' onPress={handleSubscribe} status={userSubscription == null ? false : true} />
+                  <NormalButton width={209} height={44} text='Subscribe Now' onPress={handleSubscribe} status={userSubscription == 0 ? false : true} />
                   <ThemedText textcolor='#BAC1C4' variant='title12' fontFamily='RaleWaySemiBold'>
                     {trialMessage}
                   </ThemedText>

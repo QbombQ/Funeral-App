@@ -72,6 +72,7 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
     try {
       GoogleSignin.configure({
         webClientId: "361140166748-492betprlmcevc7f77n21up6qjv6f046.apps.googleusercontent.com",
+        iosClientId:"361140166748-bmj9mrcq3ffj1coqvhd0lv9l0hht4jcq.apps.googleusercontent.com",
         offlineAccess: true,
       } as any);
 
@@ -89,6 +90,31 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
       if (Platform.OS !== `ios`) {
         alert(error);
       }
+    }
+  };
+  const handleAppleSignIn = async () => {
+    try {
+      setIsSigninInProgress(true);
+
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [
+          AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+          AppleAuthentication.AppleAuthenticationScope.EMAIL,
+        ],
+      });
+
+      if (credential) {
+        signUpWithApple(credential);
+      }
+    } catch (error: any) {
+      console.warn("Apple Sign-In Error:", error);
+      if (error.code === 'ERR_CANCELED') {
+        alert('Apple Sign-In was canceled.');
+      } else {
+        alert('Apple Sign-In failed. Try again.');
+      }
+    } finally {
+      setIsSigninInProgress(false);
     }
   };
   const signUpWithGoogle = async (googleUserInfor: any) => {
@@ -117,11 +143,40 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
     }
 
   }
+  const signUpWithApple = async (appleUserInfo: any) => {
+    const formData = {
+      action: `${action}`,
+      username: appleUserInfo.fullName?.givenName || "Apple User",
+      email: appleUserInfo.email || "",
+      appleUserId: appleUserInfo.user, // Unique Apple User ID
+    };
+
+    try {
+      const response = await axiosInstance.post("/apple-login", formData);
+      if (response.data.message === "success") {
+        handleLoginSuccess(response.data);
+      }
+    } catch (error) {
+      console.error("Apple Sign-In Request Failed:", error);
+    }
+  };
+  const handleLoginSuccess = async (data: any) => {
+    Toast.show({
+      type: 'success',
+      text1: 'Login Successful',
+      text2: 'You have successfully logged in.',
+    });
+
+    await login(data.token, data.email);
+    connectSocket(data.email);
+    router.replace("/(home)/home");
+  };
+
   const handleSignIn = () => {
     if (provider === 'google') {
       handleGoogleSignIn();
     } else if (provider === 'apple') {
-      // handleAppleSignIn();
+      handleAppleSignIn();
     }
   };
   return (
