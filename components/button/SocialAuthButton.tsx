@@ -12,6 +12,7 @@ import { useAuth } from "@/context/AuthContext";
 import { connectSocket } from '@/context/socket';
 import { router } from "expo-router"
 import Toast from 'react-native-toast-message';
+import { useNavigationContext } from '@/context/NavigationContext';
 
 type SocialAuthButtonProps = {
   provider: 'google' | 'apple';
@@ -36,6 +37,7 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
 
 
   const { login } = useAuth();
+  const { selectedTab, setSelectedTab } = useNavigationContext();
 
   const [userInfo, setUserInfo] = useState<any>(null);
   const [isSigninInProgress, setIsSigninInProgress] = useState<any>(false);
@@ -133,6 +135,7 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
         });
         await login(response.data.token, response.data.email);
         connectSocket(response.data.email);
+        setSelectedTab('home');
         router.replace("/(home)/home");
         // setLoading?.(false)
 

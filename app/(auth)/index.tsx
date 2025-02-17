@@ -82,14 +82,14 @@ export default function Index() {
       return;
     }
 
-    if (!check) {
-      Toast.show({
-        type: "error",
-        text1: "Agreement Required ⚖️",
-        text2: "You must agree to the Terms of Service and Privacy Policy to continue.",
-      });
-      return;
-    }
+    // if (!check) {
+    //   Toast.show({
+    //     type: "error",
+    //     text1: "Agreement Required ⚖️",
+    //     text2: "You must agree to the Terms of Service and Privacy Policy to continue.",
+    //   });
+    //   return;
+    // }
     setLoading(true)
     const data = { name, email, password };
 
@@ -145,7 +145,7 @@ export default function Index() {
             </ThemedText>
           </View>
           <View style={tw`mt-[40px] w-full py-[15px] px-9 gap-[9px] flex flex-col justify-center items-center relative`}>
-            <View style={tw`absolute inset-0 rounded-xl bg-[#FAFAFA] opacity-3`}></View>
+            <View style={tw`absolute inset-0 rounded-xl bg-[#FAFAFA] opacity-3 mx-3`}></View>
             <FormInput
               placeholder="Name"
               value={name}
@@ -165,7 +165,7 @@ export default function Index() {
               value={password}
               onChangeText={setPassword}
             />
-            <View
+            {/* <View
               style={tw`flex flex-row gap-[12px] w-[325px] items-center`}
             >
               <ThemedCheckBox
@@ -187,7 +187,7 @@ export default function Index() {
               <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                 Allow location access to find nearby funeral homes
               </ThemedText>
-            </View>
+            </View> */}
           </View>
           <View
             style={tw`mt-[25px] flex flex-col gap-[18px] w-full justify-center items-center`}

@@ -70,7 +70,7 @@ export default function CreateVault() {
 
     const showPreviewModal = () => {
         console.log("Sdfsdfr");
-        
+
         setIsVisiblePreviewModal(!isVisiblePreviewModal)
     }
     const showOptionItem = () => {
@@ -125,7 +125,7 @@ export default function CreateVault() {
             setSelectedFile(file);
             setShowUploadedImage(true)
             console.log(file);
-            
+
         } catch (error) {
             setLoading(false);
         }
@@ -184,51 +184,78 @@ export default function CreateVault() {
     };
     const createVault = async (): Promise<void> => {
         if (!selectedFile) {
-            return;
+            return; // Exit early if no file is selected
         }
-        setLoading(true)
+
+        setLoading(true); // Start loading
+
         const formData = new FormData();
         formData.append("title", title);
         formData.append("desc", description);
         formData.append("userId", userId || '');
+
         let fileUri = selectedFile?.uri || '';
 
         // Fix file URI for Android
         if (Platform.OS === "android" && !fileUri.startsWith("file://")) {
             fileUri = "file://" + fileUri;
         }
+
         formData.append("file", {
-            uri: selectedFile.uri,
+            uri: fileUri,  // Use the fileUri variable which might have been updated
             name: selectedFile.name,
             type: selectedFile.type
-        } as any);
+        } as any); // 'any' to satisfy TypeScript if necessary
 
         try {
             const response = await axiosInstance.post("/vault/create", formData, {
                 headers: {
-                    "Content-Type": "multipart/form-data"
-                }
+                    "Content-Type": "multipart/form-data",
+                },
             });
 
-            Toast.show({
-                type: "success",
-                text1: "Vault Created",
-                text2: "Vault created successfully!",
-            });
-            setShowConfirmationModal(false);
-            // setLoading(false);
-            setStatusModalVisible(true)
-            setVaultId(response.data.id)
+            console.log(response.data);
+
+            // Close confirmation modal after API response
+            closeConfirmationModal();
+
+            // Handle success response
+            if (response.data.message === "success") {
+                Toast.show({
+                    type: "success",
+                    text1: "Vault Created",
+                    text2: "Vault created successfully!",
+                });
+
+                // Update the UI with the new vault ID
+                // closeConfirmationModal();
+                setShowConfirmationModal(false)
+
+                setStatusModalVisible(true);
+                setVaultId(response.data.id);
+
+                // Handle the "Vault limit reached" scenario
+            } else if (response.data.message === "Vault limit reached. Please subscribe to add more vaults.") {
+                showMemberShipModal();
+                closeConfirmationModal();
+            }
+
         } catch (error: any) {
-            setLoading(false);
+            // Handle errors
+            console.error("Error creating vault:", error.response?.data || error.message); // Useful for debugging
 
-            // console.error("Error creating vault:", error.response?.data || error.message);
-            showMemberShipModal()
-            closeConfirmationModal()
+            // Show error Toast
+            Toast.show({
+                type: "error",
+                text1: "Create Failed",
+                text2: "Vault create failed!",
+            });
+
+            closeConfirmationModal();
         } finally {
-            setLoading(false)
+            // Ensure that loading state is reset
+            setLoading(false);
         }
-
     };
 
     return (

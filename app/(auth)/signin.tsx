@@ -19,7 +19,7 @@ import * as SecureStore from "expo-secure-store";
 import axiosInstance from "../../context/api";
 import { useAuth } from "@/context/AuthContext";
 import { connectSocket } from '@/context/socket';
-
+import { useNavigationContext } from '@/context/NavigationContext';
 export default function Index() {
 
   const { login } = useAuth();
@@ -31,6 +31,7 @@ export default function Index() {
   const [check, setCheck] = useState(false);
   const [isEnabled, setIsEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { selectedTab, setSelectedTab } = useNavigationContext();
 
   const togglePasswordVisibility = () => {
     setIsPasswordHidden(!isPasswordHidden);
@@ -84,6 +85,7 @@ export default function Index() {
         // await SecureStore.setItemAsync("userToken", response.data.token);
         await login(token, userId);
         connectSocket(email);
+        setSelectedTab('home');
         router.replace("/(home)/home");
       } else if (response.data.message === "No exists user.") {
         Toast.show({
@@ -141,7 +143,7 @@ export default function Index() {
               value={password}
               onChangeText={setPassword}
             />
-
+{/* 
             <View
               style={tw`flex flex-row w-[325px] gap-[4px] justify-start`}
             >
@@ -150,7 +152,7 @@ export default function Index() {
               <ThemedText variant='title12' textcolor='#C2C2C2' style={[tw`opacity-90`, { fontFamily: "NunitoRegular" }]}>
                 Remember
               </ThemedText>
-            </View>
+            </View> */}
 
           </View>
           <View

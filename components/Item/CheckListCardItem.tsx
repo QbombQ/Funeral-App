@@ -44,18 +44,28 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
 
   useEffect(() => {
     const updateTime = () => {
-      const createdMoment = moment(data.created);
-      if (moment().diff(createdMoment, 'days') >= 7) {
-        setTimeAgo(createdMoment.format("MMM DD, YYYY"));
+      const createdMoment = moment.utc(data.created); // Parse timestamp as UTC
+      const now = moment.utc(); // Get current UTC time
+  
+      // Prevent negative values
+      if (now.isBefore(createdMoment)) {
+        setTimeAgo("Just now");
+        return;
+      }
+  
+      if (now.diff(createdMoment, 'days') >= 7) {
+        setTimeAgo(createdMoment.local().format("MMM DD, YYYY"));
       } else {
-        setTimeAgo(createdMoment.fromNow());
+        setTimeAgo(createdMoment.local().fromNow(true) + " ago"); // `fromNow(true)` removes "ago", so we append it manually
       }
     };
-
+  
     updateTime();
-    const interval = setInterval(updateTime, 1000);
+    const interval = setInterval(updateTime, 60000); // Update every 60 seconds for performance
     return () => clearInterval(interval);
   }, [data.created]);
+  
+  
   const isOptionOpen = openOptionId === data.id;
 
   const handleOptionToggle = () => {
@@ -263,13 +273,16 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
                 {timeAgo}
               </ThemedText>
             </View>
-
+            {
+              pathname == "/shareother"&&
             <View style={tw`flex flex-row items-center gap-2`}>
               <ThemedCheckBox checked={data.completed} onPress={onCheck} size={13} />
               <ThemedText variant='title12' fontFamily='RaleWaySemiBold' textcolor='#BAC1C4'>
                 {data.completed ? 'Completed' : 'Completed'}
               </ThemedText>
             </View>
+              
+            }
           </View>
         </View>
       </View>

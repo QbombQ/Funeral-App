@@ -96,7 +96,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ fileUri, fileType, fileName, 
     // };
     const handleClose = () => {
         console.log("Closing modal...");
-        Orientation.lockToPortrait();
+        // Orientation.lockToPortrait();
         setTimeout(() => {
             console.log("Executing onClose...");
             onClose();
@@ -179,8 +179,8 @@ const FilePreview: React.FC<FilePreviewProps> = ({ fileUri, fileType, fileName, 
                         <Video
                             source={{ uri: fileUri }}
                             style={tw`w-full h-full rounded-lg`}
-                            useNativeControls
-                            resizeMode={"contain" as unknown as ResizeMode}
+                            useNativeControls={true}
+                            resizeMode={ResizeMode.CONTAIN}
                         />
                     )}
 
