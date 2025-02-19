@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Image } from 'react-native';
-import tw from 'twrnc'; 
-import ShowIcon from '../icons/ShowIcon'; 
-import HiddenIcon from '../icons/HiddenIcon'; 
+import tw from 'twrnc';
+import ShowIcon from '../icons/ShowIcon';
+import HiddenIcon from '../icons/HiddenIcon';
 
 const FormInput = ({
   placeholder,
@@ -11,7 +11,7 @@ const FormInput = ({
   onChangeText,
   additionalStyles = {},
   ...props
-}:any) => {
+}: any) => {
   const [isPasswordHidden, setIsPasswordHidden] = useState(secureTextEntry);
 
   const togglePasswordVisibility = () => {
@@ -20,10 +20,10 @@ const FormInput = ({
 
   return (
     <View style={[tw`w-full h-[50px]`, additionalStyles]}>
-        <Image
-          source={require("@/assets/images/Form.png")}
-          style={tw`absolute top-0 left-0 z-[2] w-full h-full rounded-full`}
-        />
+      <Image
+        source={require("@/assets/images/Form.png")}
+        style={tw`absolute top-0 left-0 z-[2] w-full h-full rounded-full`}
+      />
       <View style={tw`absolute bg-[#004CFF] top-0 w-full h-full rounded-[56px] z-[1] opacity-10`}>
       </View>
 
@@ -46,7 +46,7 @@ const FormInput = ({
             onPress={togglePasswordVisibility}
             activeOpacity={0.7}
           >
-            {isPasswordHidden ? <ShowIcon  /> : <HiddenIcon />}
+            {isPasswordHidden ? <ShowIcon /> : <HiddenIcon />}
           </TouchableOpacity>
         </View>
       ) : (
@@ -56,9 +56,8 @@ const FormInput = ({
           value={value}
           onChangeText={onChangeText}
           style={[
-            tw`w-full h-full ${props.multiline&&`pt-[15px]`} bg-none text-bottom z-[5] rounded-[56px] px-[24px] text-[#C2C2C2] border border-[#004CFF] text-sm`,
-            { fontFamily: "PoppinsMedium"
-             },
+            tw`w-full h-full bg-none text-bottom z-[5] rounded-[56px] px-[24px] text-[#C2C2C2] border border-[#004CFF] text-sm`,
+            { fontFamily: "PoppinsMedium" },
           ]}
           {...props}
         />
