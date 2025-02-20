@@ -44,10 +44,9 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
 
   useEffect(() => {
     const updateTime = () => {
-      const createdMoment = moment.utc(data.created); // Parse timestamp as UTC
-      const now = moment.utc(); // Get current UTC time
+      const createdMoment = moment.utc(data.created); 
+      const now = moment.utc();
   
-      // Prevent negative values
       if (now.isBefore(createdMoment)) {
         setTimeAgo("Just now");
         return;
@@ -56,12 +55,12 @@ const CheckListCardItem: React.FC<CheckListCardItemProps> = ({
       if (now.diff(createdMoment, 'days') >= 7) {
         setTimeAgo(createdMoment.local().format("MMM DD, YYYY"));
       } else {
-        setTimeAgo(createdMoment.local().fromNow(true) + " ago"); // `fromNow(true)` removes "ago", so we append it manually
+        setTimeAgo(createdMoment.local().fromNow(true) + " ago");
       }
     };
   
     updateTime();
-    const interval = setInterval(updateTime, 60000); // Update every 60 seconds for performance
+    const interval = setInterval(updateTime, 60000); 
     return () => clearInterval(interval);
   }, [data.created]);
   

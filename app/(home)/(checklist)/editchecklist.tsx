@@ -169,54 +169,6 @@ export default function EditCheckList() {
                         <View
                             style={tw`w-full flex flex-row justify-end gap-[5px] items-center`}
                         >
-                            {/* <ThemedText variant='title12' fontFamily='PoppinsMedium' textcolor='#C2C2C2'>
-                                Create a New Title
-                            </ThemedText>
-                            <TouchableOpacity
-                                onPress={showOptionItem}
-                            >
-                                <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
-                            </TouchableOpacity> */}
-
-                            {/* {showItem && (
-                                <View style={[tw`absolute bottom-[-185px] right-[6px] gap-[3px] flex justify-end items-end`, { zIndex: 4, position: 'absolute' }]}>
-                                    <Image source={require('@/assets/images/Polygon 2.png')} />
-                                    <View style={tw`w-[151px] h-[170px] border border-[#004CFF] rounded-[4px] justify-between`}>
-                                        <Image source={require('@/assets/images/addback.png')} style={tw`absolute w-full h-full`} />
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] w-full flex items-center flex flex-row gap-[10px]`}>
-                                            <PlusIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Add New title
-                                            </ThemedText>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] flex items-center flex flex-row gap-[10px]`}>
-                                            <MusicIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Music
-                                            </ThemedText>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] flex items-center flex flex-row gap-[10px]`}>
-                                            <PhotoIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Take Picture
-                                            </ThemedText>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] flex items-center flex flex-row gap-[10px]`} onPress={() => { setModalVisible(true), setShowItem(false) }}>
-                                            <GalleryIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Add from gallery
-                                            </ThemedText>
-                                        </TouchableOpacity>
-
-                                        <TouchableOpacity style={tw`px-[8px] h-[26px] flex items-center flex flex-row gap-[10px]`}>
-                                            <VideoIcon />
-                                            <ThemedText variant='title12' textcolor='#F6FBFD' fontFamily='NunitoMedium'>
-                                                Add Video
-                                            </ThemedText>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            )} */}
                         </View>
 
                         <View
@@ -240,14 +192,6 @@ export default function EditCheckList() {
                                             onChangeText={setTitle}
                                         />
                                     </View>
-                                    {/* <View
-                                        style={tw`flex-1 justify-center items-center pt-[10px] gap-[5px]`}
-                                    >
-                                        <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
-                                        <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsLight'>
-                                            Create List
-                                        </ThemedText>
-                                    </View> */}
                                 </View>
                                 <View
                                     style={tw`w-full flex flex-row w-full`}
@@ -265,14 +209,6 @@ export default function EditCheckList() {
                                             multiline
                                         />
                                     </View>
-                                    {/* <View
-                                        style={tw`flex-1 justify-center items-center pt-[10px] gap-[5px]`}
-                                    >
-                                        <Image source={require('@/assets/images/09. More.png')} style={tw`w-[24px] h-[24px]`} />
-                                        <ThemedText variant='title12' textcolor='#C2C2C2' fontFamily='PoppinsLight'>
-                                            Add List
-                                        </ThemedText>
-                                    </View> */}
                                 </View>
 
                             </View>
@@ -293,14 +229,6 @@ export default function EditCheckList() {
                         <View
                             style={tw`w-full flex-row justify-between`}
                         >
-                            {/* <View
-                                style={tw`w-[105px] flex flex-col justify-center items-center gap-[4px]`}
-                            >
-                                <SwitchForm />
-                                <ThemedText variant='title12' fontFamily='NunitoRegular' textcolor='#C2C2C2'>
-                                    Add Reminder
-                                </ThemedText>
-                            </View> */}
                             <BlueButton
                                 width={142}
                                 height={48}

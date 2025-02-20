@@ -11,6 +11,7 @@ import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 import { AuthProvider } from "@/context/AuthContext";
 import config from "@/config.json"
 import { connectSocket, disconnectSocket } from "@/context/socket";
+import SocketListener from "@/components/SocketListener";
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
@@ -75,6 +76,7 @@ export default function RootLayout() {
           </Stack>
           <StatusBar style="inverted" />
           <Toast config={toastConfig} />
+          <SocketListener />
         </ThemeProvider>
       </NavigationProvider>
     </AuthProvider>

@@ -52,7 +52,7 @@ const NavigationHeader: React.FC<NavigationHeaderProps> = ({ title }) => {
             <View
                 style={[
                     tw`${Platform.OS === 'ios' ? 'mt-0' : 'mt-[44px]'} w-full flex justify-center items-center px-[14px] h-[38px]`,
-                    { position: 'relative', zIndex: 1 } // Set position to relative
+                    { position: 'relative', zIndex: 1 } 
                 ]}
             >
             <View

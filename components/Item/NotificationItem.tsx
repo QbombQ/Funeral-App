@@ -116,7 +116,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete, onRefresh, openOp
       {/* <TouchableOpacity
       onPress={toViewVault}
       activeOpacity={1}
-    // onStartShouldSetResponderCapture={() => showOptions} // Prevent closing when options are open
+    // onStartShouldSetResponderCapture={() => showOptions} 
     > */}
       <View style={tw`w-full ${pathname==="/shareme"?`h-[85px]`:pathname==="/shareother"?`h-[85px]`:`h-[71.62px]`} items-center border border-[#004CFF] rounded-lg`}>
         <Image source={require('@/assets/images/vaultCardBack.png')} style={tw`absolute w-full h-full rounded-lg`} />
@@ -128,13 +128,11 @@ const VaultCard: React.FC<VaultCardProps> = ({ item, onDelete, onRefresh, openOp
               <ThemedText variant="title14" textcolor="#BAC1C4" fontFamily="RaleWaySemiBold">{`Upload Date: ${item.uploadDate}`}</ThemedText>
             </View>
           </View>
-          {/* Options Button */}
           <TouchableOpacity onPress={handleOptionToggle}>
             <OptionIcon />
           </TouchableOpacity>
         </View>
 
-        {/* Options Menu */}
         {isOptionOpen && (
           // <TouchableOpacity activeOpacity={1} onPress={() => { }} style={tw`absolute bottom-[-95px] right-[12px] justify-end items-end gap-1`}>
           <View style={tw`absolute top-[50px] right-[12px] justify-end items-end gap-1 z-2`}>

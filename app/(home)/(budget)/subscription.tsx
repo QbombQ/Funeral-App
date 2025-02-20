@@ -97,7 +97,7 @@ export default function Subscription() {
   const onPaymentCancel = () => {
     setModalVisible(false);
     Toast.show({
-      type: 'info',
+      type: 'error',
       text1: 'Payment Cancelled',
       text2: 'You cancelled the payment process.',
     });

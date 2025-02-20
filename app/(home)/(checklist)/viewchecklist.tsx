@@ -167,43 +167,7 @@ export default function Index() {
                                 </View>
                             )}
 
-
-                            {/* <View
-                            style={tw`flex flex-row gap-[6.5px]`}
-                        >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Next of Kin:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>Alex John</ThemedText>
                         </View>
-                        <View
-                            style={tw`flex flex-row gap-[6.5px]`}
-                        >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Location:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>Karnail Singh Stadium</ThemedText>
-                        </View>
-                        <View
-                            style={tw`flex flex-row gap-[6.5px]`}
-                        >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Funeral Type:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>Traditional</ThemedText>
-                        </View>
-                        <View
-                            style={tw`flex flex-row gap-[6.5px]`}
-                        >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Contact:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>+1 0211420420</ThemedText>
-                        </View>
-                        <View
-                            style={tw`flex flex-row gap-[6.5px]`}
-                        >
-                            <ThemedText variant='title20' textcolor='#BAC1C4' style={tw`opacity-60`} fontFamily='RaleWaySemiBold'>Budget:</ThemedText>
-                            <ThemedText variant='title20' textcolor='#BAC1C4' fontFamily='RaleWaySemiBold'>$4000</ThemedText>
-                        </View> */}
-
-                        </View>
-                        {/* <View style={tw`w-full justify-center items-center`}>
-                        <ManIcon />
-                        <ThemedText variant='title14' textcolor='#C2C2C2' fontFamily='PoppinsMedium'>Picture</ThemedText>
-                    </View> */}
                     </View>
 
                 }

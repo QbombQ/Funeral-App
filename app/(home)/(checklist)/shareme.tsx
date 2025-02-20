@@ -40,10 +40,6 @@ type ConfirmationAction = 'remove' | 'complete' | null;
 
 export default function Index() {
     const { userId } = useAuth()
-    // const [isUploadModalVisible, setUploadModalVisible] = useState(false);
-    // const [isUploadingModalVisible, setUploadingModalVisible] = useState(false);
-    // const [uploadProgress, setUploadProgress] = useState(0);
-    // const [isStatusModalVisible, setStatusModalVisible] = useState(false);
 
     const [dataList, setDataList] = useState<ChecklistItem[]>([]);
 
@@ -54,31 +50,6 @@ export default function Index() {
     const [isCreateModalVisible, setCreateModalVisible] = useState(false);
     const [openOptionId, setOpenOptionId] = useState<string | number | null>(null);
     const [loading, setLoading] = useState(false);
-
-    // const openUploadModal = () => setUploadModalVisible(true);
-    // const closeUploadModal = () => setUploadModalVisible(false);
-
-    // const handleFileUpload = () => {
-    //     closeUploadModal();
-    //     setUploadingModalVisible(true);
-    //     let progress = 0;
-    //     const interval = setInterval(() => {
-    //         if (progress >= 100) {
-    //             clearInterval(interval);
-    //             setUploadingModalVisible(false);
-    //             setStatusModalVisible(true);
-    //             setUploadProgress(0);
-    //         } else {
-    //             progress += 10;
-    //             setUploadProgress(progress);
-    //         }
-    //     }, 500);
-    // };
-
-    // const closeStatusModal = () => {
-    //     setStatusModalVisible(false);
-    // };
-
     const openCreateModal = () => setCreateModalVisible(true);
     const closeCreateModal = () => setCreateModalVisible(false);
     const fetchChecklists = async () => {
@@ -356,24 +327,6 @@ export default function Index() {
 
                 </>
             }
-            {/* <CheckListUploadModal
-                visible={isUploadModalVisible}
-                onClose={closeUploadModal}
-                onCreateChecklist={openCreateModal}
-                onUpload={handleFileUpload}
-                isLoading={false}
-            />
-            <UploadingModal
-                visible={isUploadingModalVisible}
-                progress={uploadProgress}
-            />
-            <SuccessModal
-                visible={isStatusModalVisible}
-                onCancel={closeStatusModal}
-                onConfirm={closeStatusModal}
-                statusText='Completed!'
-                btnText='Check File'
-            /> */}
             <CreateChecklistModal
                 visible={isCreateModalVisible}
                 onClose={closeCreateModal}

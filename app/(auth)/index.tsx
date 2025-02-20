@@ -23,24 +23,15 @@ import Expo from "expo";
 
 
 export default function Index() {
-  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [check, setCheck] = useState(false);
-  const [isEnabled, setIsEnabled] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setIsPasswordHidden(!isPasswordHidden);
-  };
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
   const tosignin = () => {
     router.push("/(auth)/signin")
-
-  }
-  const toOnboarding = () => {
-    // router.push('/(auth)/onboarding')
 
   }
   const validateEmail = (email: string): boolean => {
@@ -81,15 +72,6 @@ export default function Index() {
       });
       return;
     }
-
-    // if (!check) {
-    //   Toast.show({
-    //     type: "error",
-    //     text1: "Agreement Required ⚖️",
-    //     text2: "You must agree to the Terms of Service and Privacy Policy to continue.",
-    //   });
-    //   return;
-    // }
     setLoading(true)
     const data = { name, email, password };
 

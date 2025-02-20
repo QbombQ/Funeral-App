@@ -13,14 +13,13 @@ export default function HomeScreen() {
     const { userToken } = useAuth();
     const handlePress = () => {
         if (userToken) {
-            router.replace("/(home)/home"); // Redirect to login if not authenticated
+            router.replace("/(home)/home");
         }else{
             router.push("/(auth)")
 
         }
     }
     return (
-        // <ThemedView>
         <View style={tw`w-full h-full`}>
 
             <ImageBackground
@@ -78,7 +77,6 @@ export default function HomeScreen() {
 
             </ImageBackground>
         </View>
-        // </ThemedView>
 
     );
 }

@@ -43,10 +43,9 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
 
   useEffect(() => {
     const updateTime = () => {
-      const createdMoment = moment.utc(data.created); // Parse timestamp as UTC
-      const now = moment.utc(); // Get current UTC time
+      const createdMoment = moment.utc(data.created);
+      const now = moment.utc(); 
   
-      // Prevent negative values
       if (now.isBefore(createdMoment)) {
         setTimeAgo("Just now");
         return;
@@ -55,12 +54,12 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
       if (now.diff(createdMoment, 'days') >= 7) {
         setTimeAgo(createdMoment.local().format("MMM DD, YYYY"));
       } else {
-        setTimeAgo(createdMoment.local().fromNow(true) + " ago"); // `fromNow(true)` removes "ago", so we append it manually
+        setTimeAgo(createdMoment.local().fromNow(true) + " ago"); 
       }
     };
   
     updateTime();
-    const interval = setInterval(updateTime, 60000); // Update every 60 seconds for performance
+    const interval = setInterval(updateTime, 60000); 
     return () => clearInterval(interval);
   }, [data.created]);
   // const handleOptionToggle = () => {
@@ -134,7 +133,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
       {/* <TouchableOpacity
       onPress={toViewVault}
       activeOpacity={1}
-    // onStartShouldSetResponderCapture={() => showOptions} // Prevent closing when options are open
+    // onStartShouldSetResponderCapture={() => showOptions} 
     > */}
       <View style={tw`w-full ${pathname === "/shareme" ? `h-[85px]` : pathname === "/shareother" ? `h-[85px]` : `h-[71.62px]`} items-center border border-[#004CFF] rounded-lg`}>
         <Image source={require('@/assets/images/vaultCardBack.png')} style={tw`absolute w-full h-full rounded-lg`} />
@@ -154,13 +153,11 @@ const VaultCard: React.FC<VaultCardProps> = ({ data, onDelete, onRefresh, openOp
               <ThemedText variant="title14" textcolor="#BAC1C4" fontFamily="RaleWaySemiBold">{`Upload Date: ${timeAgo}`}</ThemedText>
             </View>
           </View>
-          {/* Options Button */}
           <TouchableOpacity onPress={handleOptionToggle}>
             <OptionIcon />
           </TouchableOpacity>
         </View>
 
-        {/* Options Menu */}
         {isOptionOpen && (
           // <TouchableOpacity activeOpacity={1} onPress={() => { }} style={tw`absolute bottom-[-95px] right-[12px] justify-end items-end gap-1`}>
           <View style={tw`absolute top-[50px] right-[12px] justify-end items-end gap-1 z-2`}>

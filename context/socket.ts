@@ -1,13 +1,18 @@
 import { io, Socket } from "socket.io-client";
-
-const SOCKET_URL = "http://172.20.100.19:8000"; 
+import config from "@/config.json"
+const SOCKET_URL = `${config.server_base_url}:${config.server_port}`; 
 
 let socket: Socket;
 
 export const connectSocket = (userEmail: string) => {
-    
     if (!socket) {
-        socket = io(SOCKET_URL);
+        socket = io(SOCKET_URL, {
+            transports: ['websocket'],
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000
+        });
+        
         console.log('connectSocket triggered'); 
         socket.connect();
         
@@ -16,11 +21,23 @@ export const connectSocket = (userEmail: string) => {
             socket.emit("join", { email: userEmail });
         });
 
+        socket.on("connect_error", (error) => {
+            console.error("Socket connection error:", error);
+        });
+
         socket.on("disconnect", () => {
             console.log("Socket disconnected");
         });
 
-        // Example of listening to notifications
+        socket.on("reconnect", (attemptNumber) => {
+            console.log("Socket reconnected after", attemptNumber, "attempts");
+            socket.emit("join", { email: userEmail });
+        });
+
+        socket.on("reconnect_error", (error) => {
+            console.error("Socket reconnection error:", error);
+        });
+
         socket.on("shared-checkList", (data) => {
             console.log("Received shared checklist notification:", data);
         });
@@ -37,6 +54,8 @@ export const connectSocket = (userEmail: string) => {
             console.log("Received unshared vault notification:", data);
         });
     }
+
+    return socket;
 };
 
 export const disconnectSocket = () => {
@@ -47,3 +66,15 @@ export const disconnectSocket = () => {
 };
 
 export const getSocket = () => socket;
+
+export const isSocketConnected = () => {
+    return socket && socket.connected;
+};
+
+export const emitEvent = (eventName: string, data: any) => {
+    if (socket && socket.connected) {
+        socket.emit(eventName, data);
+    } else {
+        console.error('Socket is not connected. Cannot emit event:', eventName);
+    }
+};

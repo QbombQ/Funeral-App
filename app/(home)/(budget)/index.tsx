@@ -25,16 +25,7 @@ export default function Index() {
     const [totalBudget, setTotalBudget] = useState(0);
     const [remainingBudget, setRemainingBudget] = useState(0);
     const [isCreateModalVisible, setCreateModalVisible] = useState(false);
-    const [dataList, setDataList] = useState<BudgetItem[]>([
-        // {
-        //     title: 'Burial A',
-        //     budget: 1000
-        // },
-        // {
-        //     title: 'Burial B',
-        //     budget: 3000
-        // }
-    ]);
+    const [dataList, setDataList] = useState<BudgetItem[]>([]);
 
     const [temporaryBudget, setTemporaryBudget] = useState(0);
 
@@ -134,9 +125,6 @@ export default function Index() {
                                 <View
                                     style={tw`w-full justify-center items-center`}
                                 >
-                                    {/* <TouchableOpacity onPress={openCreateModal}>
-                                        <Image source={require("@/assets/images/09. More.png")} />
-                                    </TouchableOpacity> */}
                                     <TouchableOpacity
                                         onPress={openCreateModal}
                                         style={[

@@ -9,11 +9,6 @@ import PDFReader from 'react-native-pdf';
 export const getFileComponent = (filePath: string, fileType: string) => {
     const formattedFilePath = filePath;
 
-    // useEffect(() => {
-    //     console.log('getrFileComponent is called:::');
-
-    // }, [])
-
     if (fileType.includes('image')) {
         return <Image source={{ uri: formattedFilePath }} style={tw`w-[100%] h-full rounded-lg`} />;
     }
@@ -23,24 +18,7 @@ export const getFileComponent = (filePath: string, fileType: string) => {
     }
 
     if (fileType.includes('pdf')) {
-        // return <WebView
-        //     source={{ uri: "http://172.20.100.19:8000/uploads/1739411056945-206393567.pdf" }}
-        //     originWhitelist={['*']}
-        //     allowFileAccess={true}
-        //     allowUniversalAccessFromFileURLs={true}
-        //     style={{width: '100%', height: '100%'}}
-        // />;
-        // useEffect(() => {
-        // console.log('PDFReader is triggered:::');
-
-        // }, [])
         return <View style={{ flex: 1, width: '100%', height: "100%" }}>
-            {/* <PDFReader
-                trustAllCerts={false}
-                source={{ uri: `http://172.20.100.19:8000/uploads/1739411056945-206393567.pdf`, cache: true }}
-                onLoadComplete={(a, b) => { console.log('onLoadComplete:::', a, b) }}
-                onError={(err) => { console.error('ErrorPDFReader:::', err) }}
-            /> */}
             <PDFReader
                 trustAllCerts={false}
                 source={{
@@ -80,39 +58,29 @@ const AudioPlayer = ({ audioUri }: { audioUri: string }) => {
         if (!sound) {
             const { sound } = await Audio.Sound.createAsync(
                 { uri: audioUri },
-                { shouldPlay: true } // Automatically play when created
+                { shouldPlay: true }
             );
 
-            // sound.setOnPlaybackStatusUpdate((status) => {
-            //     if (status.didJustFinish) {
-            //         // Reset audio player state when finished
-            //         setIsPlaying(false);
-            //         sound.unloadAsync(); // Unload the sound after playback
-            //         setSound(null); // Set the sound state to null
-            //     }
-            // });
             sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
-                // Check if the status is a success status
                 if ((status as AVPlaybackStatusSuccess).didJustFinish !== undefined) {
                     const playbackStatus = status as AVPlaybackStatusSuccess;
 
                     if (playbackStatus.didJustFinish) {
-                        // Reset audio player state when finished
                         setIsPlaying(false);
-                        sound.unloadAsync(); // Unload the sound after playback
-                        setSound(null); // Set the sound state to null
+                        sound.unloadAsync(); 
+                        setSound(null); 
                     }
                 }
             });
             setSound(sound);
-            setIsPlaying(true); // Set to playing
+            setIsPlaying(true); 
         } else {
             if (isPlaying) {
                 await sound.pauseAsync();
             } else {
                 await sound.playAsync();
             }
-            setIsPlaying(!isPlaying); // Toggle playing state
+            setIsPlaying(!isPlaying); 
         }
     };
 

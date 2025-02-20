@@ -7,17 +7,14 @@ import tw from 'twrnc';
 const PaymentModal = ({ visible, approvalUrl, onSuccess, onCancel }:any) => {
   const [loading, setLoading] = useState(true);
 
-  // This is your "success" URL as configured on the backend
-  const SUCCESS_URL = 'https://yourbackend.com/paypal/success';
-  const CANCEL_URL = 'https://yourbackend.com/paypal/cancel';
+  const SUCCESS_URL = '';
+  const CANCEL_URL = '';
 
   const onNavigationStateChange = (navState: { url: any; }) => {
     const { url } = navState;
-    // When the user approves the payment, PayPal redirects to SUCCESS_URL with order details as query params.
     if (url.startsWith(SUCCESS_URL)) {
-      // Extract orderID from the URL if provided, or you can pass it via other means.
       const urlParams = new URLSearchParams(url.split('?')[1]);
-      const orderID = urlParams.get('token'); // PayPal often uses 'token' for order ID
+      const orderID = urlParams.get('token');
       if (orderID) {
         onSuccess(orderID);
       }

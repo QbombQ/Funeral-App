@@ -184,7 +184,7 @@ export default function CreateVault() {
     };
     const createVault = async (): Promise<void> => {
         if (!selectedFile) {
-            return; // Exit early if no file is selected
+            return;
         }
 
         setLoading(true); // Start loading
@@ -196,16 +196,15 @@ export default function CreateVault() {
 
         let fileUri = selectedFile?.uri || '';
 
-        // Fix file URI for Android
         if (Platform.OS === "android" && !fileUri.startsWith("file://")) {
             fileUri = "file://" + fileUri;
         }
 
         formData.append("file", {
-            uri: fileUri,  // Use the fileUri variable which might have been updated
+            uri: fileUri, 
             name: selectedFile.name,
             type: selectedFile.type
-        } as any); // 'any' to satisfy TypeScript if necessary
+        } as any);
 
         try {
             const response = await axiosInstance.post("/vault/create", formData, {
@@ -216,10 +215,8 @@ export default function CreateVault() {
 
             console.log(response.data);
 
-            // Close confirmation modal after API response
             closeConfirmationModal();
 
-            // Handle success response
             if (response.data.message === "success") {
                 Toast.show({
                     type: "success",
@@ -227,24 +224,17 @@ export default function CreateVault() {
                     text2: "Vault created successfully!",
                 });
 
-                // Update the UI with the new vault ID
-                // closeConfirmationModal();
                 setShowConfirmationModal(false)
 
                 setStatusModalVisible(true);
                 setVaultId(response.data.id);
 
-                // Handle the "Vault limit reached" scenario
             } else if (response.data.message === "Vault limit reached. Please subscribe to add more vaults.") {
                 showMemberShipModal();
                 closeConfirmationModal();
             }
 
         } catch (error: any) {
-            // Handle errors
-            console.error("Error creating vault:", error.response?.data || error.message); // Useful for debugging
-
-            // Show error Toast
             Toast.show({
                 type: "error",
                 text1: "Create Failed",
@@ -253,7 +243,6 @@ export default function CreateVault() {
 
             closeConfirmationModal();
         } finally {
-            // Ensure that loading state is reset
             setLoading(false);
         }
     };

@@ -110,39 +110,28 @@ const FilePreview: React.FC<FilePreviewProps> = ({ fileUri, fileType, fileName, 
             if (!sound) {
                 const { sound } = await Audio.Sound.createAsync(
                     { uri: audioUri },
-                    { shouldPlay: true } // Automatically play when created
+                    { shouldPlay: true } //
                 );
-    
-                // sound.setOnPlaybackStatusUpdate((status) => {
-                //     if (status.didJustFinish) {
-                //         // Reset audio player state when finished
-                //         setIsPlaying(false);
-                //         sound.unloadAsync(); // Unload the sound after playback
-                //         setSound(null); // Set the sound state to null
-                //     }
-                // });
                 sound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
-                    // Check if the status is a success status
                     if ((status as AVPlaybackStatusSuccess).didJustFinish !== undefined) {
                         const playbackStatus = status as AVPlaybackStatusSuccess;
     
                         if (playbackStatus.didJustFinish) {
-                            // Reset audio player state when finished
                             setIsPlaying(false);
-                            sound.unloadAsync(); // Unload the sound after playback
-                            setSound(null); // Set the sound state to null
+                            sound.unloadAsync(); 
+                            setSound(null); 
                         }
                     }
                 });
                 setSound(sound);
-                setIsPlaying(true); // Set to playing
+                setIsPlaying(true); 
             } else {
                 if (isPlaying) {
                     await sound.pauseAsync();
                 } else {
                     await sound.playAsync();
                 }
-                setIsPlaying(!isPlaying); // Toggle playing state
+                setIsPlaying(!isPlaying);
             }
         };
     
@@ -205,11 +194,11 @@ const FilePreview: React.FC<FilePreviewProps> = ({ fileUri, fileType, fileName, 
                                 onPressLink={uri => {
                                     console.log(`Link pressed: ${uri}`);
                                 }}
-                                scale={1.0} // Ensure proper scaling
+                                scale={1.0} 
                                 minScale={1.0}
-                                maxScale={3.0} // Allow pinch zooming
-                                enablePaging={false} // Enable scrolling instead of swiping pages
-                                spacing={10} // Adjust spacing between pages
+                                maxScale={3.0} 
+                                enablePaging={false} 
+                                spacing={10}
                                 style={tw`w-full h-full rounded-lg`}
                             />
                         </View>
