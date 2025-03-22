@@ -1,8 +1,27 @@
-# Welcome to your Expo app 👋
+# Funeral Planning Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, intuitive mobile application designed to help users plan and manage funeral arrangements with care and dignity. Built with Expo and React Native.
 
-## Get started
+![App Preview](assets/images/app-preview.png)
+
+## Features
+
+- **User Authentication**: Secure sign-in with Google and Apple authentication options
+- **Interactive Dashboard**: Easy-to-navigate dashboard for managing funeral arrangements
+- **Location Planning**: Map integration for funeral venue selection
+- **Dark Theme**: Elegant dark-themed UI with blue accents for comfortable viewing
+- **Responsive Design**: Smooth, parallax scrolling and haptic feedback for enhanced user experience
+
+## Technical Stack
+
+- **Framework**: Expo / React Native
+- **UI Components**: Custom-built components with theming support
+- **Authentication**: Multi-provider auth system
+- **Navigation**: File-based routing with Expo Router
+- **State Management**: React Context for auth and navigation states
+- **Real-time Updates**: WebSocket integration for live updates
+
+## Getting Started
 
 1. Install dependencies
 
@@ -10,41 +29,90 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Development Mode
 
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+   This will open the Expo Developer Tools in your browser.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+3. Platform Specific Setup
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+   ### iOS
+   
+   Requirements:
+   - macOS computer
+   - Xcode 14 or newer
+   - iOS 13.0 or newer
+   - CocoaPods (`sudo gem install cocoapods`)
 
-## Get a fresh project
+   Steps:
+   ```bash
+   cd ios
+   pod install
+   cd ..
+   npx expo run:ios
+   ```
 
-When you're ready, run:
+   
+   ```bash
+   npx expo run:ios 
+   ```
+
+   ### Android
+   
+   Requirements:
+   - Android Studio
+   - Android SDK Platform 33 (Android 13.0)
+   - Android SDK Build-Tools 33.0.0
+   - JDK 11 or newer
+
+   Steps:
+   ```bash
+   npx expo run:android
+   ```
+
+4. Production Build
+
+   ### iOS
+   ```bash
+   eas build --platform ios
+   ```
+
+   ### Android
+   ```bash
+   eas build --platform android
+   ```
+
+## Development
+
+The application structure is organized as follows:
+
+- `/app` - Main application routes and layouts
+- `/components` - Reusable UI components
+- `/assets` - Images and fonts
+- `/context` - React Context providers
+- `/hooks` - Custom React hooks
+- `/utils` - Utility functions
+- `/constants` - Theme and configuration constants
+
+## Testing
+
+Run the test suite:
 
 ```bash
-npm run reset-project
+npm test
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Contributing
 
-## Learn more
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-To learn more about developing your project with Expo, look at the following resources:
+## License
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the MIT License - see the LICENSE file for details.
